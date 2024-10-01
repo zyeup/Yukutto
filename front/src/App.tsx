@@ -1,33 +1,68 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { ChangeEvent, FormEvent, useState } from 'react';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [inputValue, setInputValue] = useState("");
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  type Todo ={
+    inputValue: string;
+    id: number;
+    checked: boolean;
+  } 
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // console.log(e.target.value);
+    setInputValue(e.target.value);
+  }
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newTodo: Todo = {
+      inputValue: inputValue,
+      id: todos.length,
+      checked: false,
+    };
+
+    setTodos([newTodo, ...todos]);
+    setInputValue("");
+  }
+
+  const handleEdit = () => {
+
+  }
+
 
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h2>
+          Todoリスト with TypeScript
+        </h2>
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <input 
+            type="text" 
+            onChange={(e) => handleChange(e)} 
+          />
+          <input 
+            type="submit" 
+            value="作成"
+          />
+        </form>
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id}>
+              <input 
+                type="text" 
+                onChange={() => handleEdit()} 
+                value={todo.inputValue}
+              />
+            </li>
+          ))}
+        </ul>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
