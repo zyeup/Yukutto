@@ -84,14 +84,22 @@ const App: React.FC = () => {
         <h3>現在のピンの位置情報</h3>
         <p>緯度：{lat}</p> 
         <p>経度：{lng}</p> 
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="タイトルを入力"
-        />
-        <button onClick={addMarker}>この名前でピンを保存する</button>
-        <button onClick={deleteMarker}>ピンを全て削除する</button>
+        <label className='font-bold' htmlFor='marker'>マーカーに表示する名前を入力
+          <input
+            id="marker"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="タイトルを入力"
+            className="border border-1 border-black focus:border-black focus:outline-none py-2 px-4 rounded"
+          />
+        </label>
+        <button className="block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+                onClick={addMarker}>この名前でピンを保存する
+        </button>
+        <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" 
+                onClick={deleteMarker}>ピンを全て削除する
+        </button>
       </div>
       <div ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
     </div>
