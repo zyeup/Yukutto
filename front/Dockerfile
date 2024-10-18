@@ -4,4 +4,14 @@ FROM node:21.7.1
 RUN mkdir /myapp
 WORKDIR /myapp
 
+# package.json と package-lock.json をコピー
+COPY package*.json ./
+
+# 依存関係をインストール
+RUN npm install
+
+# アプリケーションのコードをコピー
+COPY . .
+
+
 CMD ["npm","run","dev"]

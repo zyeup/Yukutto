@@ -1,70 +1,101 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './App.css'
 
-function App() {
+// 初期化用の定数
+const INITIALIZE_LAT = 35.6809591; // 緯度
+const INITIALIZE_LNG = 139.7673068; // 経度
+const INITIALIZE_ZOOM = 12.5; // ズームレベル
+const INITIALIZE_MAP_WIDTH = '50%'; // 地図の幅
+const INITIALIZE_MAP_HEIGHT = '800px'; // 地図の高さ
 
-  const [inputValue, setInputValue] = useState("");
-  const [todos, setTodos] = useState<Todo[]>([]);
 
-  type Todo ={
-    inputValue: string;
-    id: number;
-    checked: boolean;
-  } 
+const App: React.FC = () => {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [lat, setLat] = useState<number>(INITIALIZE_LAT);
+  const [lng, setLng] = useState<number>(INITIALIZE_LNG);
+  const [title, setTitle] = useState<string>('New Marker'); 
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // console.log(e.target.value);
-    setInputValue(e.target.value);
+  const markerArray: google.maps.Marker[] = [];  // マーカーの配列の型を指定
+  const [markers, setMarkers] = useState<google.maps.Marker[]>(markerArray);   // マーカーをstateとして管理
+
+  useEffect(() => {
+    if (!mapRef.current || map) return;
+
+    const initializedMap = new google.maps.Map(mapRef.current, {
+      center: { lat: INITIALIZE_LAT, lng: INITIALIZE_LNG },
+      zoom: INITIALIZE_ZOOM,
+    });
+
+    // 余計な文字を非表示にする
+    // 左上の地図を押すと元に戻るので要修正
+    var style = [{
+      featureType: 'all',
+      elementType: 'labels.icon',
+      stylers: [{ visibility: 'off' }]
+    }];
+    var lopanType = new google.maps.StyledMapType(style);
+    initializedMap.mapTypes.set('noText', lopanType);
+    initializedMap.setMapTypeId('noText');
+
+    initializedMap.addListener('click', (event: google.maps.MapMouseEvent) => {
+      if (event.latLng) {
+        const clickedLat = event.latLng.lat();
+        const clickedLng = event.latLng.lng();
+
+        // クリックされた座標をstateに保存
+        setLat(clickedLat);
+        setLng(clickedLng); 
+      }
+    });
+
+    setMap(initializedMap);
+  }, []);
+
+   // マーカーを追加する関数
+   const addMarker = () => {
+    if (map) {
+      const marker =new google.maps.Marker({
+        position: { lat, lng },
+        map,
+        title: 'New Marker',
+        label: {
+          text: title,
+          color: 'red',
+          fontSize: '12px',
+          fontWeight: 'normal',
+        },
+      });
+      marker.setMap(map)
+      setMarkers((prevMarkers) => [...prevMarkers, marker]);    }
+  };
+
+  const deleteMarker = () => {
+    if (map) {
+      markers.map((marker) => {
+        marker.setMap(null);
+    })
+    }
   }
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const newTodo: Todo = {
-      inputValue: inputValue,
-      id: todos.length,
-      checked: false,
-    };
-
-    setTodos([newTodo, ...todos]);
-    setInputValue("");
-  }
-
-  const handleEdit = () => {
-
-  }
-
 
   return (
-    <>
-      <div>
-        <h2>
-          Todoリスト with TypeScript
-        </h2>
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <input 
-            type="text" 
-            onChange={(e) => handleChange(e)} 
-          />
-          <input 
-            type="submit" 
-            value="作成"
-          />
-        </form>
-        <ul>
-          {todos.map((todo) => (
-            <li key={todo.id}>
-              <input 
-                type="text" 
-                onChange={() => handleEdit()} 
-                value={todo.inputValue}
-              />
-            </li>
-          ))}
-        </ul>
+    <div className="container">
+      <div style={{ marginTop: '10px' }}>
+        <h3>現在のピンの位置情報</h3>
+        <p>緯度：{lat}</p> 
+        <p>経度：{lng}</p> 
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="タイトルを入力"
+        />
+        <button onClick={addMarker}>この名前でピンを保存する</button>
+        <button onClick={deleteMarker}>ピンを全て削除する</button>
       </div>
-    </>
-  )
-}
+      <div ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
+    </div>
+  );
+};
 
 export default App
