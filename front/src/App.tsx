@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 import './App.css'
+import Home from './pages/home';
+import About from './pages/about';
 
 // 初期化用の定数
 const INITIALIZE_LAT = 35.6809591; // 緯度
@@ -14,7 +17,7 @@ const App: React.FC = () => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [lat, setLat] = useState<number>(INITIALIZE_LAT);
   const [lng, setLng] = useState<number>(INITIALIZE_LNG);
-  const [title, setTitle] = useState<string>('New Marker'); 
+  const [title, setTitle] = useState<string>('New Marker');
 
   const markerArray: google.maps.Marker[] = [];  // マーカーの配列の型を指定
   const [markers, setMarkers] = useState<google.maps.Marker[]>(markerArray);   // マーカーをstateとして管理
@@ -45,17 +48,17 @@ const App: React.FC = () => {
 
         // クリックされた座標をstateに保存
         setLat(clickedLat);
-        setLng(clickedLng); 
+        setLng(clickedLng);
       }
     });
 
     setMap(initializedMap);
   }, []);
 
-   // マーカーを追加する関数
-   const addMarker = () => {
+  // マーカーを追加する関数
+  const addMarker = () => {
     if (map) {
-      const marker =new google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: { lat, lng },
         map,
         title: 'New Marker',
@@ -67,14 +70,15 @@ const App: React.FC = () => {
         },
       });
       marker.setMap(map)
-      setMarkers((prevMarkers) => [...prevMarkers, marker]);    }
+      setMarkers((prevMarkers) => [...prevMarkers, marker]);
+    }
   };
 
   const deleteMarker = () => {
     if (map) {
       markers.map((marker) => {
         marker.setMap(null);
-    })
+      })
     }
   }
 
@@ -82,8 +86,8 @@ const App: React.FC = () => {
     <div className="container">
       <div style={{ marginTop: '10px' }}>
         <h3>現在のピンの位置情報</h3>
-        <p>緯度：{lat}</p> 
-        <p>経度：{lng}</p> 
+        <p>緯度：{lat}</p>
+        <p>経度：{lng}</p>
         <label className='font-bold' htmlFor='marker'>マーカーに表示する名前を入力
           <input
             id="marker"
@@ -94,14 +98,20 @@ const App: React.FC = () => {
             className="border border-1 border-black focus:border-black focus:outline-none py-2 px-4 rounded"
           />
         </label>
-        <button className="block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
-                onClick={addMarker}>この名前でピンを保存する
+        <button className="block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={addMarker}>この名前でピンを保存する
         </button>
-        <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" 
-                onClick={deleteMarker}>ピンを全て削除する
+        <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          onClick={deleteMarker}>ピンを全て削除する
         </button>
       </div>
       <div ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+      <Link to="/">Home</Link>
+      <Link to="/about">About</Link>
     </div>
   );
 };
