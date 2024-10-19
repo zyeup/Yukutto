@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
+import List from '../map_components/list'
 
 // 初期化用の定数
 const INITIALIZE_LAT = 35.6809591; // 緯度
@@ -7,6 +8,13 @@ const INITIALIZE_LNG = 139.7673068; // 経度
 const INITIALIZE_ZOOM = 12.5; // ズームレベル
 const INITIALIZE_MAP_WIDTH = '50%'; // 地図の幅
 const INITIALIZE_MAP_HEIGHT = '800px'; // 地図の高さ
+
+type MarkerInfo = {
+    id: number;
+    lat: number;
+    lng: number;
+    title: string;
+};
 
 const Map: React.FC = () => {
     const mapRef = useRef<HTMLDivElement>(null);
@@ -17,6 +25,7 @@ const Map: React.FC = () => {
 
     const markerArray: google.maps.Marker[] = [];  // マーカーの配列の型を指定
     const [markers, setMarkers] = useState<google.maps.Marker[]>(markerArray);   // マーカーをstateとして管理
+    const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);   // マーカーをstateとして管理
 
     useEffect(() => {
         if (!mapRef.current || map) return;
@@ -65,8 +74,17 @@ const Map: React.FC = () => {
                     fontWeight: 'normal',
                 },
             });
+
+            const markerInfo = {
+                id: Date.now(), // 一意のIDを使う
+                lat: lat,
+                lng: lng,
+                title: 'New Marker',
+            };
+
             marker.setMap(map)
             setMarkers((prevMarkers) => [...prevMarkers, marker]);
+            setMarkersInfos((prevMarkers) => [...prevMarkers, markerInfo]);
         }
     };
 
@@ -75,6 +93,7 @@ const Map: React.FC = () => {
             markers.map((marker) => {
                 marker.setMap(null);
             })
+            setMarkersInfos([]);
         }
     }
 
@@ -100,6 +119,7 @@ const Map: React.FC = () => {
                 <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                     onClick={deleteMarker}>ピンを全て削除する
                 </button>
+                <List markersInfos={markersInfos}></List>
             </div>
             <div ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
         </div>
