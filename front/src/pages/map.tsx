@@ -14,6 +14,7 @@ type MarkerInfo = {
     lat: number;
     lng: number;
     title: string;
+    marker: google.maps.Marker;
 };
 
 const Map: React.FC = () => {
@@ -21,22 +22,21 @@ const Map: React.FC = () => {
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lat, setLat] = useState<number>(INITIALIZE_LAT);
     const [lng, setLng] = useState<number>(INITIALIZE_LNG);
-    const [title, setTitle] = useState<string>('New Marker');
-
-    const markerArray: google.maps.Marker[] = [];  // マーカーの配列の型を指定
-    const [markers, setMarkers] = useState<google.maps.Marker[]>(markerArray);   // マーカーをstateとして管理
-    const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);   // マーカーをstateとして管理
+    const [title, setTitle] = useState<string>('');
+    const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);
 
     useEffect(() => {
         if (!mapRef.current || map) return;
 
-        const initializedMap = new google.maps.Map(mapRef.current, {
+        var myOptions = {
             center: { lat: INITIALIZE_LAT, lng: INITIALIZE_LNG },
             zoom: INITIALIZE_ZOOM,
-        });
+            disableDefaultUI: true,
+            zoomControl: true,
+        }
 
-        // 余計な文字を非表示にする
-        // 左上の地図を押すと元に戻るので要修正
+        const initializedMap = new google.maps.Map(mapRef.current, myOptions);
+
         var style = [{
             featureType: 'all',
             elementType: 'labels.icon',
@@ -60,38 +60,55 @@ const Map: React.FC = () => {
         setMap(initializedMap);
     }, []);
 
+    const checkAdd = () => {
+        if (markersInfos.length > 0 && lat === markersInfos[markersInfos.length - 1].lat && lng === markersInfos[markersInfos.length - 1].lng) {
+            alert("同じ地点は指定できません");
+            return false;
+        } else if (title === "") {
+            alert("タイトルを入力してください");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     // マーカーを追加する関数
-    const addMarker = () => {
-        if (map) {
+    const addMarker = (e: { preventDefault: () => void; }) => {
+
+        e.preventDefault();
+
+        if (map && checkAdd()) {
             const marker = new google.maps.Marker({
                 position: { lat, lng },
                 map,
-                title: 'New Marker',
+                title: title,
                 label: {
                     text: title,
-                    color: 'red',
-                    fontSize: '12px',
-                    fontWeight: 'normal',
+                    color: 'black',
+                    fontSize: '20px',
+                    fontWeight: 'bold',
                 },
+                animation: google.maps.Animation.DROP,
             });
 
             const markerInfo = {
                 id: Date.now(), // 一意のIDを使う
                 lat: lat,
                 lng: lng,
-                title: 'New Marker',
+                title: title,
+                marker: marker
             };
 
             marker.setMap(map)
-            setMarkers((prevMarkers) => [...prevMarkers, marker]);
             setMarkersInfos((prevMarkers) => [...prevMarkers, markerInfo]);
+            setTitle("");
         }
     };
 
-    const deleteMarker = () => {
+    const deleteMarkers = () => {
         if (map) {
-            markers.map((marker) => {
-                marker.setMap(null);
+            markersInfos.map((markerInfos) => {
+                markerInfos.marker.setMap(null);
             })
             setMarkersInfos([]);
         }
@@ -99,29 +116,31 @@ const Map: React.FC = () => {
 
     return (
         <div className="container">
-            <div style={{ marginTop: '10px' }}>
+            <div className="mt-4 ml-4">
                 <h3>現在のピンの位置情報</h3>
                 <p>緯度：{lat}</p>
                 <p>経度：{lng}</p>
-                <label className='font-bold' htmlFor='marker'>マーカーに表示する名前を入力
-                    <input
-                        id="marker"
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="タイトルを入力"
-                        className="border border-1 border-black focus:border-black focus:outline-none py-2 px-4 rounded"
-                    />
-                </label>
+                <form onSubmit={addMarker}>
+                    <label className='font-bold' htmlFor='marker'>マーカーに表示する名前を入力
+                        <input
+                            id="marker"
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="タイトルを入力"
+                            className="border border-1 border-black focus:border-black focus:outline-none py-2 px-4 rounded"
+                        />
+                    </label>
+                </form>
                 <button className="block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     onClick={addMarker}>この名前でピンを保存する
                 </button>
                 <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={deleteMarker}>ピンを全て削除する
+                    onClick={deleteMarkers}>ピンを全て削除する
                 </button>
-                <List markersInfos={markersInfos}></List>
+                <List markersInfos={markersInfos} setMarkersInfos={setMarkersInfos} ></List>
             </div>
-            <div ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
+            <div className="mt-4" ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
         </div>
     );
 
