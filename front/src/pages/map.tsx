@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import List from '../map_components/list'
+import axios from 'axios';
 
 // 初期化用の定数
 const INITIALIZE_LAT = 35.6809591; // 緯度
@@ -58,6 +59,38 @@ const Map: React.FC = () => {
         });
 
         setMap(initializedMap);
+
+        const fetchMarkers = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/v1/markers');
+                // データを MarkerInfo の配列に整形
+                const markersData: MarkerInfo[] = response.data.map((marker: any) => ({
+                    id: marker.id,
+                    lat: marker.lat,
+                    lng: marker.lng,
+                    title: marker.title,
+                    marker: new google.maps.Marker({
+                        position: { lat: marker.lat, lng: marker.lng },
+                        map,
+                        title: marker.title,
+                        label: {
+                            text: marker.title,
+                            color: 'black',
+                            fontSize: '20px',
+                            fontWeight: 'bold',
+                        },
+                        animation: google.maps.Animation.DROP,
+                    }),
+                }));
+                setMarkersInfos(markersData);
+                markersData.forEach((markerInfo) => {
+                    markerInfo.marker.setMap(initializedMap);
+                });
+            } catch (error) {
+                console.error("Error fetching markers:", error);
+            }
+        };
+        fetchMarkers();
     }, []);
 
     const checkAdd = () => {
@@ -73,35 +106,49 @@ const Map: React.FC = () => {
     }
 
     // マーカーを追加する関数
-    const addMarker = (e: { preventDefault: () => void; }) => {
+    const addMarker = async (e: FormEvent) => {
 
         e.preventDefault();
 
         if (map && checkAdd()) {
-            const marker = new google.maps.Marker({
-                position: { lat, lng },
-                map,
-                title: title,
-                label: {
-                    text: title,
-                    color: 'black',
-                    fontSize: '20px',
-                    fontWeight: 'bold',
-                },
-                animation: google.maps.Animation.DROP,
-            });
 
-            const markerInfo = {
-                id: Date.now(), // 一意のIDを使う
-                lat: lat,
-                lng: lng,
-                title: title,
-                marker: marker
-            };
+            try {
+                await axios.post('http://localhost:3000/api/v1/markers', {
+                    lat: lat,
+                    lng: lng,
+                    title: title,
+                })
 
-            marker.setMap(map)
-            setMarkersInfos((prevMarkers) => [...prevMarkers, markerInfo]);
-            setTitle("");
+                const marker = new google.maps.Marker({
+                    position: { lat, lng },
+                    map,
+                    title: title,
+                    label: {
+                        text: title,
+                        color: 'black',
+                        fontSize: '20px',
+                        fontWeight: 'bold',
+                    },
+                    animation: google.maps.Animation.DROP,
+                });
+
+                const markerInfo = {
+                    id: Date.now(),
+                    lat: lat,
+                    lng: lng,
+                    title: title,
+                    marker: marker
+                };
+
+                marker.setMap(map)
+                setMarkersInfos((prevMarkers) => [...prevMarkers, markerInfo]);
+                setTitle("");
+            } catch (err) {
+
+                alert("マーカーの作成に失敗しました")
+
+            }
+
         }
     };
 
