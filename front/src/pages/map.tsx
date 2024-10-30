@@ -23,8 +23,9 @@ const Map: React.FC = () => {
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lat, setLat] = useState<number>(INITIALIZE_LAT);
     const [lng, setLng] = useState<number>(INITIALIZE_LNG);
-    const [title, setTitle] = useState<string>('');
+    const [title, setTitle] = useState<string>("");
     const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);
+    const [tmpMarker, setTmpMarker] = useState<google.maps.Marker | null>(null);
 
     useEffect(() => {
         if (!mapRef.current || map) return;
@@ -89,6 +90,13 @@ const Map: React.FC = () => {
         fetchMarkers();
     }, []);
 
+    useEffect(() => {
+        if (map) {
+            if (lat !== INITIALIZE_LAT || lng !== INITIALIZE_LNG)
+                nowLocate(lat, lng);
+        }
+    }, [map, lat, lng]);
+
     // マーカーを追加する関数
     const addMarker = async (newMarker: MarkerInfo) => {
 
@@ -103,6 +111,33 @@ const Map: React.FC = () => {
         setMarkersInfos((prevMarkerInfos) => [...prevMarkerInfos, newMarkerInfo]);
     };
 
+    const nowLocate = (clickedLat: number, clickedLng: number) => {
+
+        if (tmpMarker) {
+            tmpMarker.setMap(null);
+        }
+        const marker = new google.maps.Marker({
+            position: { lat: clickedLat, lng: clickedLng },
+            map,
+            title: title,
+            icon: {
+                fillColor: "red",
+                fillOpacity: 1,
+                path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                scale: 8,
+                strokeColor: "red",
+                strokeWeight: 1.0
+            },
+            label: {
+                text: " ",
+                color: 'black',
+                fontSize: '20px',
+                fontWeight: 'bold',
+            },
+        });
+        marker.setMap(map);
+        setTmpMarker(marker);
+    }
 
     return (
         <div className="container">
