@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import React, { Dispatch, SetStateAction } from 'react'
 
-interface PostData {
+type PostData = {
     id: string;
     title: string;
     content: string;
@@ -9,28 +10,29 @@ interface PostData {
     update_at: string;
 }
 
-interface DeltetePostProps {
-    posts: Record<string, PostData>;
-    setPosts: React.Dispatch<React.SetStateAction<Record<string, PostData>>>;
+type PostProps = {
+    posts: PostData[];
+    setPosts: Dispatch<SetStateAction<PostData[]>>;
 }
 
-const Home: React.FC<DeltetePostProps> = ({ posts, setPosts }) => {
-
-    const fetchPosts = async () => {
-        const response = await axios.get('http://localhost:3000/api/v1/posts');
-        setPosts(response.data);
-    };
+const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
 
     const handleDelete = async (postId: string) => {
         try {
             await axios.delete(`http://localhost:3000/api/v1/posts/${postId}`);
-            await fetchPosts();
+            const newArray = [...posts].filter(post => {
+                return post.id !== postId;
+            })
+            setPosts([...newArray]);
+
         } catch (err) {
             alert("削除に失敗しました")
+            console.log(err);
+
         }
     }
 
-    const sortedPosts = Object.values(posts).sort((a, b) => parseInt(a.id) - parseInt(b.id));
+    const sortedPosts = posts.sort((a, b) => parseInt(a.id) - parseInt(b.id));
 
     return (
         <>

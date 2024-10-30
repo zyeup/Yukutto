@@ -10,7 +10,7 @@ interface PostData {
 }
 
 interface PostProps {
-    posts: Record<string, PostData>;
+    posts: PostData[];
 }
 
 const Post: React.FC<PostProps> = ({ posts }) => {

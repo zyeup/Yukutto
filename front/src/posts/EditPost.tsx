@@ -1,8 +1,8 @@
 import axios from 'axios';
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { Dispatch, SetStateAction, ChangeEvent, FormEvent, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom";
 
-interface PostData {
+type PostData = {
     id: string;
     title: string;
     content: string;
@@ -10,13 +10,13 @@ interface PostData {
     update_at: string;
 }
 
-interface EditPostProps {
-    posts: Record<string, PostData>;
-    setPosts: React.Dispatch<React.SetStateAction<Record<string, PostData>>>;
+type PostProps = {
+    posts: PostData[];
+    setPosts: Dispatch<SetStateAction<PostData[]>>;
 }
 
 
-const EditPost: React.FC<EditPostProps> = ({ posts, setPosts }) => {
+const EditPost: React.FC<PostProps> = ({ posts, setPosts }) => {
 
     const { postId } = useParams<{ postId: string }>();
     const post = postId ? Object.values(posts).find((post) => String(post.id) === postId) : undefined;

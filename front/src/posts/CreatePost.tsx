@@ -1,8 +1,9 @@
 import axios from 'axios';
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { Dispatch, SetStateAction, ChangeEvent, FormEvent, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 
-interface PostData {
+
+type PostData = {
     id: string;
     title: string;
     content: string;
@@ -10,13 +11,13 @@ interface PostData {
     update_at: string;
 }
 
-interface CreatePostProps {
-    posts: Record<string, PostData>;
-    setPosts: React.Dispatch<React.SetStateAction<Record<string, PostData>>>;
+type PostProps = {
+    posts: PostData[];
+    setPosts: Dispatch<SetStateAction<PostData[]>>;
 }
 
 
-const CreatePost: React.FC<CreatePostProps> = ({ posts, setPosts }) => {
+const CreatePost: React.FC<PostProps> = ({ posts, setPosts }) => {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -31,11 +32,15 @@ const CreatePost: React.FC<CreatePostProps> = ({ posts, setPosts }) => {
                 content: content
             })
 
-            const newPost: PostData = response.data;
-            setPosts({
-                ...posts,
-                [newPost.id]: newPost
-            });
+            const newPost = {
+                id: response.data.id,
+                title: title,
+                content: content,
+                created_at: response.data.created_at,
+                update_at: response.data.update_at
+            }
+            setPosts([...posts, newPost]);
+
             navigate("/");
 
         } catch (err) {

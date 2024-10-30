@@ -14,21 +14,18 @@ type MapComponentProps = {
     setMarkersInfos: Dispatch<SetStateAction<MarkerInfo[]>>;
 };
 
-const List: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos }) => {
+const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos }) => {
 
-    const deleteMarker = async (postId: number) => {
-
-        console.log(postId);
-
+    const deleteMarker = async (markersInfoId: number) => {
 
         try {
-            await axios.delete(`http://localhost:3000/api/v1/markers/${postId}`);
+            await axios.delete(`http://localhost:3000/api/v1/markers/${markersInfoId}`);
 
             const newArray = [...markersInfos].filter(markerinfos => {
-                if (markerinfos.id === postId) {
+                if (markerinfos.id === markersInfoId) {
                     markerinfos.marker.setMap(null);
                 }
-                return markerinfos.id !== postId;
+                return markerinfos.id !== markersInfoId;
             })
             setMarkersInfos([...newArray]);
 
@@ -43,14 +40,14 @@ const List: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos }) =>
     return (
         <>
             <ul className='py-2 px-4 '>
-                <div className='text-green-500 font-extralight text-2xl'>登録されたマーカーは下に表示されます</div>
+                <div className='text-black font-extralight text-2xl'>登録されたマーカーは下に表示されます</div>
                 {markersInfos.map((markersInfo) => (
                     <div className='m-2' key={markersInfo.id}>
-                        <li className='text-green-500 font-extralight text-2xl' key={markersInfo.id}>
+                        <li className='text-black font-extralight text-2xl' key={markersInfo.id}>
                             {markersInfo.title}
                         </li>
                         <button
-                            className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                            className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                             onClick={() => deleteMarker(markersInfo.id)}>このマーカーを削除する
                         </button>
                     </div>
@@ -61,4 +58,4 @@ const List: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos }) =>
     )
 }
 
-export default List;
+export default MarkerList;

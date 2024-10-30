@@ -1,6 +1,6 @@
-import React, { FormEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import List from '../map_components/list'
+import MarkerForm from '../map_components/MarkerForm';
+import MarkerList from '../map_components/MarkerList'
 import axios from 'axios';
 
 // 初期化用の定数
@@ -29,22 +29,18 @@ const Map: React.FC = () => {
     useEffect(() => {
         if (!mapRef.current || map) return;
 
-        var myOptions = {
+        const initializedMap = new google.maps.Map(mapRef.current, {
             center: { lat: INITIALIZE_LAT, lng: INITIALIZE_LNG },
             zoom: INITIALIZE_ZOOM,
             disableDefaultUI: true,
             zoomControl: true,
-        }
+        });
 
-        const initializedMap = new google.maps.Map(mapRef.current, myOptions);
-
-        var style = [{
+        initializedMap.mapTypes.set('noText', new google.maps.StyledMapType([{
             featureType: 'all',
             elementType: 'labels.icon',
             stylers: [{ visibility: 'off' }]
-        }];
-        var lopanType = new google.maps.StyledMapType(style);
-        initializedMap.mapTypes.set('noText', lopanType);
+        }]));
         initializedMap.setMapTypeId('noText');
 
         initializedMap.addListener('click', (event: google.maps.MapMouseEvent) => {
@@ -63,7 +59,7 @@ const Map: React.FC = () => {
         const fetchMarkers = async () => {
             try {
                 const response = await axios.get('http://localhost:3000/api/v1/markers');
-                // データを MarkerInfo の配列に整形
+
                 const markersData: MarkerInfo[] = response.data.map((marker: any) => ({
                     id: marker.id,
                     lat: marker.lat,
@@ -93,99 +89,33 @@ const Map: React.FC = () => {
         fetchMarkers();
     }, []);
 
-    const checkAdd = () => {
-        if (markersInfos.length > 0 && lat === markersInfos[markersInfos.length - 1].lat && lng === markersInfos[markersInfos.length - 1].lng) {
-            alert("同じ地点は指定できません");
-            return false;
-        } else if (title === "") {
-            alert("タイトルを入力してください");
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     // マーカーを追加する関数
-    const addMarker = async (e: FormEvent) => {
+    const addMarker = async (newMarker: MarkerInfo) => {
 
-        e.preventDefault();
+        const newMarkerInfo = {
+            id: newMarker.id,
+            lat: newMarker.lat,
+            lng: newMarker.lng,
+            title: newMarker.title,
+            marker: newMarker.marker
+        };
 
-        if (map && checkAdd()) {
-
-            try {
-                await axios.post('http://localhost:3000/api/v1/markers', {
-                    lat: lat,
-                    lng: lng,
-                    title: title,
-                })
-
-                const marker = new google.maps.Marker({
-                    position: { lat, lng },
-                    map,
-                    title: title,
-                    label: {
-                        text: title,
-                        color: 'black',
-                        fontSize: '20px',
-                        fontWeight: 'bold',
-                    },
-                    animation: google.maps.Animation.DROP,
-                });
-
-                const markerInfo = {
-                    id: Date.now(),
-                    lat: lat,
-                    lng: lng,
-                    title: title,
-                    marker: marker
-                };
-
-                marker.setMap(map)
-                setMarkersInfos((prevMarkers) => [...prevMarkers, markerInfo]);
-                setTitle("");
-            } catch (err) {
-
-                alert("マーカーの作成に失敗しました")
-
-            }
-
-        }
+        setMarkersInfos((prevMarkerInfos) => [...prevMarkerInfos, newMarkerInfo]);
     };
 
-    const deleteMarkers = () => {
-        if (map) {
-            markersInfos.map((markerInfos) => {
-                markerInfos.marker.setMap(null);
-            })
-            setMarkersInfos([]);
-        }
-    }
 
     return (
         <div className="container">
             <div className="mt-4 ml-4">
-                <h3>現在のピンの位置情報</h3>
-                <p>緯度：{lat}</p>
-                <p>経度：{lng}</p>
-                <form onSubmit={addMarker}>
-                    <label className='font-bold' htmlFor='marker'>マーカーに表示する名前を入力
-                        <input
-                            id="marker"
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            placeholder="タイトルを入力"
-                            className="border border-1 border-black focus:border-black focus:outline-none py-2 px-4 rounded"
-                        />
-                    </label>
-                </form>
-                <button className="block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={addMarker}>この名前でピンを保存する
-                </button>
-                <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={deleteMarkers}>ピンを全て削除する
-                </button>
-                <List markersInfos={markersInfos} setMarkersInfos={setMarkersInfos} ></List>
+                <MarkerForm
+                    lat={lat}
+                    lng={lng}
+                    title={title}
+                    setTitle={setTitle}
+                    addMarker={addMarker}
+                    map={map}
+                />
+                <MarkerList markersInfos={markersInfos} setMarkersInfos={setMarkersInfos} ></MarkerList>
             </div>
             <div className="mt-4" ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
         </div>

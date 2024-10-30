@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css'
-import Home from './pages/home';
-import Map from './pages/map';
+import Home from './pages/Home';
+import Map from './pages/Map';
 import Header from './components/Header'
-import Posts from './posts/posts'
-import Post from './posts/post';
+import Posts from './posts/Posts'
+import Post from './posts/Post';
 import axios from 'axios';
-import CreatePost from './posts/create_post';
-import EditPost from './posts/edit_post';
-import EditPosts from './posts/edit_posts';
+import CreatePost from './posts/CreatePost';
+import EditPost from './posts/EditPost';
+import EditPosts from './posts/EditPosts';
 
-interface PostData {
+type PostData = {
   id: string;
   title: string;
   content: string;
@@ -21,7 +21,7 @@ interface PostData {
 
 const App: React.FC = () => {
 
-  const [posts, setPosts] = useState<Record<string, PostData>>({});
+  const [posts, setPosts] = useState<PostData[]>([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -32,6 +32,7 @@ const App: React.FC = () => {
 
     fetchPosts();
   }, []);
+
   return (
     <>
       <Header></Header>
