@@ -1,6 +1,7 @@
 class Api::V1::MarkersController < ApplicationController
   def index
-    @markers = Marker.all
+    post_id = params[:post_id]
+    @markers = Marker.where(post_id: post_id)
     render json: @markers
   end
 
@@ -37,7 +38,7 @@ class Api::V1::MarkersController < ApplicationController
   private
 
   def marker_params
-    params.require(:marker).permit(:title, :lat, :lng)
+    params.require(:marker).permit(:title, :lat, :lng, :post_id)
   end
 
 end

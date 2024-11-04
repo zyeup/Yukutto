@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import MarkerForm from '../map_components/MarkerForm';
 import MarkerList from '../map_components/MarkerList'
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 // 初期化用の定数
 const INITIALIZE_LAT = 35.6809591; // 緯度
@@ -18,6 +19,7 @@ type MarkerInfo = {
     marker: google.maps.Marker;
 };
 
+
 const Map: React.FC = () => {
     const mapRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -26,6 +28,7 @@ const Map: React.FC = () => {
     const [title, setTitle] = useState<string>("");
     const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);
     const [tmpMarker, setTmpMarker] = useState<google.maps.Marker | null>(null);
+    const { postId } = useParams<{ postId: string }>();
 
     useEffect(() => {
         if (!mapRef.current || map) return;
@@ -56,10 +59,15 @@ const Map: React.FC = () => {
         });
 
         setMap(initializedMap);
+    }, [mapRef, map]);
 
+    useEffect(() => {
         const fetchMarkers = async () => {
+
+                console.log(postId);
+
             try {
-                const response = await axios.get('http://localhost:3000/api/v1/markers');
+                const response = await axios.get(`http://localhost:3000/api/v1/markers?post_id=${postId}`);
 
                 const markersData: MarkerInfo[] = response.data.map((marker: any) => ({
                     id: marker.id,
@@ -81,14 +89,16 @@ const Map: React.FC = () => {
                 }));
                 setMarkersInfos(markersData);
                 markersData.forEach((markerInfo) => {
-                    markerInfo.marker.setMap(initializedMap);
+                    markerInfo.marker.setMap(map);
                 });
             } catch (error) {
                 console.error("Error fetching markers:", error);
             }
         };
-        fetchMarkers();
-    }, []);
+
+            fetchMarkers();
+
+    }, [map]);
 
     useEffect(() => {
         if (map) {

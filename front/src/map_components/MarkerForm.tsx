@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { FormEvent } from 'react';
+import { useParams } from 'react-router-dom';
 
 
 type MarkerFormProps = {
@@ -13,6 +14,7 @@ type MarkerFormProps = {
 
 
 const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addMarker, map }) => {
+  const { postId } = useParams<{ postId: string }>();
 
   const handleAddMarker = async (e: FormEvent) => {
 
@@ -24,10 +26,16 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
     }
 
     try {
+
+      const post_id = parseInt(postId || "0");
+      console.log(post_id);
+
+
       await axios.post('http://localhost:3000/api/v1/markers', {
         lat: lat,
         lng: lng,
         title: title,
+        post_id: post_id
       })
 
       const marker = new google.maps.Marker({

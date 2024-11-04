@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import Map from '../pages/Map';
 
 interface PostData {
     id: string;
@@ -16,7 +17,7 @@ interface PostProps {
 const Post: React.FC<PostProps> = ({ posts }) => {
 
     const { postId } = useParams<{ postId: string }>();
-    const post = postId ? Object.values(posts).find((post) => String(post.id) === postId) : undefined;
+    const post = postId ? posts.find((post) => post.id === postId) : undefined;
 
     return (
         <div>
@@ -31,6 +32,7 @@ const Post: React.FC<PostProps> = ({ posts }) => {
             ) : (
                 <h1>Post not found</h1>
             )}
+            <Map></Map>
         </div>
     )
 }
