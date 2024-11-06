@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 
 type PostData = {
-    id: string;
+    id: number;
     title: string;
     content: string;
     created_at: string;

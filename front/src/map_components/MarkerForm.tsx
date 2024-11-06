@@ -26,11 +26,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
     }
 
     try {
-
       const post_id = parseInt(postId || "0");
-      console.log(post_id);
-
-
       await axios.post('http://localhost:3000/api/v1/markers', {
         lat: lat,
         lng: lng,
@@ -68,6 +64,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
       <form>
         <label className='font-bold' htmlFor='marker'>マーカーに表示する名前を入力
           <input
+            id="marker"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="タイトルを入力"

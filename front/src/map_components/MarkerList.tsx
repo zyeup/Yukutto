@@ -12,9 +12,11 @@ type MarkerInfo = {
 type MapComponentProps = {
     markersInfos: MarkerInfo[];
     setMarkersInfos: Dispatch<SetStateAction<MarkerInfo[]>>;
+    selectedMarkerId: number | null;
+    setSelectedMarkerId: Dispatch<SetStateAction<number | null>>;
 };
 
-const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos }) => {
+const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos, selectedMarkerId, setSelectedMarkerId }) => {
 
     const deleteMarker = async (markersInfoId: number) => {
 
@@ -32,9 +34,10 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
         } catch (err) {
             alert("削除に失敗しました")
         }
+    }
 
-
-
+    const handleSelect = (markersInfoId: number) => {
+        setSelectedMarkerId(markersInfoId)
     }
 
     return (
@@ -42,13 +45,17 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
             <ul className='py-2 px-4 '>
                 <div className='text-black font-extralight text-2xl'>登録されたマーカーは下に表示されます</div>
                 {markersInfos.map((markersInfo) => (
-                    <div className='m-2' key={markersInfo.id}>
+                     <div
+                     onClick={() => handleSelect(markersInfo.id)}
+                     key={markersInfo.id}
+                     className={`m-2 ${markersInfo.id === selectedMarkerId ? 'bg-yellow-200' : ''}`}
+                 >
                         <li className='text-black font-extralight text-2xl' key={markersInfo.id}>
                             {markersInfo.title}
                         </li>
                         <button
-                            className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                            onClick={() => deleteMarker(markersInfo.id)}>このマーカーを削除する
+                            className="bg-red-600 hover:bg-red-700 text-white font-bold rounded"
+                            onClick={() => deleteMarker(markersInfo.id)}>削除する
                         </button>
                     </div>
                 ))}

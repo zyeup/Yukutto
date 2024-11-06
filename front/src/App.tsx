@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css'
 import Home from './pages/Home';
-import Map from './pages/Map';
+import Map from './pages/map';
 import Header from './components/Header'
-import Posts from './posts/Posts'
-import Post from './posts/Post';
+import Posts from './posts/posts'
+import Post from './posts/post';
 import axios from 'axios';
 import CreatePost from './posts/CreatePost';
 import EditPost from './posts/EditPost';
 import EditPosts from './posts/EditPosts';
 
 type PostData = {
-  id: string;
+  id: number;
   title: string;
   content: string;
   created_at: string;

@@ -1,9 +1,9 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import Map from '../pages/Map';
+import Map from '../pages/map';
 
 interface PostData {
-    id: string;
+    id: number;
     title: string;
     content: string;
     created_at: string;
@@ -17,7 +17,8 @@ interface PostProps {
 const Post: React.FC<PostProps> = ({ posts }) => {
 
     const { postId } = useParams<{ postId: string }>();
-    const post = postId ? posts.find((post) => post.id === postId) : undefined;
+    const post_id = parseInt(postId || "0");
+    const post = post_id ? posts.find((post) => post.id === post_id) : undefined;
 
     return (
         <div>

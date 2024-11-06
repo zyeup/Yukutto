@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import React, { Dispatch, SetStateAction } from 'react'
 
 type PostData = {
-    id: string;
+    id: number;
     title: string;
     content: string;
     created_at: string;
@@ -17,7 +17,7 @@ type PostProps = {
 
 const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
 
-    const handleDelete = async (postId: string) => {
+    const handleDelete = async (postId: number) => {
         try {
             await axios.delete(`http://localhost:3000/api/v1/posts/${postId}`);
             const newArray = [...posts].filter(post => {
@@ -32,7 +32,7 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
         }
     }
 
-    const sortedPosts = posts.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+    const sortedPosts = posts.sort((a, b) => a.id - b.id);
 
     return (
         <>

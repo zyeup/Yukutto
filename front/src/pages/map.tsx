@@ -8,8 +8,8 @@ import { useParams } from 'react-router-dom';
 const INITIALIZE_LAT = 35.6809591; // 緯度
 const INITIALIZE_LNG = 139.7673068; // 経度
 const INITIALIZE_ZOOM = 12.5; // ズームレベル
-const INITIALIZE_MAP_WIDTH = '50%'; // 地図の幅
-const INITIALIZE_MAP_HEIGHT = '800px'; // 地図の高さ
+const INITIALIZE_MAP_WIDTH = '60%'; // 地図の幅
+const INITIALIZE_MAP_HEIGHT = '600px'; // 地図の高さ
 
 type MarkerInfo = {
     id: number;
@@ -28,6 +28,7 @@ const Map: React.FC = () => {
     const [title, setTitle] = useState<string>("");
     const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);
     const [tmpMarker, setTmpMarker] = useState<google.maps.Marker | null>(null);
+    const [selectedMarkerId, setSelectedMarkerId] = useState<number | null>(null);
     const { postId } = useParams<{ postId: string }>();
 
     useEffect(() => {
@@ -64,19 +65,14 @@ const Map: React.FC = () => {
     useEffect(() => {
         const fetchMarkers = async () => {
 
-                console.log(postId);
-
             try {
                 const response = await axios.get(`http://localhost:3000/api/v1/markers?post_id=${postId}`);
 
-                const markersData: MarkerInfo[] = response.data.map((marker: any) => ({
-                    id: marker.id,
-                    lat: marker.lat,
-                    lng: marker.lng,
-                    title: marker.title,
-                    marker: new google.maps.Marker({
+                const markersData: MarkerInfo[] = response.data.map((marker: any) => {
+                    const googleMarker = new google.maps.Marker({
                         position: { lat: marker.lat, lng: marker.lng },
                         map,
+                        draggable: true,
                         title: marker.title,
                         label: {
                             text: marker.title,
@@ -85,8 +81,15 @@ const Map: React.FC = () => {
                             fontWeight: 'bold',
                         },
                         animation: google.maps.Animation.DROP,
-                    }),
-                }));
+                    });
+                    googleMarker.addListener('click', () => {
+                        setSelectedMarkerId(marker.id);
+                        if (marker.id === selectedMarkerId){
+                            googleMarker.setAnimation(google.maps.Animation.BOUNCE)
+                        }
+                    });
+                    return { id: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, marker: googleMarker };
+                });
                 setMarkersInfos(markersData);
                 markersData.forEach((markerInfo) => {
                     markerInfo.marker.setMap(map);
@@ -95,10 +98,18 @@ const Map: React.FC = () => {
                 console.error("Error fetching markers:", error);
             }
         };
-
             fetchMarkers();
-
     }, [map]);
+
+    useEffect(() => {
+        markersInfos.forEach((markerInfo) => {
+            if (markerInfo.id === selectedMarkerId) {
+                markerInfo.marker.setAnimation(google.maps.Animation.BOUNCE);
+            } else {
+                markerInfo.marker.setAnimation(null); // 他のマーカーはBOUNCEを解除
+            }
+        });
+    }, [selectedMarkerId, markersInfos]);
 
     useEffect(() => {
         if (map) {
@@ -107,7 +118,6 @@ const Map: React.FC = () => {
         }
     }, [map, lat, lng]);
 
-    // マーカーを追加する関数
     const addMarker = async (newMarker: MarkerInfo) => {
 
         const newMarkerInfo = {
@@ -160,7 +170,7 @@ const Map: React.FC = () => {
                     addMarker={addMarker}
                     map={map}
                 />
-                <MarkerList markersInfos={markersInfos} setMarkersInfos={setMarkersInfos} ></MarkerList>
+                <MarkerList markersInfos={markersInfos} setMarkersInfos={setMarkersInfos} selectedMarkerId={selectedMarkerId} setSelectedMarkerId={setSelectedMarkerId} ></MarkerList>
             </div>
             <div className="mt-4" ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
         </div>
