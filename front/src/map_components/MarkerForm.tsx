@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api/axios';
 import React, { FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
 
     try {
       const post_id = parseInt(postId || "0");
-      await axios.post('http://localhost:3000/api/v1/markers', {
+      await api.post('/markers', {
         lat: lat,
         lng: lng,
         title: title,
