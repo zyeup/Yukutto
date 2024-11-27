@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api/axios';
 import React, { Dispatch, SetStateAction, ChangeEvent, FormEvent, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -29,12 +29,12 @@ const EditPost: React.FC<PostProps> = ({ posts, setPosts }) => {
         e.preventDefault();
 
         const fetchPosts = async () => {
-            const response = await axios.get('http://localhost:3000/api/v1/posts');
+            const response = await api.get('/posts');
             setPosts(response.data);
         };
 
         try {
-            await axios.put(`http://localhost:3000/api/v1/posts/${postId}`, {
+            await api.put(`/posts/${postId}`, {
                 title: title,
                 content: content
             })

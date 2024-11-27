@@ -9,6 +9,7 @@ WORKDIR /myapp
 
 # GemfileとGemfile.lockをコピーして依存関係をインストール
 COPY Gemfile Gemfile.lock /myapp/
+RUN gem install bundler
 RUN bundle install
 
 # アプリケーションのファイルをコピー

@@ -20,6 +20,9 @@ Bundler.require(*Rails.groups)
 
 module Myapp
   class Application < Rails::Application
+
+  config.hosts << "back-aged-firefly-3643.fly.dev"
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
@@ -35,5 +38,8 @@ module Myapp
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+    config.time_zone = 'Tokyo'
+    config.active_record.default_timezone = :local
+    config.i18n.default_locale = :ja
   end
 end

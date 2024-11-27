@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api/axios';
 import React, { Dispatch, SetStateAction } from 'react'
 
 type MarkerInfo = {
@@ -21,7 +21,7 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
     const deleteMarker = async (markersInfoId: number) => {
 
         try {
-            await axios.delete(`http://localhost:3000/api/v1/markers/${markersInfoId}`);
+            await api.delete(`/markers/${markersInfoId}`);
 
             const newArray = [...markersInfos].filter(markerinfos => {
                 if (markerinfos.id === markersInfoId) {

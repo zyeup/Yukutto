@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import MarkerForm from '../map_components/MarkerForm';
 import MarkerList from '../map_components/MarkerList'
-import axios from 'axios';
+import api from '../api/axios';
 import { useParams } from 'react-router-dom';
 
 // 初期化用の定数
@@ -66,7 +66,7 @@ const Map: React.FC = () => {
         const fetchMarkers = async () => {
 
             try {
-                const response = await axios.get(`http://localhost:3000/api/v1/markers?post_id=${postId}`);
+                const response = await api.get(`/markers?post_id=${postId}`);
 
                 const markersData: MarkerInfo[] = response.data.map((marker: any) => {
                     const googleMarker = new google.maps.Marker({

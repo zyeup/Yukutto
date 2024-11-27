@@ -6,7 +6,7 @@ import Map from './pages/map';
 import Header from './components/Header'
 import Posts from './posts/posts'
 import Post from './posts/post';
-import axios from 'axios';
+import api from './api/axios';
 import CreatePost from './posts/CreatePost';
 import EditPost from './posts/EditPost';
 import EditPosts from './posts/EditPosts';
@@ -26,7 +26,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
 
-      const response = await axios.get('http://localhost:3000/api/v1/posts');
+      const response = await api.get('/posts');
       setPosts(response.data);
     };
 

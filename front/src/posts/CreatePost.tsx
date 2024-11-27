@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api/axios';
 import React, { Dispatch, SetStateAction, ChangeEvent, FormEvent, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +27,7 @@ const CreatePost: React.FC<PostProps> = ({ posts, setPosts }) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:3000/api/v1/posts", {
+            const response = await api.post("/posts", {
                 title: title,
                 content: content
             })

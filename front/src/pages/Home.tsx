@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api/axios';
 import { Link } from 'react-router-dom';
 import React, { Dispatch, SetStateAction } from 'react'
 
@@ -19,7 +19,7 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
 
     const handleDelete = async (postId: number) => {
         try {
-            await axios.delete(`http://localhost:3000/api/v1/posts/${postId}`);
+            await api.delete(`/posts/${postId}`);
             const newArray = [...posts].filter(post => {
                 return post.id !== postId;
             })
