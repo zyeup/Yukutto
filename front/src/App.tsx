@@ -26,19 +26,13 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
     const fetchPosts = async () => {
 
       const response = await api.get('/posts');
       setPosts(response.data);
+      setIsLoading(false)
     };
-
     fetchPosts();
-    setIsLoading(false)
   }, []);
 
   return (
