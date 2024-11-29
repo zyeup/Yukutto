@@ -35,32 +35,46 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
     const sortedPosts = posts.sort((a, b) => a.id - b.id);
 
     return (
-        <>
-            <h2 className='text-red-800 text-2xl'>
-                ここはHome画面です!!
-            </h2>
-            <div className='inline'>新規作成は</div>
-            <Link to="/create_posts" className='hover:underline'>こちら</Link>
+        <div className="p-6 bg-white shadow-md rounded-md max-w-3xl mx-auto">
+        <h2 className="text-2xl font-bold text-red-700 mb-4">
+            ここはHome画面です!!
+        </h2>
+        <p className="text-gray-700 mb-6">
+            新規作成は{" "}
+            <Link to="/create_posts" className="text-blue-600 hover:underline font-medium">
+            こちら
+            </Link>
+        </p>
+        <div className="space-y-6">
             {sortedPosts.map((post) => (
-                <div className="px-4 py-2 mt-4" key={post.id}>
-                    <Link className="hover:underline font-bold" to={`/posts/${post.id}`}>
-                        {post.id}:{post.title}
-                    </Link>
-                    <div>
-                        <Link to={`/edit_posts/${post.id}`}>
-                            <button className=' bg-blue-500 hover:bg-blue-700 px-4 text-white rounded'>
-                                Edit
-                            </button>
-                        </Link>
-                        <button
-                            onClick={() => handleDelete(post.id)}
-                            className=' bg-red-500 hover:bg-red-700 px-2 text-white rounded'>
-                            Delete
-                        </button>
-                    </div>
+            <div
+                key={post.id}
+                className="p-4 bg-gray-50 rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200"
+            >
+                <Link
+                to={`/posts/${post.id}`}
+                className="text-lg font-semibold text-gray-900 hover:underline"
+                >
+                {post.id}: {post.title}
+                </Link>
+                <div className="mt-4 flex gap-4">
+                <Link to={`/edit_posts/${post.id}`}>
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors duration-200">
+                    Edit
+                    </button>
+                </Link>
+                <button
+                    onClick={() => handleDelete(post.id)}
+                    className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md transition-colors duration-200"
+                >
+                    Delete
+                </button>
                 </div>
+            </div>
             ))}
-        </>
+        </div>
+        </div>
+
     );
 };
 

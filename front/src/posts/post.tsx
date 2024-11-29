@@ -21,20 +21,25 @@ const Post: React.FC<PostProps> = ({ posts }) => {
     const post = post_id ? posts.find((post) => post.id === post_id) : undefined;
 
     return (
-        <div>
-            {post ? (
-                <>
-                    <h2 className='text-2xl px-4 py-2'>{post.id}番目のポストの詳細</h2>
-                    <div>
-                        <h1 className="px-4 mt-4">{post.title}</h1>
-                        <p className="px-4">{post.content}</p>
-                    </div>
-                </>
-            ) : (
-                <h1>Post not found</h1>
-            )}
-            <Map></Map>
+        <div className="p-6 bg-white shadow-md rounded-md mx-auto">
+        {post ? (
+            <>
+            <h2 className="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">
+                {post.id}番目のポストの詳細
+            </h2>
+            <div className="space-y-4">
+                <h1 className="text-xl font-semibold text-gray-900">{post.title}</h1>
+                <p className="text-gray-700">{post.content}</p>
+            </div>
+            </>
+        ) : (
+            <h1 className="text-xl font-bold text-red-600 text-center">Post not found</h1>
+        )}
+        <div className="mt-6">
+            <Map />
         </div>
+        </div>
+
     )
 }
 

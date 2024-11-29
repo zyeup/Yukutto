@@ -51,24 +51,51 @@ const CreatePost: React.FC<PostProps> = ({ posts, setPosts }) => {
 
     return (
         <>
-            <h1>新規投稿</h1>
+        <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+            <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">新規投稿</h1>
             <form onSubmit={handleSubmit}>
-                <label>タイトル</label>
-                <input
-                    className='block bg-gray-200 appearance-none border-2 border-gray-400 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500'
-                    type="text"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} />
-                <label>本文</label>
-                <textarea className='block bg-gray-200 appearance-none border-2 border-gray-400 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500'
-                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)} />
-                <button
-                    className='block bg-blue-500 hover:bg-blue-700 text-white rounded'
-                    type='submit'
+            <div className="mb-4">
+                <label
+                className="block text-gray-700 font-medium mb-2"
+                htmlFor="title"
                 >
-                    投稿
-                </button>
+                タイトル
+                </label>
+                <input
+                id="title"
+                className="w-full bg-gray-100 border-2 border-gray-300 rounded py-2 px-4 text-gray-800 focus:outline-none focus:bg-white focus:border-blue-500"
+                type="text"
+                placeholder="タイトルを入力"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+                />
+            </div>
+
+            <div className="mb-6">
+                <label
+                className="block text-gray-700 font-medium mb-2"
+                htmlFor="content"
+                >
+                本文
+                </label>
+                <textarea
+                id="content"
+                className="w-full bg-gray-100 border-2 border-gray-300 rounded py-2 px-4 text-gray-800 focus:outline-none focus:bg-white focus:border-blue-500"
+                placeholder="本文を入力"
+                rows={5}
+                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
+                />
+            </div>
+
+            <button
+                type="submit"
+                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200"
+            >
+                投稿
+            </button>
             </form>
+        </div>
         </>
+
     )
 }
 

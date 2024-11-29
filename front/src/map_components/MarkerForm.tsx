@@ -57,28 +57,32 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
   }
 
   return (
-    <div>
-      <h3>現在のピンの位置情報</h3>
-      <p>緯度：{lat}</p>
-      <p>経度：{lng}</p>
-      <form>
-        <label className='font-bold' htmlFor='marker'>マーカーに表示する名前を入力
+    <div className="p-4 bg-white shadow-md rounded-md w-full max-w-sm mx-auto">
+      <h3 className="text-xl font-bold text-gray-800 mb-4">現在のピンの位置情報</h3>
+      <div className="mb-4">
+        <p className="text-gray-600"><span className="font-medium text-gray-800">緯度：</span>{lat}</p>
+        <p className="text-gray-600"><span className="font-medium text-gray-800">経度：</span>{lng}</p>
+      </div>
+      <form onSubmit={handleAddMarker} className="space-y-4">
+        <div>
+          <label htmlFor="marker" className="block font-bold text-gray-800 mb-2">
+            マーカーに表示する名前を入力
+          </label>
           <input
             id="marker"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="タイトルを入力"
-            className="border border-1 border-black focus:border-black focus:outline-none py-2 px-4 rounded"
+            className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none py-2 px-4 rounded-md"
           />
-        </label>
+        </div>
         <button
           type="submit"
-          className="block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleAddMarker}>この名前でピンを保存する
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300"
+        >
+          この名前でピンを保存する
         </button>
-
       </form>
-
     </div>
   )
 }
