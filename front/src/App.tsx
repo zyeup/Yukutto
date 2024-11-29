@@ -27,7 +27,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 2000);
-    return () => clearTimeout(timer); // クリーンアップ
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -38,6 +38,7 @@ const App: React.FC = () => {
     };
 
     fetchPosts();
+    setIsLoading(false)
   }, []);
 
   return (
