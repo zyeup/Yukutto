@@ -106,7 +106,7 @@ const Map: React.FC = () => {
             if (markerInfo.id === selectedMarkerId) {
                 markerInfo.marker.setAnimation(google.maps.Animation.BOUNCE);
             } else {
-                markerInfo.marker.setAnimation(null); // 他のマーカーはBOUNCEを解除
+                markerInfo.marker.setAnimation(null);
             }
         });
     }, [selectedMarkerId, markersInfos]);

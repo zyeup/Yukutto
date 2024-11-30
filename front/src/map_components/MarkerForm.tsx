@@ -27,12 +27,14 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
 
     try {
       const post_id = parseInt(postId || "0");
-      await api.post('/markers', {
+      const response = await api.post('/markers', {
         lat: lat,
         lng: lng,
         title: title,
         post_id: post_id
       })
+
+      const newMarkerData = response.data;
 
       const marker = new google.maps.Marker({
         position: { lat, lng },
@@ -48,7 +50,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
       });
 
       marker.setMap(map)
-      addMarker({ id: Date.now(), lat, lng, title, marker });
+      addMarker({ id: newMarkerData.id, lat, lng, title, marker });
       setTitle("");
 
     } catch (err) {

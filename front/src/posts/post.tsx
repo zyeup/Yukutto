@@ -24,12 +24,9 @@ const Post: React.FC<PostProps> = ({ posts }) => {
         <div className="p-6 bg-white shadow-md rounded-md mx-auto">
         {post ? (
             <>
-            <h2 className="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">
-                {post.id}番目のポストの詳細
-            </h2>
             <div className="space-y-4">
-                <h1 className="text-xl font-semibold text-gray-900">{post.title}</h1>
-                <p className="text-gray-700">{post.content}</p>
+                <h1 className="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">{post.title}</h1>
+                <p className="text-xl font-semibold text-gray-900">{post.content}</p>
             </div>
             </>
         ) : (
