@@ -42,7 +42,7 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
 
     return (
         <>
-<div className="p-4 bg-white shadow-md rounded-md w-full max-w-md mx-auto">
+<div className="p-4 m-4 bg-white shadow-md border rounded-md w-full max-w-md mx-auto">
   <h3 className="text-xl font-bold text-gray-800 mb-4">
     登録されたマーカー一覧
   </h3>

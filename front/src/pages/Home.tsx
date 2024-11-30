@@ -35,46 +35,53 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
     const sortedPosts = posts.sort((a, b) => a.id - b.id);
 
     return (
-        <div className="p-6 bg-white shadow-md rounded-md max-w-3xl mx-auto">
-        <h2 className="text-2xl font-bold text-red-700 mb-4">
-            ここはHome画面です!!
-        </h2>
-        <p className="text-gray-700 mb-6">
-            新規作成は{" "}
-            <Link to="/create_posts" className="text-blue-600 hover:underline font-medium">
-            こちら
-            </Link>
-        </p>
-        <div className="space-y-6">
-            {sortedPosts.map((post) => (
-            <div
-                key={post.id}
-                className="p-4 bg-gray-50 rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200"
-            >
+        <div className="p-6 bg-gray-100 shadow-lg rounded-xl max-w-4xl mx-auto">
+            <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
+                Home
+            </h2>
+            <p className="text-gray-600 mb-8 text-center">
+                <Link to="/create_posts" className="text-blue-500 hover:text-blue-600 hover:underline font-semibold">
+                新しく地図を作成する
+                </Link>
+            </p>
+            <div className="grid grid-cols-1 gap-6">
+                {sortedPosts.map((post) => (
                 <Link
-                to={`/posts/${post.id}`}
-                className="text-lg font-semibold text-gray-900 hover:underline"
+                    to={`/posts/${post.id}`}
+                    key={post.id}
+                    className="block p-6 bg-white shadow-md hover:shadow-lg border border-gray-200 transition-all duration-300"
                 >
-                {post.id}: {post.title}
-                </Link>
-                <div className="mt-4 flex gap-4">
-                <Link to={`/edit_posts/${post.id}`}>
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors duration-200">
-                    Edit
+                    <div>
+                    <h3 className="text-xl font-bold text-gray-700 ">
+                        {post.id}: {post.title}
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                        Created at: {new Date(post.created_at).toLocaleDateString()}
+                    </p>
+                    </div>
+                    <div className="flex justify-end space-x-3">
+                    <Link
+                        to={`/edit_posts/${post.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg shadow-sm transition-all duration-200">
+                        Edit
+                        </button>
+                    </Link>
+                    <button
+                    onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(post.id);
+                    }}
+                    className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg shadow-sm transition-all duration-200"
+                    >
+                        Delete
                     </button>
+                    </div>
                 </Link>
-                <button
-                    onClick={() => handleDelete(post.id)}
-                    className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md transition-colors duration-200"
-                >
-                    Delete
-                </button>
-                </div>
+                ))}
             </div>
-            ))}
         </div>
-        </div>
-
     );
 };
 

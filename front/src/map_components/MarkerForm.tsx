@@ -59,7 +59,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
   }
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-md w-full max-w-sm mx-auto">
+    <div className="p-4 bg-white shadow-md border rounded-md w-full max-w-md mx-auto">
       <h3 className="text-xl font-bold text-gray-800 mb-4">現在のピンの位置情報</h3>
       <div className="mb-4">
         <p className="text-gray-600"><span className="font-medium text-gray-800">緯度：</span>{lat}</p>
