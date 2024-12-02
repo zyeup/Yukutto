@@ -58,12 +58,19 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
     }
   }
 
+  const initialNum = ( num: number) => {
+    if (num == 35.6809591 || num == 139.7673068)
+      return "クリックすると表示されます"
+    else
+    return num
+  }
+
   return (
     <div className="p-4 bg-white shadow-md border rounded-md w-full max-w-md mx-auto">
       <h3 className="text-xl font-bold text-gray-800 mb-4">現在のピンの位置情報</h3>
       <div className="mb-4">
-        <p className="text-gray-600"><span className="font-medium text-gray-800">緯度：</span>{lat}</p>
-        <p className="text-gray-600"><span className="font-medium text-gray-800">経度：</span>{lng}</p>
+        <p className="text-gray-600"><span className="font-medium text-gray-800">緯度：</span>{initialNum(lat)}</p>
+        <p className="text-gray-600"><span className="font-medium text-gray-800">経度：</span>{initialNum(lng)}</p>
       </div>
       <form onSubmit={handleAddMarker} className="space-y-4">
         <div>

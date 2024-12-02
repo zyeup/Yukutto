@@ -44,7 +44,7 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
                 新しく地図を作成する
                 </Link>
             </p>
-            <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 gap-6 max-h-[700px] overflow-y-scroll">
                 {sortedPosts.map((post) => (
                 <Link
                     to={`/posts/${post.id}`}

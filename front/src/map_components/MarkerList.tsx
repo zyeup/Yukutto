@@ -47,9 +47,9 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
     登録されたマーカー一覧
   </h3>
   <p className="text-gray-600 mb-4">
-    登録されたマーカーは以下に表示されます。選択すると詳細が表示されます。
+    登録されたマーカーは以下に表示されます。
   </p>
-  <ul className="space-y-4">
+  <ul className="space-y-4 grid grid-cols-1 max-h-[250px] overflow-y-scroll">
     {markersInfos.map((markersInfo) => (
       <li
         key={markersInfo.id}

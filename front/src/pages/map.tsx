@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import MarkerForm from '../map_components/MarkerForm';
 import MarkerList from '../map_components/MarkerList'
+import AddressSearch from '../map_components/AddressSearch';
 import api from '../api/axios';
 import { useParams } from 'react-router-dom';
 
@@ -172,6 +173,7 @@ const Map: React.FC = () => {
                 />
                 <MarkerList markersInfos={markersInfos} setMarkersInfos={setMarkersInfos} selectedMarkerId={selectedMarkerId} setSelectedMarkerId={setSelectedMarkerId} ></MarkerList>
             </div>
+            <AddressSearch map={map} setLat={setLat} setLng={setLng} />
             <div className="mt-4" ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
         </div>
     );
