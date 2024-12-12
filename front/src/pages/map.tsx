@@ -162,7 +162,7 @@ const Map: React.FC = () => {
 
     return (
         <div className="container">
-            <div className="mt-4 ml-4">
+            <div className="ml-4">
                 <MarkerForm
                     lat={lat}
                     lng={lng}
@@ -173,8 +173,8 @@ const Map: React.FC = () => {
                 />
                 <MarkerList markersInfos={markersInfos} setMarkersInfos={setMarkersInfos} selectedMarkerId={selectedMarkerId} setSelectedMarkerId={setSelectedMarkerId} ></MarkerList>
             </div>
+            <div className="" ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
             <AddressSearch map={map} setLat={setLat} setLng={setLng} />
-            <div className="mt-4" ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
         </div>
     );
 
