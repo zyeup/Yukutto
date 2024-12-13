@@ -62,7 +62,6 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ map, setLat, setLng }) =>
 
         setLat(lat);
         setLng(lng);
-        // setResults([]); // 候補リストを非表示にする
     };
 
     return (
@@ -73,6 +72,12 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ map, setLat, setLng }) =>
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleSearch();
+                    }
+                }}
+
                 placeholder="住所を入力"
                 className="flex-1 p-2 border rounded-lg"
             />

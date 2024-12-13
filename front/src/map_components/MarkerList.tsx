@@ -20,19 +20,23 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
 
     const deleteMarker = async (markersInfoId: number) => {
 
-        try {
-            await api.delete(`/markers/${markersInfoId}`);
+      const confirm = window.confirm("このマーカーを削除します。\n本当によろしいですか？");
+        if (confirm){
 
-            const newArray = [...markersInfos].filter(markerinfos => {
-                if (markerinfos.id === markersInfoId) {
-                    markerinfos.marker.setMap(null);
-                }
-                return markerinfos.id !== markersInfoId;
-            })
-            setMarkersInfos([...newArray]);
+          try {
+              await api.delete(`/markers/${markersInfoId}`);
 
-        } catch (err) {
-            alert("削除に失敗しました")
+              const newArray = [...markersInfos].filter(markerinfos => {
+                  if (markerinfos.id === markersInfoId) {
+                      markerinfos.marker.setMap(null);
+                  }
+                  return markerinfos.id !== markersInfoId;
+              })
+              setMarkersInfos([...newArray]);
+
+          } catch (err) {
+              alert("削除に失敗しました")
+          }
         }
     }
 
@@ -67,8 +71,8 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
           <button
             className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-md"
             onClick={(e) => {
-              e.stopPropagation(); // ボタンのクリックで親要素のクリックが発火しないようにする
               deleteMarker(markersInfo.id);
+              e.preventDefault();
             }}
           >
             削除する

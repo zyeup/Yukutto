@@ -18,17 +18,22 @@ type PostProps = {
 const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
 
     const handleDelete = async (postId: number) => {
-        try {
-            await api.delete(`/posts/${postId}`);
-            const newArray = [...posts].filter(post => {
-                return post.id !== postId;
-            })
-            setPosts([...newArray]);
 
-        } catch (err) {
-            alert("削除に失敗しました")
-            console.log(err);
+        const confirm = window.confirm("このリストを削除します。\n本当によろしいですか？");
+        if (confirm){
 
+            try {
+                await api.delete(`/posts/${postId}`);
+                const newArray = [...posts].filter(post => {
+                    return post.id !== postId;
+                })
+                setPosts([...newArray]);
+
+            } catch (err) {
+                alert("削除に失敗しました")
+                console.log(err);
+
+            }
         }
     }
 
@@ -70,8 +75,8 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
                     </Link>
                     <button
                     onClick={(e) => {
-                    e.stopPropagation();
                     handleDelete(post.id);
+                    e.preventDefault();
                     }}
                     className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg shadow-sm transition-all duration-200"
                     >
