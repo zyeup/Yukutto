@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from '../pages/Home';
-import Posts from '../posts/Posts'
+import Posts from '../posts/Posts';
 import Post from '../posts/Post';
 import CreatePost from '../posts/CreatePost';
 import EditPost from '../posts/EditPost';
 import EditPosts from '../posts/EditPosts';
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction } from 'react';
 
 type PostData = {
   id: number;
