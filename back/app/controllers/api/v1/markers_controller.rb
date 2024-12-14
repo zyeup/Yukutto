@@ -38,7 +38,7 @@ class Api::V1::MarkersController < ApplicationController
   private
 
   def marker_params
-    params.require(:marker).permit(:title, :lat, :lng, :post_id)
+    params.require(:marker).permit(:title, :content, :lat, :lng, :post_id)
   end
 
 end

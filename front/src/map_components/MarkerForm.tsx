@@ -8,12 +8,14 @@ type MarkerFormProps = {
   lng: number;
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
+  content: string;
+  setContent: React.Dispatch<React.SetStateAction<string>>;
   addMarker: (newMarker: any) => void;
   map: google.maps.Map | null;
 };
 
 
-const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addMarker, map }) => {
+const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, content, setContent, addMarker, map }) => {
   const { postId } = useParams<{ postId: string }>();
 
   const handleAddMarker = async (e: FormEvent) => {
@@ -31,6 +33,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
         lat: lat,
         lng: lng,
         title: title,
+        content: content,
         post_id: post_id
       })
 
@@ -50,8 +53,9 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
       });
 
       marker.setMap(map)
-      addMarker({ id: newMarkerData.id, lat, lng, title, marker });
+      addMarker({ id: newMarkerData.id, lat, lng, title, content, marker });
       setTitle("");
+      setContent("");
 
     } catch (err) {
       alert("マーカーの作成に失敗しました")
@@ -74,14 +78,21 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, addM
       </div>
       <form onSubmit={handleAddMarker} className="space-y-4">
         <div>
-          <label htmlFor="marker" className="block font-bold text-gray-800 mb-2">
+          <label htmlFor="marker_name" className="block font-bold text-gray-800 mb-2">
             マーカーに表示する名前を入力
           </label>
           <input
-            id="marker"
+            id="marker_name"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="タイトルを入力"
+            className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none py-2 px-4 rounded-md"
+          />
+          <input
+            id="marker_content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="説明文を入力"
             className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none py-2 px-4 rounded-md"
           />
         </div>

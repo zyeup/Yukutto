@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import Map from '../pages/map';
+import Map from '../map_components/Map';
 
 interface PostData {
     id: number;

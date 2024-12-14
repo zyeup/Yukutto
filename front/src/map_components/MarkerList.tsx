@@ -6,6 +6,7 @@ type MarkerInfo = {
     lat: number;
     lng: number;
     title: string;
+    content: string;
     marker: google.maps.Marker;
 };
 
@@ -14,9 +15,10 @@ type MapComponentProps = {
     setMarkersInfos: Dispatch<SetStateAction<MarkerInfo[]>>;
     selectedMarkerId: number | null;
     setSelectedMarkerId: Dispatch<SetStateAction<number | null>>;
+    centerMapOnMarker: (markerId: number) => void;
 };
 
-const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos, selectedMarkerId, setSelectedMarkerId }) => {
+const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos, selectedMarkerId, setSelectedMarkerId, centerMapOnMarker }) => {
 
     const deleteMarker = async (markersInfoId: number) => {
 
@@ -46,42 +48,47 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
 
     return (
         <>
-<div className="p-4 m-4 bg-white shadow-md border rounded-md w-full max-w-md mx-auto">
-  <h3 className="text-xl font-bold text-gray-800 mb-4">
-    登録されたマーカー一覧
-  </h3>
-  <p className="text-gray-600 mb-4">
-    登録されたマーカーは以下に表示されます。
-  </p>
-  <ul className="space-y-4 grid grid-cols-1 max-h-[250px] overflow-y-scroll">
-    {markersInfos.map((markersInfo) => (
-      <li
-        key={markersInfo.id}
-        className={`p-4 border rounded-md cursor-pointer transition-colors duration-300 ${
-          markersInfo.id === selectedMarkerId
-            ? "bg-yellow-100 border-yellow-400"
-            : "bg-gray-50 hover:bg-gray-100 border-gray-300"
-        }`}
-        onClick={() => handleSelect(markersInfo.id)}
-      >
-        <div className="flex justify-between items-center">
-          <span className="text-lg font-medium text-gray-800">
-            {markersInfo.title}
-          </span>
-          <button
-            className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-md"
-            onClick={(e) => {
-              deleteMarker(markersInfo.id);
-              e.preventDefault();
-            }}
-          >
-            削除する
-          </button>
-        </div>
-      </li>
-    ))}
-  </ul>
-</div>
+          <div className="flex">
+            <div className="p-4 m-4 bg-white shadow-md border rounded-md w-full max-w-md mx-auto">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                登録されたマーカー一覧
+              </h3>
+              <p className="text-gray-600 mb-4">
+                登録されたマーカーは以下に表示されます。
+              </p>
+              <ul className="space-y-4 grid grid-cols-1 max-h-[250px] overflow-y-scroll">
+                {markersInfos.map((markersInfo) => (
+                  <li
+                    key={markersInfo.id}
+                    className={`p-4 border rounded-md cursor-pointer transition-colors duration-300 ${
+                      markersInfo.id === selectedMarkerId
+                        ? "bg-yellow-100 border-yellow-400"
+                        : "bg-gray-50 hover:bg-gray-100 border-gray-300"
+                    }`}
+                    onClick={() => {
+                      handleSelect(markersInfo.id)
+                      centerMapOnMarker(markersInfo.id)
+                    }}
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="text-lg font-medium text-gray-800">
+                        <h1>{markersInfo.title}</h1>
+                      </span>
+                      <button
+                        className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-md"
+                        onClick={(e) => {
+                          deleteMarker(markersInfo.id);
+                          e.preventDefault();
+                        }}
+                      >
+                        削除する
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </>
     )
 }

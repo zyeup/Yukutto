@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import MarkerForm from '../map_components/MarkerForm';
-import MarkerList from '../map_components/MarkerList'
-import AddressSearch from '../map_components/AddressSearch';
+import MarkerForm from './MarkerForm';
+import MarkerList from './MarkerList'
+import AddressSearch from './AddressSearch';
+import MarkerModal from './MarkerModal';
 import api from '../api/axios';
 import { useParams } from 'react-router-dom';
 
@@ -17,6 +18,7 @@ type MarkerInfo = {
     lat: number;
     lng: number;
     title: string;
+    content: string;
     marker: google.maps.Marker;
 };
 
@@ -27,6 +29,7 @@ const Map: React.FC = () => {
     const [lat, setLat] = useState<number>(INITIALIZE_LAT);
     const [lng, setLng] = useState<number>(INITIALIZE_LNG);
     const [title, setTitle] = useState<string>("");
+    const [content, setContent] = useState<string>("");
     const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);
     const [tmpMarker, setTmpMarker] = useState<google.maps.Marker | null>(null);
     const [selectedMarkerId, setSelectedMarkerId] = useState<number | null>(null);
@@ -83,13 +86,19 @@ const Map: React.FC = () => {
                         },
                         animation: google.maps.Animation.DROP,
                     });
+
                     googleMarker.addListener('click', () => {
                         setSelectedMarkerId(marker.id);
+                        const position = googleMarker.getPosition();
+                        if (position && map) {
+                            // マーカーを地図の中心に移動
+                            map.setCenter(position);
+                        }
                         if (marker.id === selectedMarkerId){
                             googleMarker.setAnimation(google.maps.Animation.BOUNCE)
                         }
                     });
-                    return { id: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, marker: googleMarker };
+                    return { id: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, content: marker.content, marker: googleMarker };
                 });
                 setMarkersInfos(markersData);
                 markersData.forEach((markerInfo) => {
@@ -126,6 +135,7 @@ const Map: React.FC = () => {
             lat: newMarker.lat,
             lng: newMarker.lng,
             title: newMarker.title,
+            content: newMarker.content,
             marker: newMarker.marker
         };
 
@@ -160,21 +170,40 @@ const Map: React.FC = () => {
         setTmpMarker(marker);
     }
 
+    const centerMapOnMarker = (markerId: number) => {
+        const markerInfo = markersInfos.find((info) => info.id === markerId);
+        if (markerInfo && map) {
+            const position = markerInfo.marker.getPosition();
+            if (position) {
+                map.setCenter(position);
+            }
+        }
+    };
+
     return (
-        <div className="container">
+        <div className="flex">
             <div className="ml-4">
                 <MarkerForm
                     lat={lat}
                     lng={lng}
                     title={title}
+                    setContent={setContent}
+                    content= {content}
                     setTitle={setTitle}
                     addMarker={addMarker}
                     map={map}
                 />
-                <MarkerList markersInfos={markersInfos} setMarkersInfos={setMarkersInfos} selectedMarkerId={selectedMarkerId} setSelectedMarkerId={setSelectedMarkerId} ></MarkerList>
+                <MarkerList
+                    markersInfos={markersInfos}
+                    setMarkersInfos={setMarkersInfos}
+                    selectedMarkerId={selectedMarkerId}
+                    setSelectedMarkerId={setSelectedMarkerId}
+                    centerMapOnMarker={centerMapOnMarker} >
+                </MarkerList>
             </div>
-            <div className="" ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
             <AddressSearch map={map} setLat={setLat} setLng={setLng} />
+            <div className="map-container" ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
+            <MarkerModal markersInfos={markersInfos} setMarkersInfos={setMarkersInfos} selectedMarkerId={selectedMarkerId} setSelectedMarkerId={setSelectedMarkerId}></MarkerModal>
         </div>
     );
 
