@@ -1,20 +1,20 @@
 class Api::V1::MarkersController < ApplicationController
   def index
     post_id = params[:post_id]
-    @markers = Marker.where(post_id: post_id)
+    @markers = Marker.where(post_id: post_id).order(:id)
     render json: @markers
   end
 
   def show
     @markers = Marker.find(params[:id])
-    render json: @markers
+    render json: @markers.as_json.merge(image_url: @markers.image.url)
   end
 
   def create
     @markers = Marker.new(marker_params)
 
     if @markers.save
-      render json: @markers, status: :created
+      render json: @markers.as_json.merge(image_url: @markers.image.url), status: :created
     else
       render json: @markers.errors, status: :unprocessable_entity
     end
@@ -38,7 +38,7 @@ class Api::V1::MarkersController < ApplicationController
   private
 
   def marker_params
-    params.require(:marker).permit(:title, :content, :lat, :lng, :post_id)
+    params.permit(:lat, :lng, :title, :content, :post_id, :image)
   end
 
 end

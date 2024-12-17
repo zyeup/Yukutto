@@ -7,6 +7,7 @@ type MarkerInfo = {
     title: string;
     content: string;
     marker: google.maps.Marker;
+    image?: string | { url: string };
 };
 
 type MapComponentProps = {
@@ -30,6 +31,13 @@ const MarkerModal: React.FC<MapComponentProps> = ({ markersInfos, selectedMarker
                     <p className="mb-2">
                         <strong>内容:</strong> {selectedMarker.content}
                     </p>
+                    {selectedMarker.image && (
+                            <img
+                            src={`${(selectedMarker.image as any).url}`}
+                            alt={selectedMarker.title}
+                            style={{ maxWidth: '100%', height: 'auto' }}
+                             />
+                    )}
                 </div>
             ) : (
                 <p className="text-gray-600">マーカーを選択してください。</p>

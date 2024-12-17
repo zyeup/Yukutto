@@ -20,6 +20,7 @@ type MarkerInfo = {
     title: string;
     content: string;
     marker: google.maps.Marker;
+    image?: string | { url: string };
 };
 
 
@@ -98,7 +99,7 @@ const Map: React.FC = () => {
                             googleMarker.setAnimation(google.maps.Animation.BOUNCE)
                         }
                     });
-                    return { id: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, content: marker.content, marker: googleMarker };
+                    return { id: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, content: marker.content, image: marker.image, marker: googleMarker };
                 });
                 setMarkersInfos(markersData);
                 markersData.forEach((markerInfo) => {

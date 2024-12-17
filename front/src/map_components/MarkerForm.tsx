@@ -1,5 +1,5 @@
 import api from '../api/axios';
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 
@@ -17,6 +17,7 @@ type MarkerFormProps = {
 
 const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, content, setContent, addMarker, map }) => {
   const { postId } = useParams<{ postId: string }>();
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleAddMarker = async (e: FormEvent) => {
 
@@ -29,13 +30,24 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, cont
 
     try {
       const post_id = parseInt(postId || "0");
-      const response = await api.post('/markers', {
-        lat: lat,
-        lng: lng,
-        title: title,
-        content: content,
-        post_id: post_id
-      })
+
+      const formData = new FormData();
+
+      formData.append('lat', lat.toString());
+      formData.append('lng', lng.toString());
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('post_id', post_id.toString());
+      if (imageFile) {
+        formData.append('image', imageFile); // 画像ファイルを追加
+      }
+
+
+      const response = await api.post('/markers', formData,  {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       const newMarkerData = response.data;
 
@@ -53,14 +65,21 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, cont
       });
 
       marker.setMap(map)
-      addMarker({ id: newMarkerData.id, lat, lng, title, content, marker });
+      addMarker({ id: newMarkerData.id, lat, lng, title, content, marker, image: newMarkerData.image_url, });
       setTitle("");
       setContent("");
+      setImageFile(null);
 
     } catch (err) {
       alert("マーカーの作成に失敗しました")
     }
   }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+  };
 
   const initialNum = ( num: number) => {
     if (num == 35.6809591 || num == 139.7673068)
@@ -88,13 +107,29 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, cont
             placeholder="タイトルを入力"
             className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none py-2 px-4 rounded-md"
           />
-          <input
-            id="marker_content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="説明文を入力"
-            className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none py-2 px-4 rounded-md"
-          />
+          <div>
+            <label htmlFor="marker_content" className="block font-bold text-gray-800 mb-2">
+              マーカーの説明文を入力
+            </label>
+            <textarea
+              id="marker_content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="説明文を入力"
+              className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none py-2 px-4 rounded-md"
+            ></textarea>
+          </div>
+          <div>
+            <label htmlFor="marker_image" className="block font-bold text-gray-800 mb-2">
+              マーカーに関連する画像をアップロード
+            </label>
+            <input
+              type="file"
+              id="marker_image"
+              onChange={handleImageChange}
+              className="w-full border border-gray-300 py-2 px-4 rounded-md"
+            />
+          </div>
         </div>
         <button
           type="submit"
