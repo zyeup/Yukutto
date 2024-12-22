@@ -8,6 +8,7 @@ type MarkerInfo = {
     title: string;
     content: string;
     marker: google.maps.Marker;
+    image: string;
 };
 
 type MapComponentProps = {

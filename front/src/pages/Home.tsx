@@ -43,15 +43,15 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
                     新しく地図を作成する
                 </Link>
             </p>
-            <div className="grid grid-cols-1 gap-6 max-h-[700px] overflow-y-scroll">
+            <div className="grid grid-cols-1 gap-6 max-h-[600px] overflow-y-scroll">
                 {sortedPosts.map((post) => (
                     <div
                         key={post.id}
-                        className="block p-6 bg-white shadow-md hover:shadow-lg border border-gray-200 transition-all duration-300"
+                        className="block p-6 h-32 bg-white shadow-md hover:shadow-lg border border-gray-200 transition-all duration-300"
                     >
                         <Link
                             to={`/posts/${post.id}`}
-                            className="block mb-4 text-xl font-bold text-gray-700"
+                            className="mb-4 text-xl font-bold text-gray-700"
                         >
                             {post.id}: {post.title}
                         </Link>
@@ -63,7 +63,7 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
                                 to={`/edit_posts/${post.id}`}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg shadow-sm transition-all duration-200">
+                                <button className="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                                     Edit
                                 </button>
                             </Link>
@@ -72,7 +72,7 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
                                     handleDelete(post.id);
                                     e.preventDefault();
                                 }}
-                                className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg shadow-sm transition-all duration-200"
+                                className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
                             >
                                 Delete
                             </button>

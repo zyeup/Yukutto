@@ -30,3 +30,9 @@
 
 # local env files
 .env*
+
+# 画像は不要
+*.jpg
+*.jpeg
+*.gif
+*.png

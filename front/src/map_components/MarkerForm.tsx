@@ -1,5 +1,5 @@
 import api from '../api/axios';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 
@@ -18,6 +18,7 @@ type MarkerFormProps = {
 const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, content, setContent, addMarker, map }) => {
   const { postId } = useParams<{ postId: string }>();
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleAddMarker = async (e: FormEvent) => {
 
@@ -69,6 +70,9 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, cont
       setTitle("");
       setContent("");
       setImageFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
 
     } catch (err) {
       alert("マーカーの作成に失敗しました")
@@ -81,19 +85,12 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, cont
     }
   };
 
-  const initialNum = ( num: number) => {
-    if (num == 35.6809591 || num == 139.7673068)
-      return "クリックすると表示されます"
-    else
-    return num
-  }
-
   return (
     <div className="p-4 bg-white shadow-md border rounded-md w-full max-w-md mx-auto">
       <h3 className="text-xl font-bold text-gray-800 mb-4">現在のピンの位置情報</h3>
       <div className="mb-4">
-        <p className="text-gray-600"><span className="font-medium text-gray-800">緯度：</span>{initialNum(lat)}</p>
-        <p className="text-gray-600"><span className="font-medium text-gray-800">経度：</span>{initialNum(lng)}</p>
+        <p className="text-gray-600"><span className="font-medium text-gray-800">緯度：</span>{lat}</p>
+        <p className="text-gray-600"><span className="font-medium text-gray-800">経度：</span>{lng}</p>
       </div>
       <form onSubmit={handleAddMarker} className="space-y-4">
         <div>
@@ -126,6 +123,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, cont
             <input
               type="file"
               id="marker_image"
+              ref={fileInputRef}
               onChange={handleImageChange}
               className="w-full border border-gray-300 py-2 px-4 rounded-md"
             />

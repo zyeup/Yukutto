@@ -20,7 +20,7 @@ type MarkerInfo = {
     title: string;
     content: string;
     marker: google.maps.Marker;
-    image?: string | { url: string };
+    image: string;
 };
 
 
@@ -77,7 +77,8 @@ const Map: React.FC = () => {
                     const googleMarker = new google.maps.Marker({
                         position: { lat: marker.lat, lng: marker.lng },
                         map,
-                        draggable: true,
+                        // マーカーの更新ができたらコメントを外す予定
+                        // draggable: true,
                         title: marker.title,
                         label: {
                             text: marker.title,
@@ -87,19 +88,8 @@ const Map: React.FC = () => {
                         },
                         animation: google.maps.Animation.DROP,
                     });
-
-                    googleMarker.addListener('click', () => {
-                        setSelectedMarkerId(marker.id);
-                        const position = googleMarker.getPosition();
-                        if (position && map) {
-                            // マーカーを地図の中心に移動
-                            map.setCenter(position);
-                        }
-                        if (marker.id === selectedMarkerId){
-                            googleMarker.setAnimation(google.maps.Animation.BOUNCE)
-                        }
-                    });
-                    return { id: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, content: marker.content, image: marker.image, marker: googleMarker };
+                    addMarkerClickListener(googleMarker, marker.id, map, setSelectedMarkerId);
+                    return { id: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, content: marker.content, image: marker.image.url, marker: googleMarker };
                 });
                 setMarkersInfos(markersData);
                 markersData.forEach((markerInfo) => {
@@ -109,7 +99,9 @@ const Map: React.FC = () => {
                 console.error("Error fetching markers:", error);
             }
         };
-            fetchMarkers();
+
+        fetchMarkers();
+
     }, [map]);
 
     useEffect(() => {
@@ -124,12 +116,26 @@ const Map: React.FC = () => {
 
     useEffect(() => {
         if (map) {
-            if (lat !== INITIALIZE_LAT || lng !== INITIALIZE_LNG)
                 nowLocate(lat, lng);
         }
     }, [map, lat, lng]);
 
-    const addMarker = async (newMarker: MarkerInfo) => {
+    const addMarkerClickListener = (
+        googleMarker: google.maps.Marker,
+        markerId: number,
+        map: google.maps.Map | null,
+        setSelectedMarkerId: React.Dispatch<React.SetStateAction<number | null>>
+    ) => {
+        googleMarker.addListener('click', () => {
+            setSelectedMarkerId(markerId);
+            const position = googleMarker.getPosition();
+            if (position && map) {
+                map.setCenter(position);
+            }
+        });
+    };
+
+    const addMarker = (newMarker: MarkerInfo) => {
 
         const newMarkerInfo = {
             id: newMarker.id,
@@ -137,9 +143,11 @@ const Map: React.FC = () => {
             lng: newMarker.lng,
             title: newMarker.title,
             content: newMarker.content,
-            marker: newMarker.marker
+            marker: newMarker.marker,
+            image: newMarker.image,
         };
 
+        addMarkerClickListener(newMarkerInfo.marker, newMarkerInfo.id, map, setSelectedMarkerId);
         setMarkersInfos((prevMarkerInfos) => [...prevMarkerInfos, newMarkerInfo]);
     };
 
@@ -172,7 +180,7 @@ const Map: React.FC = () => {
     }
 
     const centerMapOnMarker = (markerId: number) => {
-        const markerInfo = markersInfos.find((info) => info.id === markerId);
+        const markerInfo = markersInfos.find((marker) => marker.id === markerId);
         if (markerInfo && map) {
             const position = markerInfo.marker.getPosition();
             if (position) {
