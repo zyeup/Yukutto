@@ -31,8 +31,8 @@ const AppRoutes: React.FC<PostProps> = ({ posts, setPosts }) => {
         <Route path="/posts" element={<Posts />}>
           <Route path=":postId" element={<Post posts={posts} />} />
         </Route>
-        <Route path="/create_posts" element={<CreatePost posts={posts} setPosts={setPosts} />} />
-        <Route path="/edit_posts" element={<EditPosts />}>
+        <Route path="posts/new" element={<CreatePost posts={posts} setPosts={setPosts} />} />
+        <Route path="/posts/edit" element={<EditPosts />}>
           <Route path=":postId" element={<EditPost posts={posts} setPosts={setPosts} />} />
         </Route>
       </Routes>

@@ -39,7 +39,7 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
                 Home
             </h2>
             <p className="text-gray-600 mb-8 text-center">
-                <Link to="/create_posts" className="text-blue-500 hover:text-blue-600 hover:underline font-semibold">
+                <Link to="/posts/new" className="text-blue-500 hover:text-blue-600 hover:underline font-semibold">
                     新しく地図を作成する
                 </Link>
             </p>
@@ -60,7 +60,7 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
                         </p>
                         <div className="flex justify-end space-x-3">
                             <Link
-                                to={`/edit_posts/${post.id}`}
+                                to={`/posts/edit/${post.id}`}
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <button className="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
