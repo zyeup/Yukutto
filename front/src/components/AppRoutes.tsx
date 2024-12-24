@@ -5,7 +5,10 @@ import Post from '../posts/Post';
 import CreatePost from '../posts/CreatePost';
 import EditPost from '../posts/EditPost';
 import EditPosts from '../posts/EditPosts';
+import Login from '../user/Login';
 import React, { Dispatch, SetStateAction } from 'react';
+import Signup from '../user/Signup';
+import User from '../user/User';
 
 type PostData = {
   id: number;
@@ -35,6 +38,9 @@ const AppRoutes: React.FC<PostProps> = ({ posts, setPosts }) => {
         <Route path="/posts/edit" element={<EditPosts />}>
           <Route path=":postId" element={<EditPost posts={posts} setPosts={setPosts} />} />
         </Route>
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="user" element={<User />} />
       </Routes>
    </div>
   )
