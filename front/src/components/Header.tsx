@@ -1,12 +1,90 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import Cookies from "js-cookie"
+import { signOut } from "../api/auth"
+import { AuthContext } from "../App"
 
 const Header = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const { loading, isSignedIn, setIsSignedIn } = useContext(AuthContext)
+    const navigate = useNavigate();
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
+
+    const handleSignOut = async () => {
+        try {
+          const res = await signOut()
+
+          if (res.data.success === true) {
+            Cookies.remove("_access_token")
+            Cookies.remove("_client")
+            Cookies.remove("_uid")
+
+            setIsSignedIn(false)
+            navigate("/signin")
+
+            console.log("Succeeded in sign out")
+          } else {
+            console.log("Failed in sign out")
+          }
+        } catch (err) {
+          console.log(err)
+        }
+      }
+
+      const AuthButtons = () => {
+        if (!loading) {
+          if (isSignedIn) {
+            return (
+            <>
+                <button
+                color="inherit"
+                onClick={handleSignOut}
+                >
+                    Sign out
+                </button>
+                <li>
+                    <Link
+                        to="/user"
+                        onClick={toggleSidebar}
+                        className="hover:underline"
+                    >
+                        ユーザー情報
+                    </Link>
+                </li>
+            </>
+
+            )
+          } else {
+            return (
+              <>
+                <li>
+                    <Link
+                    to="/signin"
+                    onClick={toggleSidebar}
+                    className="hover:underline"
+                    >
+                    ログイン
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                    to="/signup"
+                    onClick={toggleSidebar}
+                    className="hover:underline"
+                    >
+                        新規会員登録
+                    </Link>
+                </li>
+              </>
+            )
+          }
+        } else {
+          return <></>
+        }
+      }
 
     return (
         <>
@@ -48,33 +126,7 @@ const Header = () => {
                             Home
                         </Link>
                     </li>
-                    <li>
-                        <Link
-                            to="/signup"
-                            onClick={toggleSidebar}
-                            className="hover:underline"
-                        >
-                            新規会員登録
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            to="/login"
-                            onClick={toggleSidebar}
-                            className="hover:underline"
-                        >
-                            ログイン
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            to="/user"
-                            onClick={toggleSidebar}
-                            className="hover:underline"
-                        >
-                            ユーザー情報
-                        </Link>
-                    </li>
+                    <AuthButtons />
                 </ul>
             </div>
         </>

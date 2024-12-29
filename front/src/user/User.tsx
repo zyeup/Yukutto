@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from "react"
+import { AuthContext } from "../App"
 
 const User:React.FC = () => {
 
+  const { currentUser } = useContext(AuthContext)
+
   const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
+    name: currentUser?.name,
+    email: currentUser?.email,
   };
 
   return (

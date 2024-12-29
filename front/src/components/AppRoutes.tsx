@@ -1,13 +1,13 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '../pages/Home';
 import Posts from '../posts/Posts';
 import Post from '../posts/Post';
 import CreatePost from '../posts/CreatePost';
 import EditPost from '../posts/EditPost';
 import EditPosts from '../posts/EditPosts';
-import Login from '../user/Login';
 import React, { Dispatch, SetStateAction } from 'react';
-import Signup from '../user/Signup';
+import SignUp from "../user/SignUp"
+import SignIn from "../user/SingIn"
 import User from '../user/User';
 
 type PostData = {
@@ -22,10 +22,20 @@ type PostData = {
 type PostProps = {
     posts: PostData[];
     setPosts: Dispatch<SetStateAction<PostData[]>>;
+    loading: boolean
+    isSignedIn: boolean
 }
 
 
-const AppRoutes: React.FC<PostProps> = ({ posts, setPosts }) => {
+const AppRoutes: React.FC<PostProps> = ({ posts, setPosts, loading, isSignedIn }) => {
+
+    const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
+      if (loading) {
+        return null;
+      }
+      return isSignedIn ? children : <Navigate to="/signin" />;
+    };
+
 
   return(
     <div>
@@ -38,9 +48,14 @@ const AppRoutes: React.FC<PostProps> = ({ posts, setPosts }) => {
         <Route path="/posts/edit" element={<EditPosts />}>
           <Route path=":postId" element={<EditPost posts={posts} setPosts={setPosts} />} />
         </Route>
-        <Route path="login" element={<Login />} />
-        <Route path="signup" element={<Signup />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="user" element={<User />} />
+        <Route path="/user" element={
+            <PrivateRoute>
+              <User />
+            </PrivateRoute>
+            } />
       </Routes>
    </div>
   )
