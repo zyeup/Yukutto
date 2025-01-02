@@ -13,7 +13,6 @@ const SignUp: React.FC = () => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
-  const [alertMessageOpen, setAlertMessageOpen] = useState<boolean>(false)
 
   const handleSubmit = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -27,7 +26,6 @@ const SignUp: React.FC = () => {
 
     try {
       const res = await signUp(params)
-      console.log(res)
 
       if (res.status === 200) {
         Cookies.set("_access_token", res.headers["access-token"])
@@ -41,11 +39,10 @@ const SignUp: React.FC = () => {
 
         console.log("Signed in successfully!")
       } else {
-        setAlertMessageOpen(true)
+        console.log("Error")
       }
     } catch (err) {
       console.log(err)
-      setAlertMessageOpen(true)
     }
   }
 
@@ -124,17 +121,6 @@ const SignUp: React.FC = () => {
           </button>
         </form>
       </div>
-      {alertMessageOpen && (
-        <div className="fixed inset-x-0 top-0 p-4 bg-red-500 text-white text-center">
-          Invalid email or password
-          <button
-            onClick={() => setAlertMessageOpen(false)}
-            className="ml-4 underline"
-          >
-            Close
-          </button>
-        </div>
-      )}
     </>
   )
 }
