@@ -1,19 +1,11 @@
 import React, { useEffect, useState, createContext } from 'react';
 import { getCurrentUser } from "./api/auth"
-import { User } from "./interfaces/index"
+import { User, PostData } from "./interfaces/index"
 import LoadingSpinner from './components/LoadingSpinner';
 import './App.css'
 import Header from './components/Header'
 import api from './api/axios';
 import AppRoutes from './components/AppRoutes';
-
-type PostData = {
-  id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  update_at: string;
-}
 
 export const AuthContext = createContext({} as {
   loading: boolean
@@ -65,13 +57,13 @@ const App: React.FC = () => {
 
   return (
     <>
-      <AuthContext.Provider value={{ loading, setLoading, isSignedIn, setIsSignedIn, currentUser, setCurrentUser}}>
+      <AuthContext.Provider value={{ loading, setLoading, isSignedIn, setIsSignedIn, currentUser, setCurrentUser }}>
         {isLoading ? (
-            <LoadingSpinner />
-          ) : (
-            <div>
-              <Header></Header>
-              <AppRoutes posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} ></AppRoutes>
+          <LoadingSpinner />
+        ) : (
+          <div>
+            <Header></Header>
+            <AppRoutes posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} ></AppRoutes>
           </div>
         )}
       </AuthContext.Provider>

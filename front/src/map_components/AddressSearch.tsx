@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
-
-type AddressSearchProps = {
-    map: google.maps.Map | null;
-    setLat: React.Dispatch<React.SetStateAction<number>>;
-    setLng: React.Dispatch<React.SetStateAction<number>>;
-};
-
-type SearchResult = {
-    address: string;
-    location: google.maps.LatLng;
-};
+import { AddressSearchProps, SearchResult } from "../interfaces/index"
 
 const AddressSearch: React.FC<AddressSearchProps> = ({ map, setLat, setLng }) => {
     const [address, setAddress] = useState<string>('');
@@ -65,42 +55,42 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ map, setLat, setLng }) =>
     };
 
     return (
-    <div className="p-4 bg-white border shadow-md rounded-md mb-4">
-        <h3 className="text-lg font-semibold mb-2">住所から検索</h3>
-        <div className="flex space-x-2">
-            <input
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        handleSearch();
-                    }
-                }}
+        <div className="p-4 bg-white border shadow-md rounded-md mb-4">
+            <h3 className="text-lg font-semibold mb-2">住所から検索</h3>
+            <div className="flex space-x-2">
+                <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            handleSearch();
+                        }
+                    }}
 
-                placeholder="住所を入力"
-                className="flex-1 p-2 border rounded-lg"
-            />
-            <button
-                onClick={handleSearch}
-                className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
-            >
-                検索
-            </button>
-        </div>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
-        <ul className="mt-4 border border-gray-300 rounded-lg bg-white shadow-md divide-y divide-gray-200">
-            {results.map((result, index) => (
-                <li
-                    key={index}
-                    onClick={() => handleResultClick(result)}
-                    className="p-2 cursor-pointer hover:bg-gray-100"
+                    placeholder="住所を入力"
+                    className="flex-1 p-2 border rounded-lg"
+                />
+                <button
+                    onClick={handleSearch}
+                    className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
                 >
-                    {result.address}
-                </li>
-            ))}
-        </ul>
-    </div>
+                    検索
+                </button>
+            </div>
+            {error && <p className="text-red-500 mt-2">{error}</p>}
+            <ul className="mt-4 border border-gray-300 rounded-lg bg-white shadow-md divide-y divide-gray-200">
+                {results.map((result, index) => (
+                    <li
+                        key={index}
+                        onClick={() => handleResultClick(result)}
+                        className="p-2 cursor-pointer hover:bg-gray-100"
+                    >
+                        {result.address}
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 };
 

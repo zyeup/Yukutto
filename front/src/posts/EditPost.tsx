@@ -1,20 +1,7 @@
 import api from '../api/axios';
-import React, { Dispatch, SetStateAction, ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom";
-
-type PostData = {
-    id: number;
-    title: string;
-    content: string;
-    created_at: string;
-    update_at: string;
-}
-
-type PostProps = {
-    posts: PostData[];
-    setPosts: Dispatch<SetStateAction<PostData[]>>;
-}
-
+import { PostProps } from "../interfaces/index"
 
 const EditPost: React.FC<PostProps> = ({ posts, setPosts }) => {
 
@@ -49,28 +36,28 @@ const EditPost: React.FC<PostProps> = ({ posts, setPosts }) => {
 
     return (
         <>
-        <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">編集</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label
-                    className="block text-gray-700 font-medium mb-2"
-                    htmlFor="title"
-                    >
-                    タイトル
-                    </label>
-                    <input
-                        className="w-full bg-gray-100 border-2 border-gray-300 rounded py-2 px-4 text-gray-800 focus:outline-none focus:bg-white focus:border-blue-500"
-                        type="text"
-                        value={title}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} />
+            <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+                <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">編集</h1>
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                        <label
+                            className="block text-gray-700 font-medium mb-2"
+                            htmlFor="title"
+                        >
+                            タイトル
+                        </label>
+                        <input
+                            className="w-full bg-gray-100 border-2 border-gray-300 rounded py-2 px-4 text-gray-800 focus:outline-none focus:bg-white focus:border-blue-500"
+                            type="text"
+                            value={title}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} />
                     </div>
 
                     <div className="mb-6">
                         <label
-                        className="block text-gray-700 font-medium mb-2"
+                            className="block text-gray-700 font-medium mb-2"
                         >
-                        本文
+                            本文
                         </label>
                         <textarea
                             className="w-full bg-gray-100 border-2 border-gray-300 rounded py-2 px-4 text-gray-800 focus:outline-none focus:bg-white focus:border-blue-500"
@@ -85,8 +72,8 @@ const EditPost: React.FC<PostProps> = ({ posts, setPosts }) => {
                         </button>
                     </div>
 
-            </form>
-        </div>
+                </form>
+            </div>
         </>
     )
 }

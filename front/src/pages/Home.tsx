@@ -1,19 +1,7 @@
 import api from '../api/axios';
 import { Link } from 'react-router-dom';
-import React, { Dispatch, SetStateAction } from 'react';
-
-type PostData = {
-    id: number;
-    title: string;
-    content: string;
-    created_at: string;
-    update_at: string;
-};
-
-type PostProps = {
-    posts: PostData[];
-    setPosts: Dispatch<SetStateAction<PostData[]>>;
-};
+import React from 'react';
+import { PostProps } from "../interfaces/index"
 
 const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
 

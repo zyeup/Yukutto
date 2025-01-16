@@ -1,21 +1,5 @@
-import React, { Dispatch, SetStateAction } from "react";
-
-type MarkerInfo = {
-    id: number;
-    lat: number;
-    lng: number;
-    title: string;
-    content: string;
-    marker: google.maps.Marker;
-    image: string;
-};
-
-type MapComponentProps = {
-    markersInfos: MarkerInfo[];
-    setMarkersInfos: Dispatch<SetStateAction<MarkerInfo[]>>;
-    selectedMarkerId: number | null;
-    setSelectedMarkerId: Dispatch<SetStateAction<number | null>>;
-};
+import React from "react";
+import { MapComponentProps } from "../interfaces/index"
 
 const MarkerModal: React.FC<MapComponentProps> = ({ markersInfos, selectedMarkerId }) => {
     const selectedMarker = markersInfos.find((marker) => marker.id === selectedMarkerId);
@@ -32,11 +16,11 @@ const MarkerModal: React.FC<MapComponentProps> = ({ markersInfos, selectedMarker
                         <strong>内容:</strong> {selectedMarker.content}
                     </p>
                     {selectedMarker.image && (
-                            <img
+                        <img
                             src={selectedMarker.image}
                             alt={selectedMarker.title}
                             style={{ maxWidth: '100%', height: 'auto' }}
-                             />
+                        />
                     )}
                 </div>
             ) : (

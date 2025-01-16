@@ -1,22 +1,8 @@
 import api from '../api/axios';
 import React, { FormEvent, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { MarkerFormProps } from "../interfaces/index"
 
-
-type MarkerFormProps = {
-  lat: number;
-  lng: number;
-  title: string;
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
-  content: string;
-  setContent: React.Dispatch<React.SetStateAction<string>>;
-  addMarker: (newMarker: any) => void;
-  map: google.maps.Map | null;
-};
-
-
-const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, content, setContent, addMarker, map }) => {
-  const { postId } = useParams<{ postId: string }>();
+const MarkerForm: React.FC<MarkerFormProps> = ({ id, lat, lng, title, setTitle, content, setContent, addMarker, makeMarker, map }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -30,43 +16,29 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ lat, lng, title, setTitle, cont
     }
 
     try {
-      const post_id = parseInt(postId || "0");
-
       const formData = new FormData();
 
+      // formDataを使用するため、数値は文字列に変換する
       formData.append('lat', lat.toString());
       formData.append('lng', lng.toString());
       formData.append('title', title);
       formData.append('content', content);
-      formData.append('post_id', post_id.toString());
+      formData.append('post_id', id.toString());
       if (imageFile) {
-        formData.append('image', imageFile); // 画像ファイルを追加
+        formData.append('image', imageFile);
       }
 
-
-      const response = await api.post('/markers', formData,  {
+      const response = await api.post('/markers', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       const newMarkerData = response.data;
-
-      const marker = new google.maps.Marker({
-        position: { lat, lng },
-        map,
-        title: title,
-        label: {
-          text: title,
-          color: 'black',
-          fontSize: '20px',
-          fontWeight: 'bold',
-        },
-        animation: google.maps.Animation.DROP,
-      });
-
+      const marker = makeMarker(lat, lng, title)
       marker.setMap(map)
-      addMarker({ id: newMarkerData.id, lat, lng, title, content, marker, image: newMarkerData.image_url, });
+
+      addMarker({ id, lat, lng, title, content, marker, image: newMarkerData.image_url });
       setTitle("");
       setContent("");
       setImageFile(null);

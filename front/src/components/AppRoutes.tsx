@@ -5,59 +5,43 @@ import Post from '../posts/Post';
 import CreatePost from '../posts/CreatePost';
 import EditPost from '../posts/EditPost';
 import EditPosts from '../posts/EditPosts';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import SignUp from "../user/SignUp"
 import SignIn from "../user/SingIn"
 import User from '../user/User';
+import { PostPropsLoading } from "../interfaces/index"
 
-type PostData = {
-  id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  update_at: string;
-}
+const AppRoutes: React.FC<PostPropsLoading> = ({ posts, setPosts, loading, isSignedIn }) => {
 
-
-type PostProps = {
-    posts: PostData[];
-    setPosts: Dispatch<SetStateAction<PostData[]>>;
-    loading: boolean
-    isSignedIn: boolean
-}
+  const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
+    if (loading) {
+      return null;
+    }
+    return isSignedIn ? children : <Navigate to="/signin" />;
+  };
 
 
-const AppRoutes: React.FC<PostProps> = ({ posts, setPosts, loading, isSignedIn }) => {
-
-    const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
-      if (loading) {
-        return null;
-      }
-      return isSignedIn ? children : <Navigate to="/signin" />;
-    };
-
-
-  return(
+  return (
     <div>
       <Routes>
         <Route path="/" element={<Home posts={posts} setPosts={setPosts} />} />
         <Route path="/posts" element={<Posts />}>
-          <Route path=":postId" element={<Post posts={posts} />} />
+          <Route path=":ParamsId" element={<Post posts={posts} />} />
         </Route>
         <Route path="posts/new" element={<CreatePost posts={posts} setPosts={setPosts} />} />
         <Route path="/posts/edit" element={<EditPosts />}>
-          <Route path=":postId" element={<EditPost posts={posts} setPosts={setPosts} />} />
+          <Route path=":ParamsId" element={<EditPost posts={posts} setPosts={setPosts} />} />
         </Route>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="user" element={<User />} />
         <Route path="/user" element={
-            <PrivateRoute>
-              <User />
-            </PrivateRoute>
-            } />
+          <PrivateRoute>
+            <User />
+          </PrivateRoute>
+        } />
       </Routes>
-   </div>
+    </div>
   )
 }
 

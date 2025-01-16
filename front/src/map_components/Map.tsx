@@ -4,7 +4,11 @@ import MarkerList from './MarkerList'
 import AddressSearch from './AddressSearch';
 import MarkerModal from './MarkerModal';
 import api from '../api/axios';
-import { useParams } from 'react-router-dom';
+import { MarkerInfo } from "../interfaces/index"
+
+type MapProps = {
+    postId: number;
+}
 
 // 初期化用の定数
 const INITIALIZE_LAT = 35.6809591; // 緯度
@@ -13,18 +17,7 @@ const INITIALIZE_ZOOM = 12.5; // ズームレベル
 const INITIALIZE_MAP_WIDTH = '60%'; // 地図の幅
 const INITIALIZE_MAP_HEIGHT = '600px'; // 地図の高さ
 
-type MarkerInfo = {
-    id: number;
-    lat: number;
-    lng: number;
-    title: string;
-    content: string;
-    marker: google.maps.Marker;
-    image: string;
-};
-
-
-const Map: React.FC = () => {
+const Map: React.FC<MapProps> = ({ postId }) => {
     const mapRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lat, setLat] = useState<number>(INITIALIZE_LAT);
@@ -34,7 +27,6 @@ const Map: React.FC = () => {
     const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);
     const [tmpMarker, setTmpMarker] = useState<google.maps.Marker | null>(null);
     const [selectedMarkerId, setSelectedMarkerId] = useState<number | null>(null);
-    const { postId } = useParams<{ postId: string }>();
 
     useEffect(() => {
         if (!mapRef.current || map) return;
@@ -74,20 +66,8 @@ const Map: React.FC = () => {
                 const response = await api.get(`/markers?post_id=${postId}`);
 
                 const markersData: MarkerInfo[] = response.data.map((marker: any) => {
-                    const googleMarker = new google.maps.Marker({
-                        position: { lat: marker.lat, lng: marker.lng },
-                        map,
-                        // マーカーの更新ができたらコメントを外す予定
-                        // draggable: true,
-                        title: marker.title,
-                        label: {
-                            text: marker.title,
-                            color: 'black',
-                            fontSize: '20px',
-                            fontWeight: 'bold',
-                        },
-                        animation: google.maps.Animation.DROP,
-                    });
+
+                    const googleMarker = makeMarker(marker.lat, marker.lng, marker.title)
                     addMarkerClickListener(googleMarker, marker.id, map, setSelectedMarkerId);
                     return { id: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, content: marker.content, image: marker.image.url, marker: googleMarker };
                 });
@@ -116,10 +96,30 @@ const Map: React.FC = () => {
 
     useEffect(() => {
         if (map) {
-                nowLocate(lat, lng);
+            nowLocate(lat, lng);
         }
     }, [map, lat, lng]);
 
+    const makeMarker = (lat: number, lng: number, title: string) => {
+        const marker = new google.maps.Marker({
+            position: { lat, lng },
+            map,
+            // マーカーの更新ができたらコメントを外す予定
+            // draggable: true,
+            title: title,
+            label: {
+                text: title,
+                color: 'black',
+                fontSize: '20px',
+                fontWeight: 'bold',
+            },
+            animation: google.maps.Animation.DROP,
+        });
+        return marker;
+    }
+
+
+    // マーカークリック時の処理
     const addMarkerClickListener = (
         googleMarker: google.maps.Marker,
         markerId: number,
@@ -135,6 +135,7 @@ const Map: React.FC = () => {
         });
     };
 
+    //マーカーを増やす
     const addMarker = (newMarker: MarkerInfo) => {
 
         const newMarkerInfo = {
@@ -147,6 +148,7 @@ const Map: React.FC = () => {
             image: newMarker.image,
         };
 
+        // 追加直後のマーカーにもクリック処理を対応
         addMarkerClickListener(newMarkerInfo.marker, newMarkerInfo.id, map, setSelectedMarkerId);
         setMarkersInfos((prevMarkerInfos) => [...prevMarkerInfos, newMarkerInfo]);
     };
@@ -193,13 +195,15 @@ const Map: React.FC = () => {
         <div className="flex">
             <div className="ml-4">
                 <MarkerForm
+                    id={postId}
                     lat={lat}
                     lng={lng}
                     title={title}
                     setContent={setContent}
-                    content= {content}
+                    content={content}
                     setTitle={setTitle}
                     addMarker={addMarker}
+                    makeMarker={makeMarker}
                     map={map}
                 />
                 <MarkerList
@@ -207,12 +211,21 @@ const Map: React.FC = () => {
                     setMarkersInfos={setMarkersInfos}
                     selectedMarkerId={selectedMarkerId}
                     setSelectedMarkerId={setSelectedMarkerId}
-                    centerMapOnMarker={centerMapOnMarker} >
-                </MarkerList>
+                    centerMapOnMarker={centerMapOnMarker}
+                />
             </div>
-            <AddressSearch map={map} setLat={setLat} setLng={setLng} />
+            <AddressSearch
+                map={map}
+                setLat={setLat}
+                setLng={setLng}
+            />
             <div className="map-container" ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
-            <MarkerModal markersInfos={markersInfos} setMarkersInfos={setMarkersInfos} selectedMarkerId={selectedMarkerId} setSelectedMarkerId={setSelectedMarkerId}></MarkerModal>
+            <MarkerModal
+                markersInfos={markersInfos}
+                setMarkersInfos={setMarkersInfos}
+                selectedMarkerId={selectedMarkerId}
+                setSelectedMarkerId={setSelectedMarkerId}
+            />
         </div>
     );
 
