@@ -7,7 +7,7 @@ import EditPost from '../posts/EditPost';
 import EditPosts from '../posts/EditPosts';
 import React from 'react';
 import SignUp from "../user/SignUp"
-import SignIn from "../user/SingIn"
+import SignIn from "../user/SignIn"
 import User from '../user/User';
 import { PostPropsLoading } from "../interfaces/index"
 
@@ -34,12 +34,13 @@ const AppRoutes: React.FC<PostPropsLoading> = ({ posts, setPosts, loading, isSig
         </Route>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="user" element={<User />} />
-        <Route path="/user" element={
-          <PrivateRoute>
-            <User />
-          </PrivateRoute>
-        } />
+        <Route
+          path="/user"
+          element={
+            <PrivateRoute>
+              <User />
+            </PrivateRoute>
+          } />
       </Routes>
     </div>
   )
