@@ -1,23 +1,8 @@
-import api from '../api/axios';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { PostProps } from "../interfaces/index"
 
-const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
-
-    const handleDelete = async (postId: number) => {
-        const confirm = window.confirm("このリストを削除します。\n本当によろしいですか？");
-        if (confirm) {
-            try {
-                await api.delete(`/posts/${postId}`);
-                const newArray = [...posts].filter(post => post.id !== postId);
-                setPosts([...newArray]);
-            } catch (err) {
-                alert("削除に失敗しました");
-                console.log(err);
-            }
-        }
-    };
+const Home: React.FC<PostProps> = ({ posts }) => {
 
     const sortedPosts = posts.sort((a, b) => a.id - b.id);
 
@@ -46,7 +31,7 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
                         <p className="text-gray-500 text-sm mb-4">
                             Created at: {new Date(post.created_at).toLocaleDateString()}
                         </p>
-                        <div className="flex justify-end space-x-3">
+                        {/* <div className="flex justify-end space-x-3">
                             <Link
                                 to={`/posts/edit/${post.id}`}
                                 onClick={(e) => e.stopPropagation()}
@@ -57,14 +42,15 @@ const Home: React.FC<PostProps> = ({ posts, setPosts }) => {
                             </Link>
                             <button
                                 onClick={(e) => {
-                                    handleDelete(post.id);
+                                    // handleDelete(post.id);
                                     e.preventDefault();
                                 }}
                                 className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
                             >
                                 Delete
                             </button>
-                        </div>
+                        </div> */}
+
                     </div>
                 ))}
             </div>

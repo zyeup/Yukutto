@@ -1,9 +1,9 @@
 import api from '../api/axios';
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { PostProps } from "../interfaces/index"
+import { PostPropsLoading } from "../interfaces/index"
 
-const CreatePost: React.FC<PostProps> = ({ posts, setPosts }) => {
+const CreatePost: React.FC<PostPropsLoading> = ({ posts, setPosts, currentUser }) => {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -15,7 +15,8 @@ const CreatePost: React.FC<PostProps> = ({ posts, setPosts }) => {
         try {
             const response = await api.post("/posts", {
                 title: title,
-                content: content
+                content: content,
+                user_id: currentUser?.id
             })
 
             const newPost = {
@@ -23,7 +24,8 @@ const CreatePost: React.FC<PostProps> = ({ posts, setPosts }) => {
                 title: title,
                 content: content,
                 created_at: response.data.created_at,
-                update_at: response.data.update_at
+                update_at: response.data.update_at,
+                user_id: currentUser?.id
             }
             setPosts([...posts, newPost]);
 
