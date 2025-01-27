@@ -12,7 +12,7 @@ import UserPosts from "../user/UserPosts"
 import User from '../user/User';
 import { PostPropsLoading } from "../interfaces/index"
 
-const AppRoutes: React.FC<PostPropsLoading> = ({ posts, setPosts, loading, isSignedIn }) => {
+const AppRoutes: React.FC<PostPropsLoading> = ({ posts, setPosts, loading, isSignedIn, currentUser, setCurrentUser }) => {
 
   const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
     if (loading) {
@@ -29,13 +29,20 @@ const AppRoutes: React.FC<PostPropsLoading> = ({ posts, setPosts, loading, isSig
         <Route path="/posts" element={<Posts />}>
           <Route path=":ParamsId" element={<Post posts={posts} />} />
         </Route>
-        <Route path="posts/new" element={<CreatePost posts={posts} setPosts={setPosts} />} />
+        <Route path="posts/new" element={<CreatePost posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
         <Route path="/posts/edit" element={<EditPosts />}>
           <Route path=":ParamsId" element={<EditPost posts={posts} setPosts={setPosts} />} />
         </Route>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/userposts" element={<UserPosts />} />
+        <Route
+          path="/userposts"
+          element={
+            <PrivateRoute>
+              <UserPosts posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser} />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/user"
           element={

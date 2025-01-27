@@ -6,6 +6,7 @@ export type PostData = {
   content: string;
   created_at: string;
   update_at: string;
+  user_id: number | undefined;
 };
 
 export type PostProps = {
@@ -16,6 +17,8 @@ export type PostProps = {
 export interface PostPropsLoading extends PostProps {
   loading: boolean
   isSignedIn: boolean
+  currentUser: User | undefined
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | undefined>>
 }
 
 export type MarkerInfo = {

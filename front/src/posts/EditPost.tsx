@@ -5,8 +5,9 @@ import { PostProps } from "../interfaces/index"
 
 const EditPost: React.FC<PostProps> = ({ posts, setPosts }) => {
 
-    const { postId } = useParams<{ postId: string }>();
-    const post = postId ? Object.values(posts).find((post) => String(post.id) === postId) : undefined;
+    const { ParamsId } = useParams<{ ParamsId: string }>();
+    const postId = parseInt(ParamsId || "0");
+    const post = postId ? posts.find((post) => post.id === postId) : undefined;
 
     const [title, setTitle] = useState(post ? post.title : "投稿が見つかりません");
     const [content, setContent] = useState(post ? post.content : "投稿が見つかりません");

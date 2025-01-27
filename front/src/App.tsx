@@ -63,7 +63,7 @@ const App: React.FC = () => {
         ) : (
           <div>
             <Header></Header>
-            <AppRoutes posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} ></AppRoutes>
+            <AppRoutes posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser} ></AppRoutes>
           </div>
         )}
       </AuthContext.Provider>
