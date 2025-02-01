@@ -1,12 +1,11 @@
 import { useNavigate, Link } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import Cookies from "js-cookie"
 import { signOut } from "../api/auth"
-import { AuthContext } from "../App"
+import { PostPropsLoading } from "../interfaces/index"
 
-const Header = () => {
+const Header: React.FC<PostPropsLoading> = ({ posts, setPosts, loading, isSignedIn, setIsSignedIn, currentUser, setCurrentUser }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { loading, isSignedIn, setIsSignedIn } = useContext(AuthContext)
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -48,7 +47,7 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link to="/userposts" onClick={toggleSidebar} className="hover:underline">
+              <Link to={`/userpostslist/${currentUser?.id}`} onClick={toggleSidebar} className="hover:underline">
                 投稿したポスト
               </Link>
             </li>

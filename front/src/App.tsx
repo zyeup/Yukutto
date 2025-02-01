@@ -62,8 +62,8 @@ const App: React.FC = () => {
           <LoadingSpinner />
         ) : (
           <div>
-            <Header></Header>
-            <AppRoutes posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser} ></AppRoutes>
+            <Header posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser}></Header>
+            <AppRoutes posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser} ></AppRoutes>
           </div>
         )}
       </AuthContext.Provider>

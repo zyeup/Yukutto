@@ -8,11 +8,13 @@ import EditPosts from '../posts/EditPosts';
 import React from 'react';
 import SignUp from "../user/SignUp"
 import SignIn from "../user/SignIn"
+import UserPostsList from "../user/UserPostsList"
 import UserPosts from "../user/UserPosts"
+import UserPost from "../user/UserPost"
 import User from '../user/User';
 import { PostPropsLoading } from "../interfaces/index"
 
-const AppRoutes: React.FC<PostPropsLoading> = ({ posts, setPosts, loading, isSignedIn, currentUser, setCurrentUser }) => {
+const AppRoutes: React.FC<PostPropsLoading> = ({ posts, setPosts, loading, isSignedIn, setIsSignedIn, currentUser, setCurrentUser }) => {
 
   const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
     if (loading) {
@@ -29,20 +31,24 @@ const AppRoutes: React.FC<PostPropsLoading> = ({ posts, setPosts, loading, isSig
         <Route path="/posts" element={<Posts />}>
           <Route path=":ParamsId" element={<Post posts={posts} />} />
         </Route>
-        <Route path="posts/new" element={<CreatePost posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+        <Route path="posts/new" element={<CreatePost posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
         <Route path="/posts/edit" element={<EditPosts />}>
           <Route path=":ParamsId" element={<EditPost posts={posts} setPosts={setPosts} />} />
         </Route>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route
-          path="/userposts"
+          path="/userpostslist/:userId"
           element={
             <PrivateRoute>
-              <UserPosts posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser} />
+              <UserPostsList posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser} />
             </PrivateRoute>
           }
         />
+        <Route path="/userposts" element={<UserPosts />}>
+          <Route path=":ParamsId" element={<UserPost posts={posts} />} />
+        </Route>
+
         <Route
           path="/user"
           element={
