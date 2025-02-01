@@ -194,7 +194,7 @@ const Map: React.FC<MapProps> = ({ postId }) => {
     return (
         <div className="flex">
             <div className="ml-4">
-                <MarkerForm
+                {/* <MarkerForm
                     id={postId}
                     lat={lat}
                     lng={lng}
@@ -205,7 +205,7 @@ const Map: React.FC<MapProps> = ({ postId }) => {
                     addMarker={addMarker}
                     makeMarker={makeMarker}
                     map={map}
-                />
+                /> */}
                 <MarkerList
                     markersInfos={markersInfos}
                     setMarkersInfos={setMarkersInfos}
@@ -214,11 +214,11 @@ const Map: React.FC<MapProps> = ({ postId }) => {
                     centerMapOnMarker={centerMapOnMarker}
                 />
             </div>
-            <AddressSearch
+            {/* <AddressSearch
                 map={map}
                 setLat={setLat}
                 setLng={setLng}
-            />
+            /> */}
             <div className="map-container" ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
             <MarkerModal
                 markersInfos={markersInfos}

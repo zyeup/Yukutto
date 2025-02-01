@@ -17,6 +17,7 @@ export type PostProps = {
 export interface PostPropsLoading extends PostProps {
   loading: boolean
   isSignedIn: boolean
+  setIsSignedIn: React.Dispatch<React.SetStateAction<boolean>>
   currentUser: User | undefined
   setCurrentUser: React.Dispatch<React.SetStateAction<User | undefined>>
 }
