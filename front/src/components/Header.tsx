@@ -4,7 +4,7 @@ import Cookies from "js-cookie"
 import { signOut } from "../api/auth"
 import { PostPropsLoading } from "../interfaces/index"
 
-const Header: React.FC<PostPropsLoading> = ({ posts, setPosts, loading, isSignedIn, setIsSignedIn, currentUser, setCurrentUser }) => {
+const Header: React.FC<PostPropsLoading> = ({ loading, isSignedIn, setIsSignedIn, currentUser }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
 

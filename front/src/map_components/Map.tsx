@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import MarkerForm from './MarkerForm';
 import MarkerList from './MarkerList'
-import AddressSearch from './AddressSearch';
 import MarkerModal from './MarkerModal';
 import api from '../api/axios';
 import { MarkerInfo } from "../interfaces/index"
