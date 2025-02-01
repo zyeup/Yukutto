@@ -20,8 +20,7 @@ const Map: React.FC<MapProps> = ({ postId }) => {
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [lat, setLat] = useState<number>(INITIALIZE_LAT);
     const [lng, setLng] = useState<number>(INITIALIZE_LNG);
-    const [title, setTitle] = useState<string>("");
-    const [content, setContent] = useState<string>("");
+    const [title,] = useState<string>("");
     const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);
     const [tmpMarker, setTmpMarker] = useState<google.maps.Marker | null>(null);
     const [selectedMarkerId, setSelectedMarkerId] = useState<number | null>(null);
@@ -133,23 +132,23 @@ const Map: React.FC<MapProps> = ({ postId }) => {
         });
     };
 
-    //マーカーを増やす
-    const addMarker = (newMarker: MarkerInfo) => {
+    // //マーカーを増やす
+    // const addMarker = (newMarker: MarkerInfo) => {
 
-        const newMarkerInfo = {
-            id: newMarker.id,
-            lat: newMarker.lat,
-            lng: newMarker.lng,
-            title: newMarker.title,
-            content: newMarker.content,
-            marker: newMarker.marker,
-            image: newMarker.image,
-        };
+    //     const newMarkerInfo = {
+    //         id: newMarker.id,
+    //         lat: newMarker.lat,
+    //         lng: newMarker.lng,
+    //         title: newMarker.title,
+    //         content: newMarker.content,
+    //         marker: newMarker.marker,
+    //         image: newMarker.image,
+    //     };
 
-        // 追加直後のマーカーにもクリック処理を対応
-        addMarkerClickListener(newMarkerInfo.marker, newMarkerInfo.id, map, setSelectedMarkerId);
-        setMarkersInfos((prevMarkerInfos) => [...prevMarkerInfos, newMarkerInfo]);
-    };
+    //     // 追加直後のマーカーにもクリック処理を対応
+    //     addMarkerClickListener(newMarkerInfo.marker, newMarkerInfo.id, map, setSelectedMarkerId);
+    //     setMarkersInfos((prevMarkerInfos) => [...prevMarkerInfos, newMarkerInfo]);
+    // };
 
     const nowLocate = (clickedLat: number, clickedLng: number) => {
 
