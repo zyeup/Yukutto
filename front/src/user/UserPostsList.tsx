@@ -1,9 +1,10 @@
 import api from '../api/axios';
 import { Link } from 'react-router-dom';
-import React from 'react';
-import { PostPropsLoading } from "../interfaces/index"
+import { useContext } from 'react';
+import { AuthContext } from "../App"
 
-const UserPostsList: React.FC<PostPropsLoading> = ({ posts, setPosts, currentUser }) => {
+const UserPostsList = () => {
+  const { posts, setPosts, currentUser } = useContext(AuthContext)
 
   const sortedPosts = posts.sort((a, b) => a.id - b.id);
   const fillterdPosts = sortedPosts.filter(post => post.user_id === currentUser?.id)

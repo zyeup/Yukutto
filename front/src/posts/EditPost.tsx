@@ -1,10 +1,10 @@
 import api from '../api/axios';
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState, useContext } from 'react'
+import { AuthContext } from "../App"
 import { useNavigate, useParams } from "react-router-dom";
-import { PostProps } from "../interfaces/index"
 
-const EditPost: React.FC<PostProps> = ({ posts, setPosts }) => {
-
+const EditPost = () => {
+    const { posts, setPosts } = useContext(AuthContext)
     const { ParamsId } = useParams<{ ParamsId: string }>();
     const postId = parseInt(ParamsId || "0");
     const post = postId ? posts.find((post) => post.id === postId) : undefined;

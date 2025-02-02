@@ -1,14 +1,10 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import Map from '../map_components/Map';
-import { PostData } from "../interfaces/index"
+import { useContext } from 'react';
+import { AuthContext } from "../App"
 
-interface PostProps {
-    posts: PostData[];
-}
-
-const Post: React.FC<PostProps> = ({ posts }) => {
-
+const Post = () => {
+    const { posts } = useContext(AuthContext)
     const { ParamsId } = useParams<{ ParamsId: string }>();
     const postId = parseInt(ParamsId || "0");
     const post = postId ? posts.find((post) => post.id === postId) : undefined;

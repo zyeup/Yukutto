@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import React from 'react';
-import { PostProps } from "../interfaces/index"
+import { useContext } from 'react';
+import { AuthContext } from "../App"
 
-const Home: React.FC<PostProps> = ({ posts }) => {
-
+const Home = () => {
+    const { posts } = useContext(AuthContext)
     const sortedPosts = posts.sort((a, b) => a.id - b.id);
 
     return (
@@ -31,26 +31,6 @@ const Home: React.FC<PostProps> = ({ posts }) => {
                         <p className="text-gray-500 text-sm mb-4">
                             Created at: {new Date(post.created_at).toLocaleDateString()}
                         </p>
-                        {/* <div className="flex justify-end space-x-3">
-                            <Link
-                                to={`/posts/edit/${post.id}`}
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                <button className="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                                    Edit
-                                </button>
-                            </Link>
-                            <button
-                                onClick={(e) => {
-                                    // handleDelete(post.id);
-                                    e.preventDefault();
-                                }}
-                                className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-                            >
-                                Delete
-                            </button>
-                        </div> */}
-
                     </div>
                 ))}
             </div>

@@ -1,11 +1,12 @@
 import { useNavigate, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Cookies from "js-cookie"
+import { AuthContext } from "../App"
 import { signOut } from "../api/auth"
-import { PostPropsLoading } from "../interfaces/index"
 
-const Header: React.FC<PostPropsLoading> = ({ loading, isSignedIn, setIsSignedIn, currentUser }) => {
+const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { loading, isSignedIn, setIsSignedIn, currentUser } = useContext(AuthContext)
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
