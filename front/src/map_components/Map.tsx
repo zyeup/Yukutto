@@ -18,11 +18,10 @@ const INITIALIZE_MAP_HEIGHT = '600px'; // 地図の高さ
 const Map: React.FC<MapProps> = ({ postId }) => {
     const mapRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
-    const [lat, setLat] = useState<number>(INITIALIZE_LAT);
-    const [lng, setLng] = useState<number>(INITIALIZE_LNG);
-    const [title,] = useState<string>("");
+    const [, setLat] = useState<number>(INITIALIZE_LAT);
+    const [, setLng] = useState<number>(INITIALIZE_LNG);
+    const [,] = useState<string>("");
     const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);
-    const [tmpMarker, setTmpMarker] = useState<google.maps.Marker | null>(null);
     const [selectedMarkerId, setSelectedMarkerId] = useState<number | null>(null);
 
     useEffect(() => {
@@ -46,8 +45,6 @@ const Map: React.FC<MapProps> = ({ postId }) => {
             if (event.latLng) {
                 const clickedLat = event.latLng.lat();
                 const clickedLng = event.latLng.lng();
-
-                // クリックされた座標をstateに保存
                 setLat(clickedLat);
                 setLng(clickedLng);
             }
@@ -58,7 +55,6 @@ const Map: React.FC<MapProps> = ({ postId }) => {
 
     useEffect(() => {
         const fetchMarkers = async () => {
-
             try {
                 const response = await api.get(`/markers?post_id=${postId}`);
 
@@ -91,18 +87,10 @@ const Map: React.FC<MapProps> = ({ postId }) => {
         });
     }, [selectedMarkerId, markersInfos]);
 
-    useEffect(() => {
-        if (map) {
-            nowLocate(lat, lng);
-        }
-    }, [map, lat, lng]);
-
     const makeMarker = (lat: number, lng: number, title: string) => {
         const marker = new google.maps.Marker({
             position: { lat, lng },
             map,
-            // マーカーの更新ができたらコメントを外す予定
-            // draggable: true,
             title: title,
             label: {
                 text: title,
@@ -114,7 +102,6 @@ const Map: React.FC<MapProps> = ({ postId }) => {
         });
         return marker;
     }
-
 
     // マーカークリック時の処理
     const addMarkerClickListener = (
@@ -132,52 +119,6 @@ const Map: React.FC<MapProps> = ({ postId }) => {
         });
     };
 
-    // //マーカーを増やす
-    // const addMarker = (newMarker: MarkerInfo) => {
-
-    //     const newMarkerInfo = {
-    //         id: newMarker.id,
-    //         lat: newMarker.lat,
-    //         lng: newMarker.lng,
-    //         title: newMarker.title,
-    //         content: newMarker.content,
-    //         marker: newMarker.marker,
-    //         image: newMarker.image,
-    //     };
-
-    //     // 追加直後のマーカーにもクリック処理を対応
-    //     addMarkerClickListener(newMarkerInfo.marker, newMarkerInfo.id, map, setSelectedMarkerId);
-    //     setMarkersInfos((prevMarkerInfos) => [...prevMarkerInfos, newMarkerInfo]);
-    // };
-
-    const nowLocate = (clickedLat: number, clickedLng: number) => {
-
-        if (tmpMarker) {
-            tmpMarker.setMap(null);
-        }
-        const marker = new google.maps.Marker({
-            position: { lat: clickedLat, lng: clickedLng },
-            map,
-            title: title,
-            icon: {
-                fillColor: "red",
-                fillOpacity: 1,
-                path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                scale: 8,
-                strokeColor: "red",
-                strokeWeight: 1.0
-            },
-            label: {
-                text: " ",
-                color: 'black',
-                fontSize: '20px',
-                fontWeight: 'bold',
-            },
-        });
-        marker.setMap(map);
-        setTmpMarker(marker);
-    }
-
     const centerMapOnMarker = (markerId: number) => {
         const markerInfo = markersInfos.find((marker) => marker.id === markerId);
         if (markerInfo && map) {
@@ -191,18 +132,6 @@ const Map: React.FC<MapProps> = ({ postId }) => {
     return (
         <div className="flex">
             <div className="ml-4">
-                {/* <MarkerForm
-                    id={postId}
-                    lat={lat}
-                    lng={lng}
-                    title={title}
-                    setContent={setContent}
-                    content={content}
-                    setTitle={setTitle}
-                    addMarker={addMarker}
-                    makeMarker={makeMarker}
-                    map={map}
-                /> */}
                 <MarkerList
                     markersInfos={markersInfos}
                     setMarkersInfos={setMarkersInfos}
@@ -211,11 +140,6 @@ const Map: React.FC<MapProps> = ({ postId }) => {
                     centerMapOnMarker={centerMapOnMarker}
                 />
             </div>
-            {/* <AddressSearch
-                map={map}
-                setLat={setLat}
-                setLng={setLng}
-            /> */}
             <div className="map-container" ref={mapRef} style={{ width: INITIALIZE_MAP_WIDTH, height: INITIALIZE_MAP_HEIGHT }} />
             <MarkerModal
                 markersInfos={markersInfos}

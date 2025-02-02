@@ -1,12 +1,13 @@
 import api from '../api/axios';
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState, useContext } from 'react'
+import { AuthContext } from "../App"
 import { useNavigate } from "react-router-dom";
-import { PostPropsLoading } from "../interfaces/index"
 
-const CreatePost: React.FC<PostPropsLoading> = ({ posts, setPosts, currentUser }) => {
+const CreatePost = () => {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const { posts, setPosts, currentUser } = useContext(AuthContext)
     const navigate = useNavigate();
 
     const handleSubmit = async (e: FormEvent) => {

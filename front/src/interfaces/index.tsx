@@ -14,14 +14,6 @@ export type PostProps = {
   setPosts: Dispatch<SetStateAction<PostData[]>>;
 };
 
-export interface PostPropsLoading extends PostProps {
-  loading: boolean
-  isSignedIn: boolean
-  setIsSignedIn: React.Dispatch<React.SetStateAction<boolean>>
-  currentUser: User | undefined
-  setCurrentUser: React.Dispatch<React.SetStateAction<User | undefined>>
-}
-
 export type MarkerInfo = {
   id: number;
   lat: number;

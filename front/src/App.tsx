@@ -8,6 +8,8 @@ import api from './api/axios';
 import AppRoutes from './components/AppRoutes';
 
 export const AuthContext = createContext({} as {
+  posts: PostData[]
+  setPosts: React.Dispatch<React.SetStateAction<PostData[]>>
   loading: boolean
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   isSignedIn: boolean
@@ -57,13 +59,13 @@ const App: React.FC = () => {
 
   return (
     <>
-      <AuthContext.Provider value={{ loading, setLoading, isSignedIn, setIsSignedIn, currentUser, setCurrentUser }}>
+      <AuthContext.Provider value={{ posts, setPosts, loading, setLoading, isSignedIn, setIsSignedIn, currentUser, setCurrentUser }}>
         {isLoading ? (
           <LoadingSpinner />
         ) : (
           <div>
-            <Header posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser}></Header>
-            <AppRoutes posts={posts} setPosts={setPosts} loading={loading} isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} currentUser={currentUser} setCurrentUser={setCurrentUser} ></AppRoutes>
+            <Header ></Header>
+            <AppRoutes ></AppRoutes>
           </div>
         )}
       </AuthContext.Provider>
