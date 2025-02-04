@@ -52,6 +52,11 @@ const Header = () => {
                 投稿したポスト
               </Link>
             </li>
+            <li>
+              <Link to={`/userpostslist/${currentUser?.id}/bookmarkposts`} onClick={toggleSidebar} className="hover:underline">
+                ブックマークした投稿
+              </Link>
+            </li>
           </>
         )
       } else {
