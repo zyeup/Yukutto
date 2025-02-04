@@ -10,6 +10,7 @@ import { AuthContext } from "../App"
 import SignUp from "../user/SignUp"
 import SignIn from "../user/SignIn"
 import UserPostsList from "../user/UserPostsList"
+import BookmarkPosts from "../user/BookmarkPosts"
 import UserPosts from "../user/UserPosts"
 import UserPost from "../user/UserPost"
 import User from '../user/User';
@@ -39,6 +40,14 @@ const AppRoutes = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route
+          path="/userpostslist/:userId/bookmarkposts"
+          element={
+            <PrivateRoute>
+              <BookmarkPosts />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/userpostslist/:userId"
           element={
             <PrivateRoute>
@@ -49,7 +58,6 @@ const AppRoutes = () => {
         <Route path="/userposts" element={<UserPosts />}>
           <Route path=":ParamsId" element={<UserPost />} />
         </Route>
-
         <Route
           path="/user"
           element={
