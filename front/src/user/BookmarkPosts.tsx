@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from 'react';
 import api from '../api/axios';
 import { AuthContext } from "../App"
 import { Link } from 'react-router-dom';
-import Cookies from "js-cookie"
 
 const BookmarkPosts = () => {
   const { posts } = useContext(AuthContext)
@@ -13,13 +12,7 @@ const BookmarkPosts = () => {
   useEffect(() => {
     const fetchBookmarks = async () => {
       try {
-        const response = await api.get('/user_bookmarks', {
-          headers: {
-            "access-token": Cookies.get("_access_token"),
-            "client": Cookies.get("_client"),
-            "uid": Cookies.get("_uid")
-          }
-        });
+        const response = await api.get('/user_bookmarks');
         const userBookmarks = response.data.bookmarks.reduce((acc: ({ [key: number]: boolean }), postId: number) => {
           acc[postId] = true;
           return acc;
@@ -38,27 +31,13 @@ const BookmarkPosts = () => {
 
     try {
       if (newIsBookmarked) {
-        // ブックマークを追加
-        await api.post('/post_bookmarks', { post_id: postId }, {
-          headers: {
-            "access-token": Cookies.get("_access_token"),
-            "client": Cookies.get("_client"),
-            "uid": Cookies.get("_uid")
-          }
-        });
+        await api.post('/post_bookmarks', { post_id: postId });
       } else {
-        // ブックマークを削除
-        await api.delete(`/post_bookmarks/${postId}`, {
-          headers: {
-            "access-token": Cookies.get("_access_token"),
-            "client": Cookies.get("_client"),
-            "uid": Cookies.get("_uid")
-          }
-        });
+
+        await api.delete(`/post_bookmarks/${postId}`);
       }
     } catch (err) {
       console.error(err);
-      // エラーの場合は元に戻す
       setBookmarks(prevBookmarks => ({ ...prevBookmarks, [postId]: !newIsBookmarked }));
     }
   };
@@ -77,7 +56,7 @@ const BookmarkPosts = () => {
             className="block p-6 h-32 bg-white shadow-md hover:shadow-lg border border-gray-200 transition-all duration-300"
           >
             <Link
-              to={`/userposts/${post.id}`}
+              to={`/posts/${post.id}`}
               className="mb-4 text-xl font-bold text-gray-700"
             >
               {post.id}: {post.title}
@@ -97,25 +76,7 @@ const BookmarkPosts = () => {
               />
               ブックマーク
             </label>
-
             <div className="flex justify-end space-x-3">
-              {/* <Link
-                to={`/posts/edit/${post.id}`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button className="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                  Edit
-                </button>
-              </Link> */}
-              {/* <button
-                onClick={(e) => {
-                  handleDelete(post.id);
-                  e.preventDefault();
-                }}
-                className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-              >
-                Delete
-              </button> */}
             </div>
           </div>
         ))}
