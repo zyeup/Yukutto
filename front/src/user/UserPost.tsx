@@ -5,8 +5,8 @@ import { AuthContext } from "../App"
 
 const UserPost = () => {
   const { posts } = useContext(AuthContext)
-  const { ParamsId } = useParams<{ ParamsId: string }>();
-  const postId = parseInt(ParamsId || "0");
+  const { paramsId } = useParams<{ paramsId: string }>();
+  const postId = parseInt(paramsId || "0");
   const post = postId ? posts.find((post) => post.id === postId) : undefined;
 
   return (

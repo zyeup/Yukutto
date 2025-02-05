@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from "../App"
 import api from '../api/axios';
-import Cookies from "js-cookie"
 
 const Home = () => {
     const { posts } = useContext(AuthContext)
@@ -13,13 +12,7 @@ const Home = () => {
     useEffect(() => {
         const fetchBookmarks = async () => {
             try {
-                const response = await api.get('/user_bookmarks', {
-                    headers: {
-                        "access-token": Cookies.get("_access_token"),
-                        "client": Cookies.get("_client"),
-                        "uid": Cookies.get("_uid")
-                    }
-                });
+                const response = await api.get('/user_bookmarks');
                 const userBookmarks = response.data.bookmarks.reduce((acc: ({ [key: number]: boolean }), postId: number) => {
                     acc[postId] = true;
                     return acc;
@@ -40,22 +33,10 @@ const Home = () => {
         try {
             if (newIsBookmarked) {
                 // ブックマークを追加
-                await api.post('/post_bookmarks', { post_id: postId }, {
-                    headers: {
-                        "access-token": Cookies.get("_access_token"),
-                        "client": Cookies.get("_client"),
-                        "uid": Cookies.get("_uid")
-                    }
-                });
+                await api.post('/post_bookmarks', { post_id: postId });
             } else {
                 // ブックマークを削除
-                await api.delete(`/post_bookmarks/${postId}`, {
-                    headers: {
-                        "access-token": Cookies.get("_access_token"),
-                        "client": Cookies.get("_client"),
-                        "uid": Cookies.get("_uid")
-                    }
-                });
+                await api.delete(`/post_bookmarks/${postId}`);
             }
         } catch (err) {
             console.error(err);
