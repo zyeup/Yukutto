@@ -23,7 +23,7 @@ const AppRoutes = () => {
     if (loading) {
       return <LoadingSpinner />;
     }
-    return isSignedIn ? children : <Navigate to="/" />;
+    return isSignedIn ? children : <Navigate to="/" replace />;
   };
 
 

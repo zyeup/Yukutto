@@ -1,6 +1,6 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import EditMap from '../map_components/EditMap';
+import Map from '../map_components/Map';
 import { AuthContext } from "../App"
 
 const UserPost = () => {
@@ -8,6 +8,8 @@ const UserPost = () => {
   const { paramsId } = useParams<{ paramsId: string }>();
   const postId = parseInt(paramsId || "0");
   const post = postId ? posts.find((post) => post.id === postId) : undefined;
+  const userId = post?.user_id ? post.user_id : undefined;
+  const [isUserPost,] = useState(true);
 
   return (
     <div className="p-6 bg-white shadow-md rounded-md mx-auto">
@@ -22,7 +24,7 @@ const UserPost = () => {
         <h1 className="text-xl font-bold text-red-600 text-center">Post not found</h1>
       )}
       <div className="mt-6">
-        <EditMap postId={postId} />
+        <Map postId={postId} userId={userId} isUserPost={isUserPost} />
       </div>
     </div>
 

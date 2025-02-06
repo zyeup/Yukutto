@@ -12,7 +12,7 @@ const BookmarkPosts = () => {
   useEffect(() => {
     const fetchBookmarks = async () => {
       try {
-        const response = await api.get('/user_bookmarks');
+        const response = await api.get('/post_bookmarks');
         const userBookmarks = response.data.bookmarks.reduce((acc: ({ [key: number]: boolean }), postId: number) => {
           acc[postId] = true;
           return acc;
