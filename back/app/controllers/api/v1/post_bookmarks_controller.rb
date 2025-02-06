@@ -2,6 +2,12 @@ class Api::V1::PostBookmarksController < ApplicationController
   before_action :authenticate_api_v1_user!
   before_action :set_post, only: [:create, :destroy]
 
+  def index
+    bookmarks = current_api_v1_user.post_bookmarks.map { |bookmark| bookmark.post_id }
+    render json: { bookmarks: bookmarks }
+  end
+
+
   def create
     bookmark = current_api_v1_user.post_bookmarks.build(post: @post)
 
