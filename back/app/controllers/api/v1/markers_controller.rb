@@ -2,8 +2,12 @@ class Api::V1::MarkersController < ApplicationController
   before_action :set_marker, only: [:show, :update, :destroy]
 
   def index
-    post_id = params[:post_id]
-    @markers = Marker.where(post_id: post_id).order(:id)
+    post_id = params[:post_id].to_i
+    if post_id > 0
+      @markers = Marker.where(post_id: post_id).order(:id)
+    else
+      @markers = Marker.order(:id) # post_idが0なら全件取得
+    end
     render json: @markers
   end
 

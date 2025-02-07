@@ -21,7 +21,7 @@ const Post = () => {
                     </div>
                 </>
             ) : (
-                <h1 className="text-xl font-bold text-red-600 text-center">Post not found</h1>
+                <h1 className="text-4xl font-bold text-black text-center">すべてのマーカー</h1>
             )}
             <div className="mt-6">
                 <Map postId={postId} userId={userId} isUserPost={isUserPost} />

@@ -32,6 +32,7 @@ const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/posts" element={<Posts />}>
         <Route path=":paramsId" element={<Post />} />
+        <Route path=":all" element={<Post />} />
       </Route>
       <Route path="/posts/new" element={<CreatePost />} />
       <Route path="/posts/edit" element={<EditPosts />}>
