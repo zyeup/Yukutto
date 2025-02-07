@@ -72,6 +72,12 @@ const Header = () => {
                 新規会員登録
               </Link>
             </li>
+            <li>
+              <Link to="/posts/all" onClick={toggleSidebar} className="hover:underline">
+                すべてのマーカーを見る
+              </Link>
+            </li>
+
           </>
         )
       }

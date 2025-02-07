@@ -66,7 +66,6 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
 
             try {
                 const response = await api.get(`/markers?post_id=${postId}`);
-
                 const markersData: MarkerInfo[] = response.data.map((marker: any) => {
 
                     const googleMarker = makeMarker(marker.lat, marker.lng, marker.title)
