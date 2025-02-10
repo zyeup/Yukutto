@@ -1,5 +1,7 @@
 class Marker < ApplicationRecord
   belongs_to :post
+  belongs_to :location
+  accepts_nested_attributes_for :location
   mount_uploader :image, ImageUploader
 
   validate :validate_image_size

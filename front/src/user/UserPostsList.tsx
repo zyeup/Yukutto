@@ -7,7 +7,7 @@ const UserPostsList = () => {
   const { posts, setPosts, currentUser } = useContext(AuthContext)
 
   const sortedPosts = posts.sort((a, b) => a.id - b.id);
-  const fillterdPosts = sortedPosts.filter(post => post.user_id === currentUser?.id)
+  const fillterdPosts = sortedPosts.filter(post => post.userId === currentUser?.id)
 
   const handleDelete = async (postId: number) => {
     const confirm = window.confirm("このリストを削除します。\n本当によろしいですか？");
@@ -46,7 +46,7 @@ const UserPostsList = () => {
               {post.id}: {post.title}
             </Link>
             <p className="text-gray-500 text-sm mb-4">
-              Created at: {new Date(post.created_at).toLocaleDateString()}
+              Created at: {new Date(post.createdAt).toLocaleDateString()}
             </p>
             <div className="flex justify-end space-x-3">
               <Link

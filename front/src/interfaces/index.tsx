@@ -4,9 +4,9 @@ export type PostData = {
   id: number;
   title: string;
   content: string;
-  created_at: string;
-  update_at: string;
-  user_id: number | undefined;
+  createdAt: string;
+  updateAt: string;
+  userId: number | undefined;
 };
 
 export type PostProps = {
@@ -20,6 +20,10 @@ export type MarkerInfo = {
   lng: number;
   title: string;
   content: string;
+  fullAddress: string;
+  country: string;
+  prefecture: string;
+  city: string;
   marker: google.maps.Marker;
   image: string;
 };
@@ -32,6 +36,14 @@ export type MarkerFormProps = {
   setTitle: React.Dispatch<React.SetStateAction<string>>;
   content: string;
   setContent: React.Dispatch<React.SetStateAction<string>>;
+  country: string;
+  setCountry: React.Dispatch<React.SetStateAction<string>>;
+  prefecture: string;
+  setPrefecture: React.Dispatch<React.SetStateAction<string>>;
+  city: string;
+  setCity: React.Dispatch<React.SetStateAction<string>>;
+  fullAddress: string;
+  setFullAddress: React.Dispatch<React.SetStateAction<string>>;
   addMarker: (newMarker: any) => void;
   makeMarker: (lat: number, lng: number, title: string) => google.maps.Marker;
   map: google.maps.Map | null;
@@ -42,11 +54,8 @@ export type MapComponentProps = {
   setMarkersInfos: Dispatch<SetStateAction<MarkerInfo[]>>;
   selectedMarkerId: number | null;
   setSelectedMarkerId: Dispatch<SetStateAction<number | null>>;
-};
-
-export interface MapComponentPropsCenter extends MapComponentProps {
   centerMapOnMarker: (markerId: number) => void;
-}
+};
 
 export type AddressSearchProps = {
   map: google.maps.Map | null;
@@ -80,6 +89,6 @@ export interface User {
   nickname?: string
   image?: string
   allowPasswordChange: boolean
-  created_at: Date
-  updated_at: Date
+  createdAt: Date
+  updatedAt: Date
 }

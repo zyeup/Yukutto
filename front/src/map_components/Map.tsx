@@ -26,6 +26,10 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
     const [lng, setLng] = useState<number>(INITIALIZE_LNG);
     const [title, setTitle] = useState<string>("");
     const [content, setContent] = useState<string>("");
+    const [fullAddress, setFullAddress] = useState<string>("");
+    const [country, setCountry] = useState<string>("");
+    const [prefecture, setPrefecture] = useState<string>("");
+    const [city, setCity] = useState<string>("");
     const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);
     const [tmpMarker, setTmpMarker] = useState<google.maps.Marker | null>(null);
     const [selectedMarkerId, setSelectedMarkerId] = useState<number | null>(null);
@@ -60,8 +64,9 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
 
         setMap(initializedMap);
     }, [mapRef, map]);
-
     useEffect(() => {
+        if (!map) return;
+
         const fetchMarkers = async () => {
 
             try {
@@ -70,7 +75,8 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
 
                     const googleMarker = makeMarker(marker.lat, marker.lng, marker.title)
                     addMarkerClickListener(googleMarker, marker.id, map, setSelectedMarkerId);
-                    return { id: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, content: marker.content, image: marker.image.url, marker: googleMarker };
+                    // console.log(response.data);
+                    return { id: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, content: marker.content, image: marker.image.url, fullAddress: marker.fullAddress, country: marker.location?.country, prefecture: marker.location?.prefecture, city: marker.location?.city, marker: googleMarker };
                 });
                 setMarkersInfos(markersData);
                 markersData.forEach((markerInfo) => {
@@ -93,7 +99,7 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
                 markerInfo.marker.setAnimation(null);
             }
         });
-    }, [selectedMarkerId, markersInfos]);
+    }, [selectedMarkerId]);
 
     useEffect(() => {
         if (map) {
@@ -145,6 +151,10 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
             lng: newMarker.lng,
             title: newMarker.title,
             content: newMarker.content,
+            fullAddress: newMarker.fullAddress,
+            country: newMarker.country,
+            prefecture: newMarker.prefecture,
+            city: newMarker.city,
             marker: newMarker.marker,
             image: newMarker.image,
         };
@@ -201,9 +211,17 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
                         lat={lat}
                         lng={lng}
                         title={title}
-                        setContent={setContent}
-                        content={content}
                         setTitle={setTitle}
+                        content={content}
+                        setContent={setContent}
+                        country={country}
+                        setCountry={setCountry}
+                        prefecture={prefecture}
+                        setPrefecture={setPrefecture}
+                        city={city}
+                        setCity={setCity}
+                        fullAddress={fullAddress}
+                        setFullAddress={setFullAddress}
                         addMarker={addMarker}
                         makeMarker={makeMarker}
                         map={map}
@@ -230,6 +248,7 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
                 setMarkersInfos={setMarkersInfos}
                 selectedMarkerId={selectedMarkerId}
                 setSelectedMarkerId={setSelectedMarkerId}
+                centerMapOnMarker={centerMapOnMarker}
             />
         </div>
     );

@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_02_03_223322) do
+ActiveRecord::Schema[7.0].define(version: 2025_02_09_143224) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "locations", force: :cascade do |t|
+    t.string "country"
+    t.string "prefecture"
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "markers", force: :cascade do |t|
     t.string "title"
@@ -23,6 +31,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_03_223322) do
     t.bigint "post_id"
     t.string "content"
     t.string "image"
+    t.string "full_address"
+    t.bigint "location_id"
+    t.index ["location_id"], name: "index_markers_on_location_id"
     t.index ["post_id"], name: "index_markers_on_post_id"
   end
 
@@ -70,6 +81,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_03_223322) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "markers", "locations"
   add_foreign_key "markers", "posts"
   add_foreign_key "post_bookmarks", "posts"
   add_foreign_key "post_bookmarks", "users"

@@ -8,7 +8,7 @@ class Api::V1::MarkersController < ApplicationController
     else
       @markers = Marker.order(:id) # post_idが0なら全件取得
     end
-    render json: @markers
+    render json: @markers.as_json(include: :location)
   end
 
   def show
@@ -45,7 +45,7 @@ class Api::V1::MarkersController < ApplicationController
   end
 
   def marker_params
-    params.permit(:lat, :lng, :title, :content, :post_id, :image)
+    params.require(:marker).permit(:lat, :lng, :title, :content, :full_address, :post_id, :image, location_attributes: [:country, :prefecture, :city])
   end
 
 end

@@ -1,8 +1,8 @@
 import api from '../api/axios';
 import React from 'react'
-import { MapComponentPropsCenter } from "../interfaces/index"
+import { MapComponentProps } from "../interfaces/index"
 
-const MarkerList: React.FC<MapComponentPropsCenter> = ({ markersInfos, setMarkersInfos, selectedMarkerId, setSelectedMarkerId, centerMapOnMarker }) => {
+const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos, selectedMarkerId, setSelectedMarkerId, centerMapOnMarker }) => {
 
   const deleteMarker = async (markersInfoId: number) => {
 
@@ -30,6 +30,9 @@ const MarkerList: React.FC<MapComponentPropsCenter> = ({ markersInfos, setMarker
     setSelectedMarkerId(markersInfoId)
   }
 
+  // console.log(country, prefecture, city);
+
+
   return (
     <>
       <div className="flex">
@@ -45,8 +48,8 @@ const MarkerList: React.FC<MapComponentPropsCenter> = ({ markersInfos, setMarker
               <li
                 key={markersInfo.id}
                 className={`p-4 border rounded-md cursor-pointer transition-colors duration-300 ${markersInfo.id === selectedMarkerId
-                    ? "bg-yellow-100 border-yellow-400"
-                    : "bg-gray-50 hover:bg-gray-100 border-gray-300"
+                  ? "bg-yellow-100 border-yellow-400"
+                  : "bg-gray-50 hover:bg-gray-100 border-gray-300"
                   }`}
                 onClick={() => {
                   handleSelect(markersInfo.id)
@@ -56,6 +59,7 @@ const MarkerList: React.FC<MapComponentPropsCenter> = ({ markersInfos, setMarker
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-medium text-gray-800">
                     <h1>{markersInfo.title}</h1>
+                    <p>{markersInfo.country} {markersInfo.prefecture}{markersInfo.city} </p>
                   </span>
                   <button
                     className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-md"
