@@ -1,12 +1,17 @@
 import axios from 'axios';
 import Cookies from "js-cookie";
+import applyCaseMiddleware from "axios-case-converter"
 
-const api = axios.create({
+const options = {
+  ignoreHeaders: true
+}
+
+const api = applyCaseMiddleware(axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-});
+}), options);
 
 api.interceptors.request.use(
   (config) => {

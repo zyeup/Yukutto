@@ -1,8 +1,9 @@
 import api from '../api/axios';
 import React, { FormEvent, useRef, useState } from 'react';
 import { MarkerFormProps } from "../interfaces/index"
+import GeocodeAddress from "./GeocodeAddress"
 
-const MarkerForm: React.FC<MarkerFormProps> = ({ id, lat, lng, title, setTitle, content, setContent, addMarker, makeMarker, map }) => {
+const MarkerForm: React.FC<MarkerFormProps> = ({ id, lat, lng, title, setTitle, content, setContent, country, setCountry, prefecture, setPrefecture, city, setCity, fullAddress, setFullAddress, addMarker, makeMarker, map }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -19,14 +20,19 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ id, lat, lng, title, setTitle, 
       const formData = new FormData();
 
       // formDataを使用するため、数値は文字列に変換する
-      formData.append('lat', lat.toString());
-      formData.append('lng', lng.toString());
-      formData.append('title', title);
-      formData.append('content', content);
-      formData.append('post_id', id.toString());
+      formData.append("marker[lat]", lat.toString());
+      formData.append("marker[lng]", lng.toString());
+      formData.append("marker[title]", title);
+      formData.append("marker[content]", content);
+      formData.append("marker[post_id]", id.toString());
+      formData.append("marker[full_address]", fullAddress.toString());
+
       if (imageFile) {
         formData.append('image', imageFile);
       }
+      formData.append("marker[location_attributes][country]", country);
+      formData.append("marker[location_attributes][prefecture]", prefecture);
+      formData.append("marker[location_attributes][city]", city);
 
       const response = await api.post('/markers', formData, {
         headers: {
@@ -38,7 +44,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ id, lat, lng, title, setTitle, 
       const marker = makeMarker(lat, lng, title)
       marker.setMap(map)
 
-      addMarker({ id, lat, lng, title, content, marker, image: newMarkerData.image_url });
+      addMarker({ id, lat, lng, title, content, marker, fullAddress, country, prefecture, city, image: newMarkerData.image_url });
       setTitle("");
       setContent("");
       setImageFile(null);
@@ -64,6 +70,8 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ id, lat, lng, title, setTitle, 
         <p className="text-gray-600"><span className="font-medium text-gray-800">緯度：</span>{lat}</p>
         <p className="text-gray-600"><span className="font-medium text-gray-800">経度：</span>{lng}</p>
       </div>
+      <GeocodeAddress lat={lat} lng={lng} showAddress={true} country={country} setCountry={setCountry} prefecture={prefecture} setPrefecture={setPrefecture} city={city} setCity={setCity} fullAddress={fullAddress} setFullAddress={setFullAddress}
+      />
       <form onSubmit={handleAddMarker} className="space-y-4">
         <div>
           <label htmlFor="marker_name" className="block font-bold text-gray-800 mb-2">

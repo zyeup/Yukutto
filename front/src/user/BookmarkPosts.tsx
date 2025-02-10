@@ -62,7 +62,7 @@ const BookmarkPosts = () => {
               {post.id}: {post.title}
             </Link>
             <p className="text-gray-500 text-sm mb-4">
-              Created at: {new Date(post.created_at).toLocaleDateString()}
+              Created at: {new Date(post.createdAt).toLocaleDateString()}
             </p>
             <label
               className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"

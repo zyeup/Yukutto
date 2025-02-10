@@ -17,16 +17,16 @@ const CreatePost = () => {
             const response = await api.post("/posts", {
                 title: title,
                 content: content,
-                user_id: currentUser?.id
+                userId: currentUser?.id
             })
 
             const newPost = {
                 id: response.data.id,
                 title: title,
                 content: content,
-                created_at: response.data.created_at,
-                update_at: response.data.update_at,
-                user_id: currentUser?.id
+                createdAt: response.data.createdAt,
+                updateAt: response.data.updateAt,
+                userId: currentUser?.id
             }
             setPosts([...posts, newPost]);
 

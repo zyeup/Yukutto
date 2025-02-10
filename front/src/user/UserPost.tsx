@@ -8,7 +8,7 @@ const UserPost = () => {
   const { paramsId } = useParams<{ paramsId: string }>();
   const postId = parseInt(paramsId || "0");
   const post = postId ? posts.find((post) => post.id === postId) : undefined;
-  const userId = post?.user_id ? post.user_id : undefined;
+  const userId = post?.userId ? post.userId : undefined;
   const [isUserPost,] = useState(true);
 
   return (
