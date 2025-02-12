@@ -3,7 +3,7 @@ import React, { FormEvent, useRef, useState } from 'react';
 import { MarkerFormProps } from "../interfaces/index"
 import GeocodeAddress from "./GeocodeAddress"
 
-const MarkerForm: React.FC<MarkerFormProps> = ({ id, lat, lng, title, setTitle, content, setContent, country, setCountry, prefecture, setPrefecture, city, setCity, fullAddress, setFullAddress, addMarker, makeMarker, map }) => {
+const MarkerForm: React.FC<MarkerFormProps> = ({ postId, lat, lng, title, setTitle, content, setContent, country, setCountry, prefecture, setPrefecture, city, setCity, fullAddress, setFullAddress, addMarker, makeMarker, map }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -24,7 +24,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ id, lat, lng, title, setTitle, 
       formData.append("marker[lng]", lng.toString());
       formData.append("marker[title]", title);
       formData.append("marker[content]", content);
-      formData.append("marker[post_id]", id.toString());
+      formData.append("marker[post_id]", postId.toString());
       formData.append("marker[full_address]", fullAddress.toString());
 
       if (imageFile) {
@@ -41,10 +41,24 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ id, lat, lng, title, setTitle, 
       });
 
       const newMarkerData = response.data;
-      const marker = makeMarker(lat, lng, title)
+      const marker = makeMarker(newMarkerData.lat, newMarkerData.lng, newMarkerData.title)
+
       marker.setMap(map)
 
-      addMarker({ id, lat, lng, title, content, marker, fullAddress, country, prefecture, city, image: newMarkerData.image_url });
+      addMarker({
+        postId,
+        markerId: newMarkerData.id,
+        lat: newMarkerData.lat,
+        lng: newMarkerData.lng,
+        title: newMarkerData.title,
+        content: newMarkerData.content,
+        marker,
+        fullAddress: newMarkerData.full_address,
+        country: newMarkerData.location.country,
+        prefecture: newMarkerData.location.prefecture,
+        city: newMarkerData.location.city,
+        image: newMarkerData.image_url,
+      });
       setTitle("");
       setContent("");
       setImageFile(null);

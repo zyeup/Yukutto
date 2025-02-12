@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 type Geocode = {
   lat: number
@@ -15,7 +15,6 @@ type Geocode = {
 }
 
 const GeocodeAddress: React.FC<Geocode> = ({ lat, lng, showAddress, country, setCountry, prefecture, setPrefecture, city, setCity, fullAddress, setFullAddress }) => {
-  const [address, setAddress] = useState("");
 
   useEffect(() => {
     const getAddressFrom = (lat: number, lng: number) => {
@@ -24,7 +23,6 @@ const GeocodeAddress: React.FC<Geocode> = ({ lat, lng, showAddress, country, set
 
       geocoder.geocode({ location: latlng }, (results, status) => {
         if (status === "OK" && results && results.length > 0) {
-          setAddress(results[0].formatted_address);
           let cityName = "";
           let prefectureName = "";
           let countryName = "";
@@ -54,11 +52,9 @@ const GeocodeAddress: React.FC<Geocode> = ({ lat, lng, showAddress, country, set
           setPrefecture(prefectureName);
           setCity(cityName);
           setCountry(countryName);
-          setAddress(formattedAddress);
-          setFullAddress(address)
+          setFullAddress(formattedAddress)
         } else {
           console.error("逆ジオコーディングに失敗しました: ", status);
-          setAddress("住所が取得できませんでした");
           setPrefecture("");
           setCity("");
           setCountry("");

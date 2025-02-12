@@ -15,7 +15,8 @@ export type PostProps = {
 };
 
 export type MarkerInfo = {
-  id: number;
+  postId: number;
+  markerId: number,
   lat: number;
   lng: number;
   title: string;
@@ -29,7 +30,7 @@ export type MarkerInfo = {
 };
 
 export type MarkerFormProps = {
-  id: number;
+  postId: number;
   lat: number;
   lng: number;
   title: string;

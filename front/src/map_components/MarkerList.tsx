@@ -13,10 +13,10 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
         await api.delete(`/markers/${markersInfoId}`);
 
         const newArray = [...markersInfos].filter(markerinfos => {
-          if (markerinfos.id === markersInfoId) {
+          if (markerinfos.markerId === markersInfoId) {
             markerinfos.marker.setMap(null);
           }
-          return markerinfos.id !== markersInfoId;
+          return markerinfos.markerId !== markersInfoId;
         })
         setMarkersInfos([...newArray]);
 
@@ -29,9 +29,6 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
   const handleSelect = (markersInfoId: number) => {
     setSelectedMarkerId(markersInfoId)
   }
-
-  // console.log(country, prefecture, city);
-
 
   return (
     <>
@@ -46,14 +43,14 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
           <ul className="space-y-4 grid grid-cols-1 max-h-[250px] overflow-y-scroll">
             {markersInfos.map((markersInfo) => (
               <li
-                key={markersInfo.id}
-                className={`p-4 border rounded-md cursor-pointer transition-colors duration-300 ${markersInfo.id === selectedMarkerId
+                key={markersInfo.markerId}
+                className={`p-4 border rounded-md cursor-pointer transition-colors duration-300 ${markersInfo.markerId === selectedMarkerId
                   ? "bg-yellow-100 border-yellow-400"
                   : "bg-gray-50 hover:bg-gray-100 border-gray-300"
                   }`}
                 onClick={() => {
-                  handleSelect(markersInfo.id)
-                  centerMapOnMarker(markersInfo.id)
+                  handleSelect(markersInfo.markerId)
+                  centerMapOnMarker(markersInfo.markerId)
                 }}
               >
                 <div className="flex justify-between items-center">
@@ -64,7 +61,7 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos
                   <button
                     className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-md"
                     onClick={(e) => {
-                      deleteMarker(markersInfo.id);
+                      deleteMarker(markersInfo.markerId);
                       e.preventDefault();
                     }}
                   >

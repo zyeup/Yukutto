@@ -75,8 +75,7 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
 
                     const googleMarker = makeMarker(marker.lat, marker.lng, marker.title)
                     addMarkerClickListener(googleMarker, marker.id, map, setSelectedMarkerId);
-                    // console.log(response.data);
-                    return { id: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, content: marker.content, image: marker.image.url, fullAddress: marker.fullAddress, country: marker.location?.country, prefecture: marker.location?.prefecture, city: marker.location?.city, marker: googleMarker };
+                    return { postId: postId, markerId: marker.id, lat: marker.lat, lng: marker.lng, title: marker.title, content: marker.content, image: marker.image.url, fullAddress: marker.fullAddress, country: marker.location?.country, prefecture: marker.location?.prefecture, city: marker.location?.city, marker: googleMarker };
                 });
                 setMarkersInfos(markersData);
                 markersData.forEach((markerInfo) => {
@@ -93,13 +92,13 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
 
     useEffect(() => {
         markersInfos.forEach((markerInfo) => {
-            if (markerInfo.id === selectedMarkerId) {
+            if (markerInfo.markerId === selectedMarkerId) {
                 markerInfo.marker.setAnimation(google.maps.Animation.BOUNCE);
             } else {
                 markerInfo.marker.setAnimation(null);
             }
         });
-    }, [selectedMarkerId]);
+    }, [selectedMarkerId, markersInfos]);
 
     useEffect(() => {
         if (map) {
@@ -146,7 +145,8 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
     const addMarker = (newMarker: MarkerInfo) => {
 
         const newMarkerInfo = {
-            id: newMarker.id,
+            postId: newMarker.postId,
+            markerId: newMarker.markerId,
             lat: newMarker.lat,
             lng: newMarker.lng,
             title: newMarker.title,
@@ -160,7 +160,7 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
         };
 
         // 追加直後のマーカーにもクリック処理を対応
-        addMarkerClickListener(newMarkerInfo.marker, newMarkerInfo.id, map, setSelectedMarkerId);
+        addMarkerClickListener(newMarkerInfo.marker, newMarkerInfo.markerId, map, setSelectedMarkerId);
         setMarkersInfos((prevMarkerInfos) => [...prevMarkerInfos, newMarkerInfo]);
     };
 
@@ -193,7 +193,7 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
     }
 
     const centerMapOnMarker = (markerId: number) => {
-        const markerInfo = markersInfos.find((marker) => marker.id === markerId);
+        const markerInfo = markersInfos.find((marker) => marker.markerId === markerId);
         if (markerInfo && map) {
             const position = markerInfo.marker.getPosition();
             if (position) {
@@ -207,7 +207,8 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
             <div className="ml-4">
                 {currentUser?.id == userId && isUserPost && (
                     <MarkerForm
-                        id={postId}
+                        postId={postId}
+
                         lat={lat}
                         lng={lng}
                         title={title}

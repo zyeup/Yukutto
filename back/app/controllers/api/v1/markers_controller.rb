@@ -12,14 +12,14 @@ class Api::V1::MarkersController < ApplicationController
   end
 
   def show
-    render json: @marker.as_json.merge(image_url: @marker.image.url)
+    render json: @marker.as_json(include: :location).as_json.merge(image_url: @marker.image.url)
   end
 
   def create
     @marker = Marker.new(marker_params)
 
     if @marker.save
-      render json: @marker.as_json.merge(image_url: @marker.image.url), status: :created
+      render json: @marker.as_json(include: :location).merge(image_url: @marker.image.url), status: :created
     else
       render json: @marker.errors, status: :unprocessable_entity
     end

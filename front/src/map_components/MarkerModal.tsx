@@ -3,7 +3,7 @@ import { MapComponentProps } from "../interfaces/index"
 // import GeocodeAddress from "./GeocodeAddress"
 
 const MarkerModal: React.FC<MapComponentProps> = ({ markersInfos, selectedMarkerId }) => {
-    const selectedMarker = markersInfos.find((marker) => marker.id === selectedMarkerId);
+    const selectedMarker = markersInfos.find((marker) => marker.markerId === selectedMarkerId);
 
     return (
         <div className="w-1/4 h-full bg-gray-50 shadow-lg p-4 overflow-y-auto">
