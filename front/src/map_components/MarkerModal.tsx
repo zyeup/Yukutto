@@ -1,34 +1,45 @@
 import React from "react";
 import { MapComponentProps } from "../interfaces/index"
-// import GeocodeAddress from "./GeocodeAddress"
+import api from '../api/axios';
 
-const MarkerModal: React.FC<MapComponentProps> = ({ markersInfos, selectedMarkerId }) => {
+const MarkerModal: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos, selectedMarkerId, setSelectedMarkerId }) => {
     const selectedMarker = markersInfos.find((marker) => marker.markerId === selectedMarkerId);
 
+    const deleteMarker = async (markersInfoId: number) => {
+
+        const confirm = window.confirm("このマーカーを削除します。\n本当によろしいですか？");
+        if (confirm) {
+
+            try {
+                await api.delete(`/markers/${markersInfoId}`);
+
+                const newArray = [...markersInfos].filter(markerinfos => {
+                    if (markerinfos.markerId === markersInfoId) {
+                        markerinfos.marker.setMap(null);
+                    }
+                    return markerinfos.markerId !== markersInfoId;
+                })
+                setMarkersInfos([...newArray]);
+
+            } catch (err) {
+                alert("削除に失敗しました")
+            }
+        }
+    }
+
+
+
     return (
-        <div className="w-1/4 h-full bg-gray-50 shadow-lg p-4 overflow-y-auto">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">マーカー詳細</h3>
-            {selectedMarker ? (
-                <div className="text-gray-600">
-                    <p className="mb-2">
-                        <strong>タイトル:</strong> {selectedMarker.title}
-                    </p>
-                    <p className="mb-2">
-                        <strong>住所:</strong> {selectedMarker.fullAddress}
-                    </p>
-                    <p className="mb-2">
-                        <strong>内容:</strong> {selectedMarker.content}
-                    </p>
-                    {selectedMarker.image && (
-                        <img
-                            src={selectedMarker.image}
-                            alt={selectedMarker.title}
-                            style={{ maxWidth: '100%', height: 'auto' }}
-                        />
-                    )}
+        <div>
+            {selectedMarker && (
+                <div className="absolute bottom-4 right-4 w-[300px] max-w-[400px] bg-white/90 shadow-lg rounded-lg p-4">
+                    <h3 className="text-lg font-bold mb-2">{selectedMarker.title}</h3>
+                    <p className="text-sm text-gray-600">{selectedMarker.fullAddress}</p>
+                    <p className="mt-2">{selectedMarker.content}</p>
+                    {selectedMarker.image && <img src={selectedMarker.image} alt={selectedMarker.title} className="w-full h-auto rounded-md mt-2" />}
+                    <button className="mt-4 bg-red-600 text-white px-3 py-1 rounded-md" onClick={() => deleteMarker(selectedMarker.markerId)}>削除</button>
+                    <button className="absolute top-4 right-4 text-gray-600" onClick={() => setSelectedMarkerId(null)}>✖︎</button>
                 </div>
-            ) : (
-                <p className="text-gray-600">マーカーを選択してください。</p>
             )}
         </div>
     );

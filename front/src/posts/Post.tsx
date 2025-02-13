@@ -12,7 +12,7 @@ const Post = () => {
     const [isUserPost,] = useState(false);
 
     return (
-        <div className="p-6 bg-white shadow-md rounded-md mx-auto">
+        <div className="p-6 bg-white shadow-md rounded-md mx-auto mt-20">
             {post ? (
                 <>
                     <div className="space-y-4">
