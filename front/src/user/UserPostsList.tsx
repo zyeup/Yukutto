@@ -24,13 +24,13 @@ const UserPostsList = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 shadow-lg rounded-xl max-w-6xl mx-auto">
+    <div className="p-6 bg-gray-100 shadow-lg rounded-xl max-w-4xl mx-auto mt-20">
       <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
         投稿したポスト一覧
       </h2>
       <p className="text-gray-600 mb-8 text-center">
         <Link to="/posts/new" className="text-blue-500 hover:text-blue-600 hover:underline font-semibold">
-          新しく地図を作成する
+          新しく投稿を作成する
         </Link>
       </p>
       <div className="grid grid-cols-1 gap-6 max-h-[680px] overflow-y-scroll">

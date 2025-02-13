@@ -59,16 +59,18 @@ const App: React.FC = () => {
 
   return (
     <>
-      <AuthContext.Provider value={{ posts, setPosts, loading, setLoading, isSignedIn, setIsSignedIn, currentUser, setCurrentUser }}>
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <div>
-            <Header ></Header>
-            <AppRoutes ></AppRoutes>
-          </div>
-        )}
-      </AuthContext.Provider>
+      <div className="h-screen overflow-hidden flex flex-col">
+        <AuthContext.Provider value={{ posts, setPosts, loading, setLoading, isSignedIn, setIsSignedIn, currentUser, setCurrentUser }}>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <div className="min-h-screen bg-gray-100">
+              <Header ></Header>
+              <AppRoutes ></AppRoutes>
+            </div>
+          )}
+        </AuthContext.Provider>
+      </div>
     </>
   );
 };

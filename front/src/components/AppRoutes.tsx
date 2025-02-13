@@ -15,6 +15,7 @@ import BookmarkPosts from "../user/BookmarkPosts"
 import UserPosts from "../user/UserPosts"
 import UserPost from "../user/UserPost"
 import User from '../user/User';
+import Starts from '../pages/Starts';
 
 const AppRoutes = () => {
 
@@ -30,6 +31,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/starts" element={<Starts />} />
       <Route path="/posts" element={<Posts />}>
         <Route path=":paramsId" element={<Post />} />
         <Route path=":all" element={<Post />} />

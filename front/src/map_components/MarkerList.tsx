@@ -1,78 +1,30 @@
-import api from '../api/axios';
-import React from 'react'
+import React, { useState } from 'react'
 import { MapComponentProps } from "../interfaces/index"
 
-const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfos, selectedMarkerId, setSelectedMarkerId, centerMapOnMarker }) => {
+const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setSelectedMarkerId, centerMapOnMarker }) => {
+  const [isListOpen, setIsListOpen] = useState(false);
 
-  const deleteMarker = async (markersInfoId: number) => {
-
-    const confirm = window.confirm("このマーカーを削除します。\n本当によろしいですか？");
-    if (confirm) {
-
-      try {
-        await api.delete(`/markers/${markersInfoId}`);
-
-        const newArray = [...markersInfos].filter(markerinfos => {
-          if (markerinfos.markerId === markersInfoId) {
-            markerinfos.marker.setMap(null);
-          }
-          return markerinfos.markerId !== markersInfoId;
-        })
-        setMarkersInfos([...newArray]);
-
-      } catch (err) {
-        alert("削除に失敗しました")
-      }
-    }
-  }
 
   const handleSelect = (markersInfoId: number) => {
     setSelectedMarkerId(markersInfoId)
+    centerMapOnMarker(markersInfoId)
   }
 
   return (
     <>
-      <div className="flex">
-        <div className="p-4 m-4 bg-white shadow-md border rounded-md w-full max-w-md mx-auto">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">
-            登録されたマーカー一覧
-          </h3>
-          <p className="text-gray-600 mb-4">
-            登録されたマーカーは以下に表示されます。
-          </p>
-          <ul className="space-y-4 grid grid-cols-1 max-h-[250px] overflow-y-scroll">
-            {markersInfos.map((markersInfo) => (
-              <li
-                key={markersInfo.markerId}
-                className={`p-4 border rounded-md cursor-pointer transition-colors duration-300 ${markersInfo.markerId === selectedMarkerId
-                  ? "bg-yellow-100 border-yellow-400"
-                  : "bg-gray-50 hover:bg-gray-100 border-gray-300"
-                  }`}
-                onClick={() => {
-                  handleSelect(markersInfo.markerId)
-                  centerMapOnMarker(markersInfo.markerId)
-                }}
-              >
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-medium text-gray-800">
-                    <h1>{markersInfo.title}</h1>
-                    <p>{markersInfo.country} {markersInfo.prefecture}{markersInfo.city} </p>
-                  </span>
-                  <button
-                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-md"
-                    onClick={(e) => {
-                      deleteMarker(markersInfo.markerId);
-                      e.preventDefault();
-                    }}
-                  >
-                    削除する
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div className={`absolute top-28 left-0 h-5/6 w-72 bg-white/90 shadow-lg p-4 transform transition-transform ${isListOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        <button className="absolute top-4 right-4 text-gray-600" onClick={() => setIsListOpen(false)}>✖︎</button>
+        <h3 className="text-lg font-bold mb-4">マーカー一覧</h3>
+        <ul className="overflow-y-auto max-h-[calc(100%-50px)]">
+          {markersInfos.map((marker) => (
+            <li key={marker.markerId} className="p-3 border rounded-md cursor-pointer hover:bg-gray-100 transition" onClick={() => handleSelect(marker.markerId)}>
+              <h4 className="font-medium">{marker.title}</h4>
+              <p className="text-sm text-gray-600">{marker.country} {marker.prefecture} {marker.city}</p>
+            </li>
+          ))}
+        </ul>
       </div>
+      <button className="absolute top-20 left-4 bg-blue-600 text-white px-3 py-1 rounded-md" onClick={() => setIsListOpen(true)}>📍リスト</button>
     </>
   )
 }

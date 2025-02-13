@@ -45,7 +45,7 @@ const BookmarkPosts = () => {
   const bookmarkedPosts = sortedPosts.filter(post => bookmarks[post.id]);
 
   return (
-    <div className="p-6 bg-gray-100 shadow-lg rounded-xl max-w-6xl mx-auto">
+    <div className="p-6 bg-gray-100 shadow-lg rounded-xl max-w-4xl mx-auto mt-20">
       <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
         ブックマークした投稿
       </h2>
@@ -65,7 +65,7 @@ const BookmarkPosts = () => {
               Created at: {new Date(post.createdAt).toLocaleDateString()}
             </p>
             <label
-              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
               htmlFor={`bookmark-checkbox-${post.id}`}
             >
               <input

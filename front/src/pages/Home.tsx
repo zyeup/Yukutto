@@ -46,24 +46,24 @@ const Home = () => {
     };
 
     return (
-        <div className="p-6 bg-gray-100 shadow-lg rounded-xl max-w-4xl mx-auto">
-            <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
+        <div className="p-6 bg-white shadow-xl rounded-xl max-w-4xl mx-auto mt-20">
+            <h2 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
                 Home
             </h2>
-            <p className="text-gray-600 mb-8 text-center">
-                <Link to="/posts/new" className="text-blue-500 hover:text-blue-600 hover:underline font-semibold">
-                    新しく地図を作成する
+            <p className="text-gray-700 mb-8 text-center">
+                <Link to="/posts/new" className="text-indigo-600 hover:text-indigo-700 hover:underline font-semibold">
+                    新しく投稿を作成する
                 </Link>
             </p>
             <div className="grid grid-cols-1 gap-6 max-h-[600px] overflow-y-scroll">
                 {sortedPosts.map((post) => (
                     <div
                         key={post.id}
-                        className="block p-6 h-32 bg-white shadow-md hover:shadow-lg border border-gray-200 transition-all duration-300"
+                        className="block p-6 h-32 bg-white shadow-lg hover:shadow-xl border border-gray-300 transition-all duration-300"
                     >
                         <Link
                             to={`/posts/${post.id}`}
-                            className="mb-4 text-xl font-bold text-gray-700"
+                            className="mb-4 text-xl font-semibold text-gray-800"
                         >
                             {post.id}: {post.title}
                         </Link>
@@ -71,7 +71,7 @@ const Home = () => {
                             Created at: {new Date(post.createdAt).toLocaleDateString()}
                         </p>
                         <label
-                            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
                             htmlFor={`bookmark-checkbox-${post.id}`}
                         >
                             <input
