@@ -52,9 +52,6 @@ const Header = () => {
                 <Link to="/" className="block px-4 py-2 hover:bg-gray-500">
                   Home
                 </Link>
-                <Link to="/posts/all" className="block px-4 py-2 hover:bg-gray-500">
-                  すべてのマーカーを見る
-                </Link>
                 <Link to="/user" className="block px-4 py-2 hover:bg-gray-500">
                   ユーザー情報
                 </Link>
@@ -78,9 +75,6 @@ const Header = () => {
                 </Link>
                 <Link to="/signup" className="block px-4 py-2 hover:bg-gray-500">
                   新規会員登録
-                </Link>
-                <Link to="/posts/all" className="block px-4 py-2 hover:bg-gray-500">
-                  すべてのマーカーを見る
                 </Link>
               </>
             )}
