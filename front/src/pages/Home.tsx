@@ -3,11 +3,19 @@ import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from "../App"
 import api from '../api/axios';
 
+const POSTS_PER_PAGE = 10;
+
 const Home = () => {
     const { posts } = useContext(AuthContext)
     const [bookmarks, setBookmarks] = useState<{ [key: number]: boolean }>({});
+    const [currentPage, setCurrentPage] = useState(1);
 
     const sortedPosts = posts.sort((a, b) => a.id - b.id);
+    const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
+    const paginatedPosts = sortedPosts.slice(
+        (currentPage - 1) * POSTS_PER_PAGE,
+        currentPage * POSTS_PER_PAGE
+    );
 
     useEffect(() => {
         const fetchBookmarks = async () => {
@@ -46,47 +54,62 @@ const Home = () => {
     };
 
     return (
-        <div className="p-6 bg-white shadow-xl rounded-xl max-w-4xl mx-auto mt-20">
-            <h2 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
-                Home
-            </h2>
-            <p className="text-gray-700 mb-8 text-center">
-                <Link to="/posts/new" className="text-indigo-600 hover:text-indigo-700 hover:underline font-semibold">
-                    新しく投稿を作成する
-                </Link>
-            </p>
-            <div className="grid grid-cols-1 gap-6 max-h-[600px] overflow-y-scroll">
-                {sortedPosts.map((post) => (
-                    <div
-                        key={post.id}
-                        className="block p-6 h-32 bg-white shadow-lg hover:shadow-xl border border-gray-300 transition-all duration-300"
-                    >
-                        <Link
-                            to={`/posts/${post.id}`}
-                            className="mb-4 text-xl font-semibold text-gray-800"
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
+            <div className="bg-white shadow-2xl rounded-2xl w-full max-w-3xl p-8 relative pt-16">
+                <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Home</h2>
+                <div className="flex justify-center gap-4 mb-6">
+                    <Link to="/posts/new" className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow-md transition-all">
+                        新しく投稿を作成
+                    </Link>
+                    <Link to="/posts/all" className="bg-gray-600 hover:bg-gray-700 text-white px-5 py-2 rounded-lg shadow-md transition-all">
+                        すべてのマーカーを見る
+                    </Link>
+                </div>
+                <div className="max-h-[500px] overflow-y-auto space-y-4 px-4">
+                    {paginatedPosts.map((post) => (
+                        <div key={post.id} className="bg-white shadow-lg p-5 rounded-lg border border-gray-300 flex items-center justify-between transition hover:shadow-xl">
+                            <div>
+                                <Link to={`/posts/${post.id}`} className="text-lg font-semibold text-gray-800 hover:text-indigo-600">
+                                    {post.id}: {post.title}
+                                </Link>
+                                <p className="text-gray-500 text-sm">Created at: {new Date(post.createdAt).toLocaleDateString()}</p>
+                            </div>
+                            <label className="flex items-center space-x-2 cursor-pointer">
+                                <input
+                                    id={`bookmark-checkbox-${post.id}`}
+                                    type="checkbox"
+                                    checked={bookmarks[post.id] || false}
+                                    onChange={(e) => handleBookmarkChange(e, post.id)}
+                                    className="hidden"
+                                />
+                                <div className={`w-6 h-6 flex items-center justify-center rounded-full border-2 ${bookmarks[post.id] ? "bg-indigo-600 border-indigo-600 text-white" : "bg-white border-gray-400 text-gray-400"} transition-all`}>
+                                    ★
+                                </div>
+                            </label>
+                        </div>
+                    ))}
+                </div>
+                {totalPages > 1 && (
+                    <div className="mt-6 flex justify-center space-x-4">
+                        <button
+                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                            disabled={currentPage === 1}
+                            className={`px-4 py-2 rounded-lg transition ${currentPage === 1 ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-indigo-600 text-white hover:bg-indigo-700"}`}
                         >
-                            {post.id}: {post.title}
-                        </Link>
-                        <p className="text-gray-500 text-sm mb-4">
-                            Created at: {new Date(post.createdAt).toLocaleDateString()}
-                        </p>
-                        <label
-                            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-                            htmlFor={`bookmark-checkbox-${post.id}`}
+                            ← 前へ
+                        </button>
+                        <span className="px-4 py-2 bg-gray-200 rounded-lg">{currentPage} / {totalPages}</span>
+                        <button
+                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                            disabled={currentPage === totalPages}
+                            className={`px-4 py-2 rounded-lg transition ${currentPage === totalPages ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-indigo-600 text-white hover:bg-indigo-700"}`}
                         >
-                            <input
-                                id={`bookmark-checkbox-${post.id}`}
-                                type="checkbox"
-                                checked={bookmarks[post.id] || false}
-                                onChange={(e) => handleBookmarkChange(e, post.id)}
-                            />
-                            ブックマーク
-                        </label>
+                            次へ →
+                        </button>
                     </div>
-                ))}
+                )}
             </div>
         </div>
     );
 };
-
 export default Home;
