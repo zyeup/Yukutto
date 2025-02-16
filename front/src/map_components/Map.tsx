@@ -109,16 +109,19 @@ const Map: React.FC<MapProps> = ({ postId, createUserId, isUserPost }) => {
     }, [map, lat, lng]);
 
     useEffect(() => {
-        if (map && { lat, lng }) {
-            map.panTo({ lat, lng });
-            map.setZoom(14); // 必要に応じてズームレベルを調整
+        if (map && markersInfos.length > 0) {
+            const firstMarker = markersInfos[0];
+            const position = new google.maps.LatLng(firstMarker.lat, firstMarker.lng);
+            map.setCenter(position);
+            map.setZoom(14);
         }
-    }, [map, { lat, lng }]);
+    }, [map, markersInfos]);
+
 
     useEffect(() => {
         if (map && markerPosition) {
             map.panTo(markerPosition);
-            map.setZoom(14); // 必要に応じてズームレベルを調整
+            map.setZoom(14);
         }
     }, [map, markerPosition]);
 
