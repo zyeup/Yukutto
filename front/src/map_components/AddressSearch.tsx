@@ -55,7 +55,7 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ map, setLat, setLng }) =>
     };
 
     return (
-        <div className="p-4 bg-white border shadow-md rounded-md mb-4">
+        <div className="absolute top-[100px] right-[480px] p-4 bg-white border shadow-md rounded-md mb-4 w-72 z-10">
             <h3 className="text-lg font-semibold mb-2">住所から検索</h3>
             <div className="flex space-x-2">
                 <input
@@ -91,6 +91,7 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ map, setLat, setLng }) =>
                 ))}
             </ul>
         </div>
+
     );
 };
 
