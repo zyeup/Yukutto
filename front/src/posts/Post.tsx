@@ -8,24 +8,20 @@ const Post = () => {
     const { paramsId } = useParams<{ paramsId: string }>();
     const postId = parseInt(paramsId || "0");
     const post = postId ? posts.find((post) => post.id === postId) : undefined;
-    const userId = post?.userId ? post.userId : undefined;
+    const createUserId = post?.userId ? post.userId : undefined;
     const [isUserPost,] = useState(false);
 
     return (
-        <div className="p-6 bg-white shadow-md rounded-md mx-auto mt-20">
+        <div className="">
             {post ? (
                 <>
-                    <div className="space-y-4">
-                        <h1 className="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">{post.title}</h1>
-                        <p className="text-xl font-semibold text-gray-900">{post.content}</p>
-                    </div>
+                    <h1 className="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">{post.title}</h1>
+                    <p className="text-xl font-semibold text-gray-900">{post.content}</p>
                 </>
             ) : (
                 <h1 className="text-4xl font-bold text-black text-center">すべてのマーカー</h1>
             )}
-            <div className="mt-6">
-                <Map postId={postId} userId={userId} isUserPost={isUserPost} />
-            </div>
+            <Map postId={postId} createUserId={createUserId} isUserPost={isUserPost} />
         </div>
 
     )

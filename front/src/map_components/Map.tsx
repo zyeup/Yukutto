@@ -9,7 +9,7 @@ import { MarkerInfo } from "../interfaces/index"
 
 type MapProps = {
     postId: number,
-    userId: number | undefined,
+    createUserId: number | undefined,
     isUserPost: boolean
 }
 
@@ -18,7 +18,7 @@ const INITIALIZE_LAT = 35.6809591; // 緯度
 const INITIALIZE_LNG = 139.7673068; // 経度
 const INITIALIZE_ZOOM = 12.5; // ズームレベル
 
-const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
+const Map: React.FC<MapProps> = ({ postId, createUserId, isUserPost }) => {
     const { currentUser } = useContext(AuthContext)
     const mapRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -221,31 +221,8 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
     };
 
     return (
-        <div className="fixed inset-0 overflow-hidden">
-            <div ref={mapRef} className="absolute inset-0 w-full h-full"></div>
-            {currentUser?.id == userId && isUserPost && (
-                <MarkerForm
-                    postId={postId}
-
-                    lat={lat}
-                    lng={lng}
-                    title={title}
-                    setTitle={setTitle}
-                    content={content}
-                    setContent={setContent}
-                    country={country}
-                    setCountry={setCountry}
-                    prefecture={prefecture}
-                    setPrefecture={setPrefecture}
-                    city={city}
-                    setCity={setCity}
-                    fullAddress={fullAddress}
-                    setFullAddress={setFullAddress}
-                    addMarker={addMarker}
-                    makeMarker={makeMarker}
-                    map={map}
-                />
-            )}
+        <>
+            <div ref={mapRef} className="absolute inset-0"></div>
             <MarkerList
                 markersInfos={markersInfos}
                 setMarkersInfos={setMarkersInfos}
@@ -253,12 +230,34 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
                 setSelectedMarkerId={setSelectedMarkerId}
                 centerMapOnMarker={centerMapOnMarker}
             />
-            {currentUser?.id == userId && isUserPost && (
-                <AddressSearch
-                    map={map}
-                    setLat={setLat}
-                    setLng={setLng}
-                />
+            {currentUser?.id == createUserId && isUserPost && (
+                <div className="">
+                    <AddressSearch
+                        map={map}
+                        setLat={setLat}
+                        setLng={setLng}
+                    />
+                    <MarkerForm
+                        postId={postId}
+                        lat={lat}
+                        lng={lng}
+                        title={title}
+                        setTitle={setTitle}
+                        content={content}
+                        setContent={setContent}
+                        country={country}
+                        setCountry={setCountry}
+                        prefecture={prefecture}
+                        setPrefecture={setPrefecture}
+                        city={city}
+                        setCity={setCity}
+                        fullAddress={fullAddress}
+                        setFullAddress={setFullAddress}
+                        addMarker={addMarker}
+                        makeMarker={makeMarker}
+                        map={map}
+                    />
+                </div>
             )}
             <MarkerModal
                 markersInfos={markersInfos}
@@ -267,7 +266,7 @@ const Map: React.FC<MapProps> = ({ postId, userId, isUserPost }) => {
                 setSelectedMarkerId={setSelectedMarkerId}
                 centerMapOnMarker={centerMapOnMarker}
             />
-        </div>
+        </>
     );
 
 };

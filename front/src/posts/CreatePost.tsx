@@ -30,7 +30,7 @@ const CreatePost = () => {
             }
             setPosts([...posts, newPost]);
 
-            navigate("/");
+            navigate(`/userposts/${newPost.id}`);
 
         } catch (err) {
 

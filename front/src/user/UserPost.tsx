@@ -8,7 +8,7 @@ const UserPost = () => {
   const { paramsId } = useParams<{ paramsId: string }>();
   const postId = parseInt(paramsId || "0");
   const post = postId ? posts.find((post) => post.id === postId) : undefined;
-  const userId = post?.userId ? post.userId : undefined;
+  const createUserId = post?.userId ? post.userId : undefined;
   const [isUserPost,] = useState(true);
 
   return (
@@ -24,7 +24,7 @@ const UserPost = () => {
         <h1 className="text-xl font-bold text-red-600 text-center">Post not found</h1>
       )}
       <div className="mt-6">
-        <Map postId={postId} userId={userId} isUserPost={isUserPost} />
+        <Map postId={postId} createUserId={createUserId} isUserPost={isUserPost} />
       </div>
     </div>
 

@@ -28,7 +28,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ postId, lat, lng, title, setTit
       formData.append("marker[full_address]", fullAddress.toString());
 
       if (imageFile) {
-        formData.append('image', imageFile);
+        formData.append('marker[image]', imageFile);
       }
       formData.append("marker[location_attributes][country]", country);
       formData.append("marker[location_attributes][prefecture]", prefecture);
@@ -53,11 +53,11 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ postId, lat, lng, title, setTit
         title: newMarkerData.title,
         content: newMarkerData.content,
         marker,
-        fullAddress: newMarkerData.full_address,
+        fullAddress: newMarkerData.fullAddress,
         country: newMarkerData.location.country,
         prefecture: newMarkerData.location.prefecture,
         city: newMarkerData.location.city,
-        image: newMarkerData.image_url,
+        image: newMarkerData.image.url,
       });
       setTitle("");
       setContent("");
@@ -78,7 +78,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ postId, lat, lng, title, setTit
   };
 
   return (
-    <div className="p-4 bg-white shadow-md border rounded-md w-full max-w-md mx-auto z-10">
+    <div className="absolute top-[100px] right-8 p-4 bg-white shadow-md border rounded-md w-full max-w-md mx-auto z-10">
       <h3 className="text-xl font-bold text-gray-800 mb-4">現在のピンの位置情報</h3>
       <div className="mb-4">
         <p className="text-gray-600"><span className="font-medium text-gray-800">緯度：</span>{lat}</p>
