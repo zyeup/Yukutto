@@ -9,8 +9,7 @@ import { MarkerInfo } from "../interfaces/index"
 
 type MapProps = {
     postId: number,
-    createUserId: number | undefined,
-    isUserPost: boolean
+    createUserId: number | undefined
 }
 
 // 初期化用の定数
@@ -18,7 +17,7 @@ const INITIALIZE_LAT = 35.6809591; // 緯度
 const INITIALIZE_LNG = 139.7673068; // 経度
 const INITIALIZE_ZOOM = 12.5; // ズームレベル
 
-const Map: React.FC<MapProps> = ({ postId, createUserId, isUserPost }) => {
+const Map: React.FC<MapProps> = ({ postId, createUserId }) => {
     const { currentUser } = useContext(AuthContext)
     const mapRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -31,10 +30,7 @@ const Map: React.FC<MapProps> = ({ postId, createUserId, isUserPost }) => {
     const [prefecture, setPrefecture] = useState<string>("");
     const [city, setCity] = useState<string>("");
     const [markersInfos, setMarkersInfos] = useState<MarkerInfo[]>([]);
-    const [tmpMarker, setTmpMarker] = useState<google.maps.Marker | null>(null);
     const [selectedMarkerId, setSelectedMarkerId] = useState<number | null>(null);
-    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLng | null | undefined>(null);
-
 
     useEffect(() => {
         if (!mapRef.current || map) return;
@@ -49,7 +45,7 @@ const Map: React.FC<MapProps> = ({ postId, createUserId, isUserPost }) => {
         initializedMap.mapTypes.set('noText', new google.maps.StyledMapType([{
             featureType: 'all',
             elementType: 'labels.icon',
-            stylers: [{ visibility: 'off' }]
+            stylers: [{ visibility: '' }]
         }]));
         initializedMap.setMapTypeId('noText');
 
@@ -101,30 +97,6 @@ const Map: React.FC<MapProps> = ({ postId, createUserId, isUserPost }) => {
             }
         });
     }, [selectedMarkerId, markersInfos]);
-
-    useEffect(() => {
-        if (map) {
-            nowLocate(lat, lng);
-        }
-    }, [map, lat, lng]);
-
-    useEffect(() => {
-        if (map && markersInfos.length > 0) {
-            const firstMarker = markersInfos[0];
-            const position = new google.maps.LatLng(firstMarker.lat, firstMarker.lng);
-            map.setCenter(position);
-            map.setZoom(14);
-        }
-    }, [map, markersInfos]);
-
-
-    useEffect(() => {
-        if (map && markerPosition) {
-            map.panTo(markerPosition);
-            map.setZoom(14);
-        }
-    }, [map, markerPosition]);
-
 
     const makeMarker = (lat: number, lng: number, title: string) => {
         const marker = new google.maps.Marker({
@@ -182,41 +154,41 @@ const Map: React.FC<MapProps> = ({ postId, createUserId, isUserPost }) => {
         // 追加直後のマーカーにもクリック処理を対応
         addMarkerClickListener(newMarkerInfo.marker, newMarkerInfo.markerId, map, setSelectedMarkerId);
         setMarkersInfos((prevMarkerInfos) => [...prevMarkerInfos, newMarkerInfo]);
+        setSelectedMarkerId(newMarker.markerId)
     };
 
-    const nowLocate = (clickedLat: number, clickedLng: number) => {
+    // const nowLocate = (clickedLat: number, clickedLng: number) => {
 
-        if (tmpMarker) {
-            tmpMarker.setMap(null);
-        }
-        const marker = new google.maps.Marker({
-            position: { lat: clickedLat, lng: clickedLng },
-            map,
-            title: title,
-            icon: {
-                fillColor: "red",
-                fillOpacity: 1,
-                path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                scale: 8,
-                strokeColor: "red",
-                strokeWeight: 1.0
-            },
-            label: {
-                text: " ",
-                color: 'black',
-                fontSize: '20px',
-                fontWeight: 'bold',
-            },
-        });
-        marker.setMap(map);
-        setTmpMarker(marker);
-    }
+    //     if (tmpMarker) {
+    //         tmpMarker.setMap(null);
+    //     }
+    //     const marker = new google.maps.Marker({
+    //         position: { lat: clickedLat, lng: clickedLng },
+    //         map,
+    //         title: title,
+    //         icon: {
+    //             fillColor: "red",
+    //             fillOpacity: 1,
+    //             path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+    //             scale: 8,
+    //             strokeColor: "red",
+    //             strokeWeight: 1.0
+    //         },
+    //         label: {
+    //             text: " ",
+    //             color: 'black',
+    //             fontSize: '20px',
+    //             fontWeight: 'bold',
+    //         },
+    //     });
+    //     marker.setMap(map);
+    //     setTmpMarker(marker);
+    // }
 
     const centerMapOnMarker = (markerId: number) => {
         const markerInfo = markersInfos.find((marker) => marker.markerId === markerId);
         if (markerInfo && map) {
             const position = markerInfo.marker.getPosition();
-            setMarkerPosition(position)
             if (position) {
                 map.setCenter(position);
             }
@@ -233,7 +205,7 @@ const Map: React.FC<MapProps> = ({ postId, createUserId, isUserPost }) => {
                 setSelectedMarkerId={setSelectedMarkerId}
                 centerMapOnMarker={centerMapOnMarker}
             />
-            {currentUser?.id == createUserId && isUserPost && (
+            {currentUser?.id == createUserId && (
                 <div className="">
                     <AddressSearch
                         map={map}

@@ -5,9 +5,9 @@ Rails.application.routes.draw do
       resources :markers, only: [:index, :show, :create, :update, :destroy]
       resources :post_bookmarks, only: [:index, :create, :destroy], param: :post_id
       resources :users, only: [:index, :show] do
-      member do
-        get 'following'
-      end
+        member do
+          get 'following'
+        end
     end
       resources :follows, only: [:create, :destroy]
 

@@ -26,7 +26,10 @@ const CreatePost = () => {
                 content: content,
                 createdAt: response.data.createdAt,
                 updateAt: response.data.updateAt,
-                userId: currentUser?.id
+                userId: currentUser?.id,
+                user: {
+                    name: currentUser?.name
+                }
             }
             setPosts([...posts, newPost]);
 

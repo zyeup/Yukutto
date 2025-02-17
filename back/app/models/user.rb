@@ -4,8 +4,6 @@ class User < ActiveRecord::Base
   has_many :posts, dependent: :destroy
   has_many :post_bookmarks, dependent: :destroy
   has_many :bookmarked_posts, through: :post_bookmarks, source: :post
-  has_many :bookmarks
-  has_many :posts, through: :bookmarks
 
   has_many :active_relationships, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
   has_many :following, through: :active_relationships, source: :followed
