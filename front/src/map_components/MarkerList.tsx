@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { MapComponentProps } from "../interfaces/index"
 
 const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setSelectedMarkerId, centerMapOnMarker }) => {
-  const [isListOpen, setIsListOpen] = useState(false);
+  const [isListOpen, setIsListOpen] = useState(true);
 
 
   const handleSelect = (markersInfoId: number) => {
@@ -12,8 +12,7 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setSelectedMark
 
   return (
     <>
-      <div className={`absolute top-28 left-0 h-5/6 w-72 bg-white/90 shadow-lg p-4 transform transition-transform ${isListOpen ? "translate-x-0" : "-translate-x-full"}`}>
-        <button className="absolute top-4 right-4 text-gray-600" onClick={() => setIsListOpen(false)}>✖︎</button>
+      <div className={`absolute top-36 left-0 h-4/5 w-72 bg-white/90 shadow-lg p-4 transform transition-transform ${isListOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <h3 className="text-lg font-bold mb-4">マーカー一覧</h3>
         <ul className="overflow-y-auto max-h-[calc(100%-50px)]">
           {markersInfos.map((marker) => (
@@ -24,7 +23,7 @@ const MarkerList: React.FC<MapComponentProps> = ({ markersInfos, setSelectedMark
           ))}
         </ul>
       </div>
-      <button className="absolute top-20 left-4 bg-blue-600 text-white px-3 py-1 rounded-md" onClick={() => setIsListOpen(true)}>📍リスト</button>
+      <button className="absolute top-32 left-4 bg-blue-600 text-white px-3 py-1 rounded-md" onClick={() => setIsListOpen(prev => !prev)}>📍リスト</button>
     </>
   )
 }

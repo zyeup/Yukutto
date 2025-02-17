@@ -43,11 +43,6 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ map, setLat, setLng }) =>
             map.setCenter(location);
             map.setZoom(14);
 
-            new google.maps.Marker({
-                position: location,
-                map,
-                title: result.address,
-            });
         }
 
         setLat(lat);

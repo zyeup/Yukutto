@@ -10,7 +10,7 @@ const Home = () => {
     const [bookmarks, setBookmarks] = useState<{ [key: number]: boolean }>({});
     const [currentPage, setCurrentPage] = useState(1);
 
-    const sortedPosts = posts.sort((a, b) => a.id - b.id);
+    const sortedPosts = posts.sort((a, b) => b.id - a.id);
     const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
     const paginatedPosts = sortedPosts.slice(
         (currentPage - 1) * POSTS_PER_PAGE,
@@ -70,9 +70,10 @@ const Home = () => {
                         <div key={post.id} className="bg-white shadow-lg p-5 rounded-lg border border-gray-300 flex items-center justify-between transition hover:shadow-xl">
                             <div>
                                 <Link to={`/posts/${post.id}`} className="text-lg font-semibold text-gray-800 hover:text-indigo-600">
-                                    {post.id}: {post.title}
+                                    {post.title}
                                 </Link>
                                 <p className="text-gray-500 text-sm">Created at: {new Date(post.createdAt).toLocaleDateString()}</p>
+                                <p className="text-gray-500 text-sm">Created at: {post.user ? post.user.name : 'ユーザー情報なし'}</p>
                             </div>
                             <label className="flex items-center space-x-2 cursor-pointer">
                                 <input

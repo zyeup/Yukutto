@@ -2,12 +2,12 @@ class Api::V1::PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy]
 
   def index
-    @posts = Post.all
-    render json: @posts
+    @posts = Post.includes(:user).all
+    render json: @posts.as_json(include: { user: { only: [:name] } })
   end
 
   def show
-    render json: @post
+    render json: @post.as_json(include: { user: { only: [:name] } })
   end
 
   def create

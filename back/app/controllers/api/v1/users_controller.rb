@@ -7,6 +7,7 @@ class Api::V1::UsersController < ApplicationController
     user.attributes.merge(
       "followers_count" => user.followers.count,
       "following_count" => user.following.count,
+      "posts_count" => user.posts.count,
     )
     end
     render json: users_with_counts

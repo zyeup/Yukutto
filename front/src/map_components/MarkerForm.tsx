@@ -1,11 +1,47 @@
 import api from '../api/axios';
-import React, { FormEvent, useRef, useState } from 'react';
+import React, { FormEvent, useRef, useState, useEffect } from 'react';
 import { MarkerFormProps } from "../interfaces/index"
 import GeocodeAddress from "./GeocodeAddress"
 
 const MarkerForm: React.FC<MarkerFormProps> = ({ postId, lat, lng, title, setTitle, content, setContent, country, setCountry, prefecture, setPrefecture, city, setCity, fullAddress, setFullAddress, addMarker, makeMarker, map }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [tmpMarker, setTmpMarker] = useState<google.maps.Marker | null>(null);
+
+  useEffect(() => {
+    if (map) {
+      nowLocate(lat, lng);
+    }
+  }, [map, lat, lng]);
+
+  const nowLocate = (clickedLat: number, clickedLng: number) => {
+
+    if (tmpMarker) {
+      tmpMarker.setMap(null);
+    }
+    const marker = new google.maps.Marker({
+      position: { lat: clickedLat, lng: clickedLng },
+      map,
+      title: title,
+      icon: {
+        fillColor: "red",
+        fillOpacity: 1,
+        path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+        scale: 8,
+        strokeColor: "red",
+        strokeWeight: 1.0
+      },
+      label: {
+        text: " ",
+        color: 'black',
+        fontSize: '20px',
+        fontWeight: 'bold',
+      },
+    });
+    marker.setMap(map);
+    setTmpMarker(marker);
+  }
+
 
   const handleAddMarker = async (e: FormEvent) => {
 

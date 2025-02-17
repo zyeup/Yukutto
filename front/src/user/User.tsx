@@ -10,6 +10,7 @@ interface User {
   email: string;
   followersCount: number;
   followingCount: number;
+  postsCount: number;
 }
 
 const UserList: React.FC = () => {
@@ -67,10 +68,8 @@ const UserList: React.FC = () => {
       setUsers((prevUsers) =>
         prevUsers.map((user) => {
           if (user.id === userId) {
-            // 対象ユーザーのフォロワー数をインクリメント
             return { ...user, followersCount: user.followersCount + 1 };
           } else if (user.id === currentUser?.id) {
-            // currentUser の followingCount をインクリメント
             return { ...user, followingCount: user.followingCount + 1 };
           }
           return user;
@@ -89,10 +88,8 @@ const UserList: React.FC = () => {
       setUsers((prevUsers) =>
         prevUsers.map((user) => {
           if (user.id === userId) {
-            // 対象ユーザーのフォロワー数をデクリメント
             return { ...user, followersCount: user.followersCount - 1 };
           } else if (user.id === currentUser?.id) {
-            // currentUser の followingCount をデクリメント
             return { ...user, followingCount: user.followingCount - 1 };
           }
           return user;
@@ -121,9 +118,8 @@ const UserList: React.FC = () => {
                   <span className="ml-2 text-xs text-green-500">(フォロー中)</span>
                 )}
               </p>
-              <p className="text-sm text-gray-600">{user.email}</p>
               <p className="text-xs text-gray-500">
-                フォロー: {user.followingCount} / フォロワー: {user.followersCount}
+                フォロー: {user.followingCount} / フォロワー: {user.followersCount} / 投稿数: {user.postsCount}
               </p>
             </div>
             {/* 自分自身の場合はフォロー／解除ボタンは表示しない */}

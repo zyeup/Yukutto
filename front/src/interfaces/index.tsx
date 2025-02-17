@@ -7,6 +7,9 @@ export type PostData = {
   createdAt: string;
   updateAt: string;
   userId: number | undefined;
+  user: {
+    name: string;
+  };
 };
 
 export type PostProps = {
