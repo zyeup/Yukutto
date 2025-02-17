@@ -1,13 +1,14 @@
 import api from '../api/axios';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from "../App"
 
 const UserPostsList = () => {
-  const { posts, setPosts, currentUser } = useContext(AuthContext)
+  const { posts, setPosts } = useContext(AuthContext)
+  const { paramsId = "0" } = useParams<{ paramsId: string }>();
 
   const sortedPosts = posts.sort((a, b) => a.id - b.id);
-  const fillterdPosts = sortedPosts.filter(post => post.userId === currentUser?.id)
+  const fillterdPosts = sortedPosts.filter(post => post.userId === +paramsId)
 
   const handleDelete = async (postId: number) => {
     const confirm = window.confirm("このリストを削除します。\n本当によろしいですか？");

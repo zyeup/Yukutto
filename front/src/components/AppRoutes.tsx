@@ -51,7 +51,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/userpostslist/:userId"
+        path="/userpostslist/:paramsId"
         element={
           <PrivateRoute>
             <UserPostsList />
