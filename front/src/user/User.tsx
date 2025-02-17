@@ -1,30 +1,152 @@
-import React, { useContext } from "react"
-import { AuthContext } from "../App"
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../App";
+import { Link } from 'react-router-dom';
+import api from "../api/axios";
+import { followUser, unfollowUser } from "../api/relation";
 
-const User: React.FC = () => {
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  followersCount: number;
+  followingCount: number;
+}
 
-  const { currentUser } = useContext(AuthContext)
+const UserList: React.FC = () => {
+  const { currentUser } = useContext(AuthContext);
+  const [users, setUsers] = useState<User[]>([]);
+  // following[userId] が true の場合、 currentUser がそのユーザーをフォローしている
+  const [following, setFollowing] = useState<{ [key: number]: boolean }>({});
 
-  const user = {
-    name: currentUser?.name,
-    email: currentUser?.email,
+  // ユーザー一覧を取得（現在ログイン中のユーザーも含む前提）
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await api.get("/users"); // 全ユーザー一覧取得エンドポイント
+        let fetchedUsers: User[] = res.data;
+        // currentUser が存在すれば、自分の情報を先頭に配置する
+        if (currentUser) {
+          const storedCurrentUser = fetchedUsers.find((user) => user.id === currentUser.id);
+          if (storedCurrentUser) {
+            fetchedUsers = fetchedUsers.filter((user) => user.id !== currentUser.id);
+            fetchedUsers.unshift(storedCurrentUser);
+          }
+        }
+        setUsers(fetchedUsers);
+      } catch (error) {
+        console.error("ユーザー一覧取得失敗:", error);
+      }
+    };
+
+    fetchUsers();
+  }, [currentUser]);
+
+  // 現在のユーザーのフォロー情報を取得する
+  useEffect(() => {
+    if (!currentUser) return;
+    const fetchFollowing = async () => {
+      try {
+        const res = await api.get(`/users/${currentUser.id}/following`);
+        const followingMap: { [key: number]: boolean } = {};
+        res.data.forEach((user: { id: number }) => {
+          followingMap[user.id] = true;
+        });
+        setFollowing(followingMap);
+      } catch (error) {
+        console.error("フォロー情報取得失敗:", error);
+      }
+    };
+
+    fetchFollowing();
+  }, [currentUser]);
+
+  const handleFollow = async (userId: number) => {
+    try {
+      await followUser(userId);
+      setFollowing((prev) => ({ ...prev, [userId]: true }));
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => {
+          if (user.id === userId) {
+            // 対象ユーザーのフォロワー数をインクリメント
+            return { ...user, followersCount: user.followersCount + 1 };
+          } else if (user.id === currentUser?.id) {
+            // currentUser の followingCount をインクリメント
+            return { ...user, followingCount: user.followingCount + 1 };
+          }
+          return user;
+        })
+      );
+    } catch (error) {
+      console.error("フォロー失敗:", error);
+    }
+  };
+
+
+  const handleUnfollow = async (userId: number) => {
+    try {
+      await unfollowUser(userId);
+      setFollowing((prev) => ({ ...prev, [userId]: false }));
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => {
+          if (user.id === userId) {
+            // 対象ユーザーのフォロワー数をデクリメント
+            return { ...user, followersCount: user.followersCount - 1 };
+          } else if (user.id === currentUser?.id) {
+            // currentUser の followingCount をデクリメント
+            return { ...user, followingCount: user.followingCount - 1 };
+          }
+          return user;
+        })
+      );
+    } catch (error) {
+      console.error("フォロー解除失敗:", error);
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-md mt-20">
-      <h2 className="text-2xl font-bold mb-4">ユーザー情報</h2>
-      <div className="mb-4">
-        <p className="text-sm text-gray-600">
-          <span className="font-medium text-gray-800">Name:</span> {user.name}
-        </p>
-      </div>
-      <div className="mb-4">
-        <p className="text-sm text-gray-600">
-          <span className="font-medium text-gray-800">Email:</span> {user.email}
-        </p>
-      </div>
+    <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md mt-20">
+      <h2 className="text-2xl font-bold mb-4">ユーザー一覧</h2>
+      <ul>
+        {users.map((user) => (
+          <li
+            key={user.id}
+            className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border-b last:border-b-0"
+          >
+            <div>
+              <p className="text-lg font-semibold">
+                <Link to={`/userpostslist/${user.id}`} className="text-lg font-semibold">
+                  {user.name}
+                </Link>
+                {currentUser && currentUser.id !== user.id && following[user.id] && (
+                  <span className="ml-2 text-xs text-green-500">(フォロー中)</span>
+                )}
+              </p>
+              <p className="text-sm text-gray-600">{user.email}</p>
+              <p className="text-xs text-gray-500">
+                フォロー: {user.followingCount} / フォロワー: {user.followersCount}
+              </p>
+            </div>
+            {/* 自分自身の場合はフォロー／解除ボタンは表示しない */}
+            {currentUser && currentUser.id !== user.id && (
+              <button
+                onClick={() =>
+                  following[user.id]
+                    ? handleUnfollow(user.id)
+                    : handleFollow(user.id)
+                }
+                className={`mt-2 sm:mt-0 px-4 py-2 rounded text-white transition ${following[user.id]
+                  ? "bg-red-500 hover:bg-red-600"
+                  : "bg-blue-500 hover:bg-blue-600"
+                  }`}
+              >
+                {following[user.id] ? "フォロー解除" : "フォロー"}
+              </button>
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
-  )
-}
+  );
+};
 
-export default User;
+export default UserList;
