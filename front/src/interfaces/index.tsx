@@ -8,7 +8,7 @@ export type PostData = {
   updateAt: string;
   userId: number | undefined;
   user: {
-    name: string;
+    name: string | undefined;
   };
 };
 
