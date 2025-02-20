@@ -78,12 +78,13 @@ const Home = () => {
                             <label className="flex items-center space-x-2 cursor-pointer">
                                 <input
                                     id={`bookmark-checkbox-${post.id}`}
+                                    data-testid={`bookmark-checkbox-${post.id}`}
                                     type="checkbox"
                                     checked={bookmarks[post.id] || false}
                                     onChange={(e) => handleBookmarkChange(e, post.id)}
                                     className="hidden"
                                 />
-                                <div className={`w-6 h-6 flex items-center justify-center rounded-full border-2 ${bookmarks[post.id] ? "bg-indigo-600 border-indigo-600 text-white" : "bg-white border-gray-400 text-gray-400"} transition-all`}>
+                                <div className={`w-6 h-6 flex items-center justify-center rounded-full border-2 ${bookmarks[post.id] ? "bg-indigo-600 border-indigo-600 text-white" : "bg-white border-gray-400 text-gray-400"} transition-all`} data-testid={`star-icon-${post.id}`}>
                                     ★
                                 </div>
                             </label>
