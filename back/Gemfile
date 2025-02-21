@@ -39,6 +39,7 @@ gem "rack-cors"
 gem 'carrierwave'
 
 gem 'fog-aws'
+gem 'aws-sdk-s3'
 
 gem 'devise'
 gem 'devise_token_auth'

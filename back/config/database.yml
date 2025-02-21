@@ -21,7 +21,7 @@ default: &default
   username: user
   password: password
   host: db
-  
+
 development:
   <<: *default
   database: myapp_development
@@ -82,6 +82,10 @@ test:
 #
 production:
   <<: *default
+  # database: myapp_production
+  # username: myapp
+  # password: <%= ENV["MYAPP_DATABASE_PASSWORD"] %>
   database: myapp_production
-  username: myapp
-  password: <%= ENV["MYAPP_DATABASE_PASSWORD"] %>
+  username: <%= ENV.fetch('DB_USERNAME', 'username') %>
+  password: <%= ENV.fetch('DB_PASSWORD', 'password') %>
+  host: <%= ENV.fetch('DB_HOST', nil) %>
