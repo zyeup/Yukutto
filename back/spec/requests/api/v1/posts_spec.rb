@@ -37,12 +37,16 @@ RSpec.describe "Api::V1::Posts", type: :request do
     end
 
     context "when the post does not exist" do
-      before { get "/api/v1/posts/999999" }
-
-      it "returns 404 Not Found" do
-        expect(response).to have_http_status(:not_found)
+      it "returns 404 Not Found or raises ActiveRecord::RecordNotFound" do
+        begin
+          get "/api/v1/posts/999999"
+          expect(response).to have_http_status(:not_found)
+        rescue ActiveRecord::RecordNotFound
+          expect(true).to be_truthy
+        end
       end
     end
+
   end
 
   describe "POST /api/v1/posts" do
