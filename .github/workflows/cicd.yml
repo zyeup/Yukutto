@@ -58,6 +58,7 @@ jobs:
       - name: Run Database Migrations for Test Environment
         env:
           RAILS_ENV: test
+          DATABASE_URL: "postgres://user:password@db/postgres"
         run:
           bundle exec rails db:create
           bundle exec rails db:migrate
