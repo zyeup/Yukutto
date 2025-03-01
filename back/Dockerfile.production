@@ -10,7 +10,7 @@ WORKDIR /myapp
 # GemfileとGemfile.lockをコピーして依存関係をインストール
 COPY Gemfile Gemfile.lock /myapp/
 RUN gem install bundler
-RUN bundle install
+RUN bundle install --no-cache
 
 # アプリケーションのファイルをコピー
 COPY . /myapp
@@ -23,7 +23,7 @@ RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
 # ポートのエクスポート
-EXPOSE 3000
+EXPOSE 80
 
 # Railsサーバーの起動コマンド
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["rails", "server", "-b", "0.0.0.0", "-p", "80"]

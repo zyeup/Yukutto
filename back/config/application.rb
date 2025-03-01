@@ -21,7 +21,11 @@ Bundler.require(*Rails.groups)
 module Myapp
   class Application < Rails::Application
 
-  config.hosts << "back-aged-firefly-3643.fly.dev"
+  # config.hosts << "back-aged-firefly-3643.fly.dev"
+    config.hosts << "yukutto.com"
+    config.hosts << "api.yukutto.com"
+    config.hosts << "web.yukutto.com"
+    config.hosts << "yukutto-api-lb-943770954.ap-northeast-1.elb.amazonaws.com"
 
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
