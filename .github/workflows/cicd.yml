@@ -15,7 +15,7 @@ env:
   AWS_REGION: ap-northeast-1
   ECS_CLUSTER: yukutto-api-cluster
   ECS_SERVICE: yukutto-api-service
-  ECS_REPOSITORY: yukutto-api-ecs
+  ECR_REPOSITORY: yukutto-api-ecs
   ECS_TASK_DEFINITION_API: back/.aws/task-def-api.json
 
 permissions:
