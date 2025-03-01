@@ -37,7 +37,7 @@ jobs:
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
-        options: --health-cmd "pg_isready -U user" --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd "pg_isready" --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
 
@@ -48,17 +48,9 @@ jobs:
           bundler-cache: true
           working-directory: back
 
-      - name: Wait for Postgres to be ready
-        run: |
-          until pg_isready -h db -p 5432; do
-            echo "Waiting for Postgres to be ready..."
-            sleep 5
-          done
-
       - name: Run Database Migrations for Test Environment
         env:
           RAILS_ENV: test
-          DATABASE_URL: "postgres://user:password@db/postgres"
         run:
           bundle exec rails db:create
           bundle exec rails db:migrate
