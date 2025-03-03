@@ -146,6 +146,11 @@ jobs:
       - name: Install Frontend Dependencies
         run: npm ci
 
+      - name: Create .env.production file
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env.production
+          echo "VITE_GOOGLE_MAP_API_KEY=${{ secrets.VITE_GOOGLE_MAP_API_KEY }}" >> .env.production
+
       - name: Run Frontend Tests
         run: npm run test
 
