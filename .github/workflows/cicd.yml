@@ -147,6 +147,7 @@ jobs:
         run: npm ci
 
       - name: Create .env.production file
+        working-directory: front
         run: |
           cat << EOF > .env.production
           VITE_API_URL=${{ secrets.VITE_API_URL }}
