@@ -136,6 +136,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ runner.os }}-node-${{ hashFiles('front/package-lock.json') }}
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
