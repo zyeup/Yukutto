@@ -164,10 +164,10 @@ jobs:
         run: npm run test
 
       - name: Build Frontend
-        run: |
-          VITE_API_URL="${{ secrets.VITE_API_URL }}"\
-          VITE_GOOGLE_MAP_API_KEY="${{ secrets.VITE_GOOGLE_MAP_API_KEY }}"\
-          npm run build
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_GOOGLE_MAP_API_KEY: ${{ secrets.VITE_GOOGLE_MAP_API_KEY }}
 
       - name: Configure AWS Credentials for Frontend
         uses: aws-actions/configure-aws-credentials@v4
