@@ -164,7 +164,7 @@ jobs:
         run: npm run test
 
       - name: Build Frontend
-        run:
+        run: |
           VITE_API_URL="${{ secrets.VITE_API_URL }}"\
           VITE_GOOGLE_MAP_API_KEY="${{ secrets.VITE_GOOGLE_MAP_API_KEY }}"\
           npm run build
