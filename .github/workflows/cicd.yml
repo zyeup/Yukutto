@@ -114,7 +114,7 @@ jobs:
 
       - name: Fill in the new image URI in the amazon ECS task definition
         id: render-task-def
-        uses: aws-actions/amazon-ecs-render-task-definition-@v1
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION_API }}
           container-name: api
@@ -125,7 +125,7 @@ jobs:
         with:
           task-definition: ${{ steps.render-task-def.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env/ECS_CLUSTER }}
+          cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
 
 
