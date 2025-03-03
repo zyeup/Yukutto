@@ -128,50 +128,35 @@ jobs:
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
 
+  test-and-build-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: front
+    steps:
+      - uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "21.7.1"
+          cache: "yarn"
+          cache-dependency-path: "package.json"
 
+      - name: Install Frontend Dependencies
+        run: yarn install
 
+      - name: Run Frontend Tests
+        run: yarn run test
 
+      - name: Build Frontend
+        run: yarn run build
 
-  #     - name: Register new Task Definition
-  #       run: |
-  #         aws ecs register-task-definition --cli-input-json file://$ECS_TASK_DEFINITION_API > task_def_output.json
-  #         TASK_DEF_ARN=$(jq -r '.taskDefinition.taskDefinitionArn' task_def_output.json)
-  #         echo "TASK_DEF_ARN=$TASK_DEF_ARN" >> $GITHUB_ENV
+      - name: Configure AWS Credentials for Frontend
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
 
-  #     - name: Update ECS Service with new Task Definition
-  #       run: |
-  #         aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --task-definition $TASK_DEF_ARN
-
-  # build-frontend:
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       working-directory: front
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: "21.7.1"
-  #         cache: "yarn"
-  #         cache-dependency-path: "package.json"
-
-  #     - name: Install Frontend Dependencies
-  #       run: yarn install
-
-  #     - name: Run Frontend Tests
-  #       run: yarn run test
-
-  #     - name: Build Frontend
-  #       run: yarn run build
-
-  #     - name: Configure AWS Credentials for Frontend
-  #       uses: aws-actions/configure-aws-credentials@v4
-  #       with:
-  #         aws-region: ${{ env.AWS_REGION }}
-  #         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-
-  #     - name: Deploy Frontend to S3
-  #       run: aws s3 cp ./dist s3://yukutto-web/ --recursive
+      - name: Deploy Frontend to S3
+        run: aws s3 cp ./dist s3://yukutto-web/ --recursive
