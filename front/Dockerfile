@@ -1,4 +1,4 @@
-FROM node:21.7.1
+FROM node:22.x
 
 # 作業ディレクトリの設定
 RUN mkdir /myapp

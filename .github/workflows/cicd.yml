@@ -140,17 +140,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "22.x"
-          cache: "yarn"
-          cache-dependency-path: "front/package.json"
+          cache: "npm"
+          cache-dependency-path: "front/package-lock.json"
 
       - name: Install Frontend Dependencies
-        run: yarn install
+        run: npm ci
 
       - name: Run Frontend Tests
-        run: yarn run test
+        run: npm run test
 
       - name: Build Frontend
-        run: yarn run build
+        run: npm run build
 
       - name: Configure AWS Credentials for Frontend
         uses: aws-actions/configure-aws-credentials@v4
