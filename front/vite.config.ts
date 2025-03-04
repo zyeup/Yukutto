@@ -1,7 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react-swc'
 
-// https://vitejs.dev/config/
 export default defineConfig({
 
   server: {
@@ -9,8 +8,8 @@ export default defineConfig({
   },
 
   test: {
-    globals: true,       // グローバルに describe, it, expect などを有効化
-    environment: 'jsdom', // DOM 環境を使用（jest-dom を利用するために必要）
+    globals: true,
+    environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}', 'tests/**/*.{test,spec}.{js,ts,jsx,tsx}'],
   },
 

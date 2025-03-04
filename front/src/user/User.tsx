@@ -16,14 +16,12 @@ interface User {
 const UserList: React.FC = () => {
   const { currentUser } = useContext(AuthContext);
   const [users, setUsers] = useState<User[]>([]);
-  // following[userId] が true の場合、 currentUser がそのユーザーをフォローしている
   const [following, setFollowing] = useState<{ [key: number]: boolean }>({});
 
-  // ユーザー一覧を取得（現在ログイン中のユーザーも含む前提）
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await api.get("/users"); // 全ユーザー一覧取得エンドポイント
+        const res = await api.get("/users");
         let fetchedUsers: User[] = res.data;
         // currentUser が存在すれば、自分の情報を先頭に配置する
         if (currentUser) {

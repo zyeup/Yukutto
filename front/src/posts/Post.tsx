@@ -10,14 +10,13 @@ const Post = () => {
     const post = postId ? posts.find((post) => post.id === postId) : undefined;
     const createUserId = post?.userId ? post.userId : undefined;
 
-    const [isOpen, setIsOpen] = useState(false); // モーダルの開閉状態
+    const [isOpen, setIsOpen] = useState(false);
 
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
 
     return (
         <div className="relative w-full h-screen">
-            {/* 投稿詳細を開くボタン */}
             {post && (
                 <div className="absolute top-20 left-4 z-20">
                     <button
@@ -28,19 +27,13 @@ const Post = () => {
                     </button>
                 </div>
             )}
-
-            {/* モーダル */}
             {isOpen && post && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
-                    {/* 背景のグレーオーバーレイ */}
                     <div
                         className="absolute inset-0 bg-gray-800 opacity-50"
                         onClick={closeModal}
                     ></div>
-
-                    {/* モーダル本体 */}
                     <div className="relative z-50 bg-white p-6 shadow-lg rounded-lg w-full max-w-2xl">
-                        {/* 閉じるボタン */}
                         <button
                             className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
                             onClick={closeModal}
@@ -52,13 +45,9 @@ const Post = () => {
                     </div>
                 </div>
             )}
-
-            {/* 投稿がない場合の表示 */}
             {!post && (
                 <h1 className="text-4xl font-bold text-black text-center">すべてのマーカー</h1>
             )}
-
-            {/* マップ */}
             <Map postId={postId} createUserId={createUserId} />
         </div>
     );
