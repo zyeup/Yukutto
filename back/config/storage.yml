@@ -8,7 +8,7 @@ local:
 
 amazon:
   service: S3
-  region: 'ap-north-east'
+  region: 'ap-north-east1'
   bucket: 'yukutto-api'
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
