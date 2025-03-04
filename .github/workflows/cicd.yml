@@ -151,7 +151,7 @@ jobs:
 
       - name: Install Frontend Dependencies
         run: npm ci
-        
+
       - name: Run Frontend Tests
         run: npm run test
 
@@ -170,3 +170,7 @@ jobs:
 
       - name: Deploy Frontend to S3
         run: aws s3 cp ./dist s3://yukutto-web/ --recursive
+
+      - name: Invalidate CloudFront cache (Optional)
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
