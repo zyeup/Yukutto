@@ -2,6 +2,7 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
 
+  # config.hosts << "back-aged-firefly-3643.fly.dev"
   config.hosts << "yukutto.com"
   config.hosts << "api.yukutto.com"
   config.hosts << "web.yukutto.com"
