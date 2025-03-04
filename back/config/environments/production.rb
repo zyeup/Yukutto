@@ -2,7 +2,8 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
 
-  config.hosts << "web.yukutto.com"
+  # config.hosts << "web.yukutto.com"
+  config.hosts << "api.yukutto.com"
 
   config.host_authorization = {
   exclude: ->(request) { request.path.start_with?('/api/v1/health_check') }
