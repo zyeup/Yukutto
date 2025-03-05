@@ -90,4 +90,4 @@ production:
   database: myapp_production
   username: <%= ENV.fetch('DB_USERNAME', 'username') %>
   password: <%= ENV.fetch('DB_PASSWORD', 'password') %>
-  host: <%= ENV.fetch('DB_HOST', nil) %>
+  host: <%= ENV.fetch('DB_HOST', "db") %>
