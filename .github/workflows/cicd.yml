@@ -59,6 +59,8 @@ jobs:
           bundle exec rails db:migrate
 
       - name: Run Backend Tests
+        env:
+          RAILS_ENV: test
         run: bundle exec rspec
 
       - name: Build Backend Docker Image
