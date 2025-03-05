@@ -52,7 +52,6 @@ jobs:
       - name: Run Database Migrations for Test Environment
         env:
           RAILS_ENV: test
-          DB_HOST: localhost
         run: |
           bundle exec rails db:drop
           bundle exec rails db:create
