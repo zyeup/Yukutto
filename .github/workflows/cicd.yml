@@ -24,6 +24,7 @@ permissions:
 
 jobs:
   test-and-build-backend:
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -88,6 +89,7 @@ jobs:
 
   # Deploy
   deploy-backend:
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     needs: [test-and-build-backend]
 
@@ -128,6 +130,7 @@ jobs:
           wait-for-service-stability: true
 
   test-and-deploy-frontend:
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     defaults:
       run:
