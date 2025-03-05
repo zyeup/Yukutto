@@ -60,7 +60,7 @@ jobs:
 
       - name: Run Backend Tests
         env:
-          RAILS_ENV: test
+          DB_HOST: localhost
         run: bundle exec rspec
 
       - name: Build Backend Docker Image
