@@ -24,13 +24,14 @@ const AppRoutes = () => {
     if (loading) {
       return <LoadingSpinner />;
     }
-    return isSignedIn ? children : <Navigate to="/" replace />;
+    return isSignedIn ? children : <Navigate to="/home" replace />;
   };
 
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Starts />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/starts" element={<Starts />} />
       <Route path="/posts" element={<Posts />}>
         <Route path=":paramsId" element={<Post />} />

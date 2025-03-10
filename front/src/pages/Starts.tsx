@@ -7,7 +7,7 @@ const Starts = () => {
 
   const handleStart = () => {
     setStart(true);
-    navigate('/');
+    navigate('/home');
   };
 
   return (

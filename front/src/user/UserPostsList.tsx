@@ -25,51 +25,40 @@ const UserPostsList = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 shadow-lg rounded-xl max-w-4xl mx-auto mt-20">
-      <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
-        投稿したポスト一覧
-      </h2>
-      <p className="text-gray-600 mb-8 text-center">
-        <Link to="/posts/new" className="text-blue-500 hover:text-blue-600 hover:underline font-semibold">
-          新しく投稿を作成する
-        </Link>
-      </p>
-      <div className="grid grid-cols-1 gap-6 max-h-[680px] overflow-y-scroll">
-        {fillterdPosts.map((post) => (
-          <div
-            key={post.id}
-            className="block p-6 h-32 bg-white shadow-md hover:shadow-lg border border-gray-200 transition-all duration-300"
-          >
-            <Link
-              to={`/userposts/${post.id}`}
-              className="mb-4 text-xl font-bold text-gray-700"
-            >
-              {post.id}: {post.title}
-            </Link>
-            <p className="text-gray-500 text-sm mb-4">
-              Created at: {new Date(post.createdAt).toLocaleDateString()}
-            </p>
-            <div className="flex justify-end space-x-3">
-              <Link
-                to={`/posts/edit/${post.id}`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button className="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                  Edit
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
+      <div className="bg-white shadow-2xl rounded-2xl w-full max-w-4xl p-8 relative pt-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+          投稿したポスト一覧
+        </h2>
+        <div className="max-h-[500px] overflow-y-auto space-y-4 px-4">
+          {fillterdPosts.map((post) => (
+            <div key={post.id} className="bg-white shadow-lg p-5 rounded-lg border border-gray-300 flex items-center justify-between transition hover:shadow-xl">
+              <div>
+                <Link to={`/userposts/${post.id}`} className="text-lg font-semibold text-gray-800 hover:text-indigo-600">
+                  {post.title}
+                </Link>
+                <p className="text-gray-500 text-sm">作成日時: {new Date(post.createdAt).toLocaleDateString()}</p>
+                <p className="text-gray-500 text-sm">作成者　: {post.user ? post.user.name : 'ユーザー情報なし'}</p>
+              </div>
+              <div className="flex justify-end space-x-3">
+                <Link to={`/posts/edit/${post.id}`} onClick={(e) => e.stopPropagation()}>
+                  <button className="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    Edit
+                  </button>
+                </Link>
+                <button
+                  onClick={(e) => {
+                    handleDelete(post.id);
+                    e.preventDefault();
+                  }}
+                  className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                >
+                  Delete
                 </button>
-              </Link>
-              <button
-                onClick={(e) => {
-                  handleDelete(post.id);
-                  e.preventDefault();
-                }}
-                className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-              >
-                Delete
-              </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   )

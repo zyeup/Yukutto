@@ -43,7 +43,7 @@ const CreatePost = () => {
 
     return (
         <>
-            <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md mt-20">
+            <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md mt-20">
                 <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">新規投稿</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">

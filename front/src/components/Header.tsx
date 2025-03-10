@@ -29,7 +29,7 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 w-full bg-gray-200 text-white font-semibold py-4 px-6 shadow-md flex justify-between items-center z-50">
-      <Link to="/" className="text-3xl font-extrabold text-black hover:text-gray-700 transition duration-300 ease-in-out transform hover:scale-105">
+      <Link to="/home" className="text-3xl font-extrabold text-black hover:text-gray-700 transition duration-300 ease-in-out transform hover:scale-105">
         Yukutto
       </Link>
 
@@ -49,22 +49,23 @@ const Header = () => {
           >
             {isSignedIn ? (
               <>
-                <Link to="/" className="block px-4 py-2 hover:bg-gray-500">
-                  Home
+                <Link to="/posts/new" className="block px-4 py-2 hover:bg-gray-500">
+                  新規投稿
+                </Link>
+                <Link to={`/userpostslist/${currentUser?.id}`} className="block px-4 py-2 hover:bg-gray-500">
+                  {currentUser?.name}の投稿一覧
+                </Link>
+                <Link to={`/userpostslist/${currentUser?.id}/bookmarkposts`} className="block px-4 py-2 hover:bg-gray-500">
+                  ブックマーク
                 </Link>
                 <Link to="/user" className="block px-4 py-2 hover:bg-gray-500">
                   ユーザー情報
-                </Link>
-                <Link to={`/userpostslist/${currentUser?.id}`} className="block px-4 py-2 hover:bg-gray-500">
-                  投稿したポスト
-                </Link>
-                <Link to={`/userpostslist/${currentUser?.id}/bookmarkposts`} className="block px-4 py-2 hover:bg-gray-500">
-                  ブックマークした投稿
                 </Link>
                 <button
                   onClick={handleSignOut}
                   className="w-full text-left px-4 py-2 hover:bg-red-600 transition duration-300"
                 >
+
                   サインアウト
                 </button>
               </>
@@ -81,6 +82,17 @@ const Header = () => {
           </div>
         )}
       </div>
+      <nav className="absolute right-40 top-1/2 transform -translate-y-1/2 flex gap-8">
+        <Link to="/" className="text-gray-800 hover:underline">
+          スタート画面
+        </Link>
+        <Link to="/home" className="text-gray-800 hover:underline">
+          投稿一覧
+        </Link>
+        <Link to="/posts/all" className="text-gray-800 hover:underline">
+          マーカー一覧
+        </Link>
+      </nav>
     </header>
   );
 };
