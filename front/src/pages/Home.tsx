@@ -55,16 +55,10 @@ const Home = () => {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
-            <div className="bg-white shadow-2xl rounded-2xl w-full max-w-3xl p-8 relative pt-16">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Home</h2>
-                <div className="flex justify-center gap-4 mb-6">
-                    <Link to="/posts/new" className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow-md transition-all">
-                        新しく投稿を作成
-                    </Link>
-                    <Link to="/posts/all" className="bg-gray-600 hover:bg-gray-700 text-white px-5 py-2 rounded-lg shadow-md transition-all">
-                        すべてのマーカーを見る
-                    </Link>
-                </div>
+            <div className="bg-white shadow-2xl rounded-2xl w-full max-w-4xl p-8 relative pt-16">
+                <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+                    投稿一覧
+                </h2>
                 <div className="max-h-[500px] overflow-y-auto space-y-4 px-4">
                     {paginatedPosts.map((post) => (
                         <div key={post.id} className="bg-white shadow-lg p-5 rounded-lg border border-gray-300 flex items-center justify-between transition hover:shadow-xl">
@@ -72,8 +66,8 @@ const Home = () => {
                                 <Link to={`/posts/${post.id}`} className="text-lg font-semibold text-gray-800 hover:text-indigo-600">
                                     {post.title}
                                 </Link>
-                                <p className="text-gray-500 text-sm">Created at: {new Date(post.createdAt).toLocaleDateString()}</p>
-                                <p className="text-gray-500 text-sm">Created at: {post.user ? post.user.name : 'ユーザー情報なし'}</p>
+                                <p className="text-gray-500 text-sm">作成日時: {new Date(post.createdAt).toLocaleDateString()}</p>
+                                <p className="text-gray-500 text-sm">作成者　: {post.user ? post.user.name : 'ユーザー情報なし'}</p>
                             </div>
                             <label className="flex items-center space-x-2 cursor-pointer">
                                 <input
