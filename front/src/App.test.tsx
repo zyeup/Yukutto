@@ -27,7 +27,7 @@ describe('App Component', () => {
     expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
     // 非同期処理が完了して、Homeが表示される
-    await waitFor(() => expect(screen.getByText('Home')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('投稿一覧')).toBeInTheDocument());
 
 
   });

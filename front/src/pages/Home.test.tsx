@@ -73,7 +73,7 @@ describe('Home Component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Home')).toBeInTheDocument();
+      expect(screen.getByText('投稿一覧')).toBeInTheDocument();
       expect(screen.getByText('Test Post 1')).toBeInTheDocument();
       expect(screen.getByText('Test Post 2')).toBeInTheDocument();
     });
