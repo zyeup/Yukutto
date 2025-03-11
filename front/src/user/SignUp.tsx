@@ -35,7 +35,7 @@ const SignUp: React.FC = () => {
         setIsSignedIn(true)
         setCurrentUser(res.data.data)
 
-        navigate("/")
+        navigate("/home")
 
         console.log("Signed in successfully!")
       } else {
@@ -47,7 +47,7 @@ const SignUp: React.FC = () => {
   }
 
   return (
-<>
+    <>
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <form
           noValidate
@@ -55,10 +55,10 @@ const SignUp: React.FC = () => {
           onSubmit={handleSubmit}
           className="w-full max-w-md p-6 bg-white rounded-lg shadow-md"
         >
-          <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">Sign Up</h2>
+          <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">新規会員登録</h2>
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Name
+              名前
             </label>
             <input
               id="name"
@@ -71,7 +71,7 @@ const SignUp: React.FC = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
+              メールアドレス
             </label>
             <input
               id="email"
@@ -84,7 +84,7 @@ const SignUp: React.FC = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
+              パスワード
             </label>
             <input
               id="password"
@@ -97,7 +97,7 @@ const SignUp: React.FC = () => {
           </div>
           <div className="mb-6">
             <label htmlFor="passwordConfirmation" className="block text-sm font-medium text-gray-700">
-              Password Confirmation
+              パスワード(確認用)
             </label>
             <input
               id="passwordConfirmation"
@@ -111,11 +111,10 @@ const SignUp: React.FC = () => {
           <button
             type="submit"
             disabled={!name || !email || !password || !passwordConfirmation}
-            className={`w-full py-2 text-sm font-medium text-white rounded-md ${
-              name && email && password && passwordConfirmation
-                ? "bg-blue-500 hover:bg-blue-600"
-                : "bg-gray-400 cursor-not-allowed"
-            }`}
+            className={`w-full py-2 text-sm font-medium text-white rounded-md ${name && email && password && passwordConfirmation
+              ? "bg-blue-500 hover:bg-blue-600"
+              : "bg-gray-400 cursor-not-allowed"
+              }`}
           >
             Submit
           </button>

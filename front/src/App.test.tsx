@@ -16,7 +16,7 @@ vi.mock('./api/auth', () => ({
 }));
 
 describe('App Component', () => {
-  it('renders LoadingSpinner initially and then Header and AppRoutes', async () => {
+  it('最初にLoadingSpinnerの表示、その後Home画面に遷移', async () => {
     render(
       <MemoryRouter>
         <App />

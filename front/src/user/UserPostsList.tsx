@@ -7,7 +7,7 @@ const UserPostsList = () => {
   const { posts, setPosts } = useContext(AuthContext)
   const { paramsId = "0" } = useParams<{ paramsId: string }>();
 
-  const sortedPosts = posts.sort((a, b) => a.id - b.id);
+  const sortedPosts = posts.sort((a, b) => b.id - a.id);
   const fillterdPosts = sortedPosts.filter(post => post.userId === +paramsId)
 
   const handleDelete = async (postId: number) => {

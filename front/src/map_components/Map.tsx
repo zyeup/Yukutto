@@ -62,6 +62,7 @@ const Map: React.FC<MapProps> = ({ postId, createUserId }) => {
 
         setMap(initializedMap);
     }, [mapRef, map]);
+
     useEffect(() => {
         if (!map) return;
 
@@ -79,13 +80,17 @@ const Map: React.FC<MapProps> = ({ postId, createUserId }) => {
                 markersData.forEach((markerInfo) => {
                     markerInfo.marker.setMap(map);
                 });
+                if (markersData.length > 0) {
+                    const position = markersData[0].marker.getPosition();
+                    if (position) {
+                        map.setCenter(position);
+                    }
+                }
             } catch (error) {
                 console.error("Error fetching markers:", error);
             }
         };
-
         fetchMarkers();
-
     }, [map]);
 
     useEffect(() => {
@@ -156,34 +161,6 @@ const Map: React.FC<MapProps> = ({ postId, createUserId }) => {
         setMarkersInfos((prevMarkerInfos) => [...prevMarkerInfos, newMarkerInfo]);
         setSelectedMarkerId(newMarker.markerId)
     };
-
-    // const nowLocate = (clickedLat: number, clickedLng: number) => {
-
-    //     if (tmpMarker) {
-    //         tmpMarker.setMap(null);
-    //     }
-    //     const marker = new google.maps.Marker({
-    //         position: { lat: clickedLat, lng: clickedLng },
-    //         map,
-    //         title: title,
-    //         icon: {
-    //             fillColor: "red",
-    //             fillOpacity: 1,
-    //             path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-    //             scale: 8,
-    //             strokeColor: "red",
-    //             strokeWeight: 1.0
-    //         },
-    //         label: {
-    //             text: " ",
-    //             color: 'black',
-    //             fontSize: '20px',
-    //             fontWeight: 'bold',
-    //         },
-    //     });
-    //     marker.setMap(map);
-    //     setTmpMarker(marker);
-    // }
 
     const centerMapOnMarker = (markerId: number) => {
         const markerInfo = markersInfos.find((marker) => marker.markerId === markerId);

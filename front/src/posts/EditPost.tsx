@@ -27,7 +27,7 @@ const EditPost = () => {
                 content: content
             })
             await fetchPosts();
-            navigate("/");
+            navigate("/home");
 
         } catch (err) {
 
@@ -37,7 +37,7 @@ const EditPost = () => {
 
     return (
         <>
-            <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+            <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md mt-20">
                 <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">編集</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -63,7 +63,7 @@ const EditPost = () => {
                         <textarea
                             className="w-full bg-gray-100 border-2 border-gray-300 rounded py-2 px-4 text-gray-800 focus:outline-none focus:bg-white focus:border-blue-500"
                             value={content}
-                            rows={5}
+                            rows={15}
                             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)} />
                         <button
                             className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200"

@@ -73,7 +73,7 @@ const CreatePost = () => {
                             id="content"
                             className="w-full bg-gray-100 border-2 border-gray-300 rounded py-2 px-4 text-gray-800 focus:outline-none focus:bg-white focus:border-blue-500"
                             placeholder="本文を入力"
-                            rows={5}
+                            rows={15}
                             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
                         />
                     </div>
