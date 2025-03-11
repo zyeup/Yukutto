@@ -45,7 +45,7 @@ const EditPost = () => {
                             className="block text-gray-700 font-medium mb-2"
                             htmlFor="title"
                         >
-                            タイトル
+                            タイトル(30文字以内)
                         </label>
                         <input
                             className="w-full bg-gray-100 border-2 border-gray-300 rounded py-2 px-4 text-gray-800 focus:outline-none focus:bg-white focus:border-blue-500"
@@ -58,7 +58,7 @@ const EditPost = () => {
                         <label
                             className="block text-gray-700 font-medium mb-2"
                         >
-                            本文
+                            本文(400文字以内)
                         </label>
                         <textarea
                             className="w-full bg-gray-100 border-2 border-gray-300 rounded py-2 px-4 text-gray-800 focus:outline-none focus:bg-white focus:border-blue-500"

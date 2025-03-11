@@ -12,8 +12,6 @@ import SignUp from "../user/SignUp"
 import SignIn from "../user/SignIn"
 import UserPostsList from "../user/UserPostsList"
 import BookmarkPosts from "../user/BookmarkPosts"
-import UserPosts from "../user/UserPosts"
-import UserPost from "../user/UserPost"
 import User from '../user/User';
 import Starts from '../pages/Starts';
 
@@ -44,7 +42,7 @@ const AppRoutes = () => {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
       <Route
-        path="/userpostslist/:userId/bookmarkposts"
+        path="/bookmarkposts/:userId"
         element={
           <PrivateRoute>
             <BookmarkPosts />
@@ -59,17 +57,6 @@ const AppRoutes = () => {
           </PrivateRoute>
         }
       />
-      <Route path="/userposts" element={
-        <PrivateRoute>
-          <UserPosts />
-        </PrivateRoute>
-      }>
-        <Route path=":paramsId" element={
-          <PrivateRoute>
-            <UserPost />
-          </PrivateRoute>
-        } />
-      </Route>
       <Route
         path="/user"
         element={

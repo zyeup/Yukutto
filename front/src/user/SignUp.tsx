@@ -37,12 +37,10 @@ const SignUp: React.FC = () => {
 
         navigate("/home")
 
-        console.log("Signed in successfully!")
-      } else {
-        console.log("Error")
+        alert("会員登録に成功しました")
       }
     } catch (err) {
-      console.log(err)
+      alert("会員登録に失敗しました")
     }
   }
 

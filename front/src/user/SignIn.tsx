@@ -33,12 +33,10 @@ const SignIn: React.FC = () => {
 
         navigate("/home")
 
-        console.log("Signed in successfully!")
-      } else {
-        console.log("Error")
+        alert("ログインに成功しました")
       }
     } catch (err) {
-      console.log(err)
+      alert("ログインに失敗しました")
     }
   }
 

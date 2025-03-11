@@ -36,7 +36,9 @@ const MarkerModal: React.FC<MapComponentProps> = ({ markersInfos, setMarkersInfo
                     <h3 className="text-lg font-bold mb-2">{selectedMarker.title}</h3>
                     <p className="text-sm text-gray-600">所在地：{selectedMarker.fullAddress}</p>
                     <p className="mt-2">{selectedMarker.content}</p>
-                    {selectedMarker.image && <img src={selectedMarker.image} alt={selectedMarker.title} className="w-full h-auto rounded-md mt-2" />}
+                    {selectedMarker.image &&
+                        <img src={selectedMarker.image} alt={selectedMarker.title} className="w-full max-h-96 object-contain rounded-md mt-2" />
+                    }
                     <button className="mt-4 bg-red-600 text-white px-3 py-1 rounded-md" onClick={() => deleteMarker(selectedMarker.markerId)}>削除</button>
                     <button className="absolute top-4 right-4 text-gray-600" onClick={() => setSelectedMarkerId(null)}>✖︎</button>
                 </div>

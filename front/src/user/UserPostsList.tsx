@@ -19,7 +19,6 @@ const UserPostsList = () => {
         setPosts([...newArray]);
       } catch (err) {
         alert("削除に失敗しました");
-        console.log(err);
       }
     }
   };
@@ -34,7 +33,7 @@ const UserPostsList = () => {
           {fillterdPosts.map((post) => (
             <div key={post.id} className="bg-white shadow-lg p-5 rounded-lg border border-gray-300 flex items-center justify-between transition hover:shadow-xl">
               <div>
-                <Link to={`/userposts/${post.id}`} className="text-lg font-semibold text-gray-800 hover:text-indigo-600">
+                <Link to={`/posts/${post.id}`} className="text-lg font-semibold text-gray-800 hover:text-indigo-600">
                   {post.title}
                 </Link>
                 <p className="text-gray-500 text-sm">作成日時: {new Date(post.createdAt).toLocaleDateString()}</p>
@@ -43,7 +42,7 @@ const UserPostsList = () => {
               <div className="flex justify-end space-x-3">
                 <Link to={`/posts/edit/${post.id}`} onClick={(e) => e.stopPropagation()}>
                   <button className="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                    Edit
+                    編集
                   </button>
                 </Link>
                 <button
@@ -53,7 +52,7 @@ const UserPostsList = () => {
                   }}
                   className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
                 >
-                  Delete
+                  削除
                 </button>
               </div>
             </div>

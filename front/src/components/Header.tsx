@@ -18,12 +18,12 @@ const Header = () => {
         Cookies.remove("_uid");
         setIsSignedIn(false);
         navigate("/signin");
-        console.log("Succeeded in sign out");
+        alert("ログアウトに成功しました");
       } else {
-        console.log("Failed in sign out");
+        alert("ログアウトに失敗しました");
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -55,7 +55,7 @@ const Header = () => {
                 <Link to={`/userpostslist/${currentUser?.id}`} className="block px-4 py-2 hover:bg-gray-500">
                   {currentUser?.name}の投稿一覧
                 </Link>
-                <Link to={`/userpostslist/${currentUser?.id}/bookmarkposts`} className="block px-4 py-2 hover:bg-gray-500">
+                <Link to={`/bookmarkposts/${currentUser?.id}`} className="block px-4 py-2 hover:bg-gray-500">
                   ブックマーク
                 </Link>
                 <Link to="/user" className="block px-4 py-2 hover:bg-gray-500">

@@ -32,11 +32,9 @@ const CreatePost = () => {
                 }
             }
             setPosts([...posts, newPost]);
-
             navigate(`/userposts/${newPost.id}`);
 
         } catch (err) {
-
             alert("投稿に失敗しました")
         }
     }
@@ -51,7 +49,7 @@ const CreatePost = () => {
                             className="block text-gray-700 font-medium mb-2"
                             htmlFor="title"
                         >
-                            タイトル
+                            タイトル(30文字以内)
                         </label>
                         <input
                             id="title"
@@ -67,7 +65,7 @@ const CreatePost = () => {
                             className="block text-gray-700 font-medium mb-2"
                             htmlFor="content"
                         >
-                            本文
+                            本文(400文字以内)
                         </label>
                         <textarea
                             id="content"
