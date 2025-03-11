@@ -31,7 +31,7 @@ const SignIn: React.FC = () => {
         setIsSignedIn(true)
         setCurrentUser(res.data.data)
 
-        navigate("/")
+        navigate("/home")
 
         console.log("Signed in successfully!")
       } else {
@@ -51,10 +51,10 @@ const SignIn: React.FC = () => {
           onSubmit={handleSubmit}
           className="w-full max-w-md p-6 bg-white rounded-lg shadow-md"
         >
-          <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">Sign In</h2>
+          <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">ログイン</h2>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
+              メールアドレス
             </label>
             <input
               id="email"
@@ -67,13 +67,13 @@ const SignIn: React.FC = () => {
           </div>
           <div className="mb-6">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
+              パスワード
             </label>
             <input
               id="password"
               type="password"
               required
-              placeholder="At least 6 characters"
+              placeholder=""
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 mt-1 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -85,13 +85,13 @@ const SignIn: React.FC = () => {
             className={`w-full py-2 text-sm font-medium text-white rounded-md ${email && password ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'
               }`}
           >
-            Submit
+            ログインする
           </button>
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
+              アカウントを持っていない方は{' '}
               <Link to="/signup" className="text-blue-500 hover:underline">
-                Sign Up now!
+                こちら
               </Link>
             </p>
           </div>

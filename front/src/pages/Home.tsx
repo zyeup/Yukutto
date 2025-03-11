@@ -3,14 +3,13 @@ import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from "../App"
 import api from '../api/axios';
 
-const POSTS_PER_PAGE = 10;
-
 const Home = () => {
     const { posts } = useContext(AuthContext)
     const [bookmarks, setBookmarks] = useState<{ [key: number]: boolean }>({});
     const [currentPage, setCurrentPage] = useState(1);
 
     const sortedPosts = posts.sort((a, b) => b.id - a.id);
+    const POSTS_PER_PAGE = 10;
     const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
     const paginatedPosts = sortedPosts.slice(
         (currentPage - 1) * POSTS_PER_PAGE,

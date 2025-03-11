@@ -7,7 +7,7 @@ const BookmarkPosts = () => {
   const { posts } = useContext(AuthContext)
   const [bookmarks, setBookmarks] = useState<{ [key: number]: boolean }>({});
 
-  const sortedPosts = posts.sort((a, b) => a.id - b.id);
+  const sortedPosts = posts.sort((a, b) => b.id - a.id);
 
   useEffect(() => {
     const fetchBookmarks = async () => {
@@ -25,6 +25,7 @@ const BookmarkPosts = () => {
 
     fetchBookmarks();
   }, []);
+
   const handleBookmarkChange = async (e: React.ChangeEvent<HTMLInputElement>, postId: number) => {
     const newIsBookmarked = e.target.checked;
     setBookmarks(prevBookmarks => ({ ...prevBookmarks, [postId]: newIsBookmarked }));

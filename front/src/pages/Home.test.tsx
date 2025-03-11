@@ -62,7 +62,7 @@ const authContextValue = {
   setCurrentUser: noop,
 };
 
-describe('Home Component', () => {
+describe('Homeコンポーネント', () => {
   it('ホーム画面と投稿の表示', async () => {
     render(
       <AuthContext.Provider value={authContextValue}>
