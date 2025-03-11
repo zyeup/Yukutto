@@ -4,6 +4,8 @@ class Marker < ApplicationRecord
   accepts_nested_attributes_for :location
   mount_uploader :image, ImageUploader
 
+  validates :title, length: { maximum: 12 }
+  validates :content, length: { maximum: 140 }
   validate :validate_image_size
 
   def image_url

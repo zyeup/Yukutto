@@ -41,12 +41,14 @@ const Post = () => {
                             ✖
                         </button>
                         <h1 className="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">{post.title}</h1>
+                        <p>作成日時: {new Date(post.createdAt).toLocaleDateString()}</p>
+                        <p>作成者　: {post.user ? post.user.name : 'ユーザー情報なし'}</p>
                         <p className="text-lg text-gray-900">{post.content}</p>
                     </div>
                 </div>
             )}
             {!post && (
-                <h1 className="text-4xl font-bold text-black text-center">すべてのマーカー</h1>
+                <h1 className="text-xl font-bold text-red-600 text-center">投稿が見つかりません</h1>
             )}
             <Map postId={postId} createUserId={createUserId} />
         </div>

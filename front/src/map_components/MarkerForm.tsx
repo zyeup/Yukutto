@@ -117,15 +117,14 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ postId, lat, lng, title, setTit
     <div className="absolute top-[100px] right-8 p-4 bg-white shadow-md border rounded-md w-full max-w-md mx-auto z-10">
       <h3 className="text-xl font-bold text-gray-800 mb-4">現在のピンの位置情報</h3>
       <div className="mb-4">
+        <GeocodeAddress lat={lat} lng={lng} showAddress={true} country={country} setCountry={setCountry} prefecture={prefecture} setPrefecture={setPrefecture} city={city} setCity={setCity} fullAddress={fullAddress} setFullAddress={setFullAddress} />
         <p className="text-gray-600"><span className="font-medium text-gray-800">緯度：</span>{lat}</p>
         <p className="text-gray-600"><span className="font-medium text-gray-800">経度：</span>{lng}</p>
       </div>
-      <GeocodeAddress lat={lat} lng={lng} showAddress={true} country={country} setCountry={setCountry} prefecture={prefecture} setPrefecture={setPrefecture} city={city} setCity={setCity} fullAddress={fullAddress} setFullAddress={setFullAddress}
-      />
       <form onSubmit={handleAddMarker} className="space-y-4">
         <div>
           <label htmlFor="marker_name" className="block font-bold text-gray-800 mb-2">
-            マーカーに表示する名前を入力
+            マーカーの名前(30文字以内)
           </label>
           <input
             id="marker_name"
@@ -136,7 +135,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ postId, lat, lng, title, setTit
           />
           <div>
             <label htmlFor="marker_content" className="block font-bold text-gray-800 mb-2">
-              マーカーの説明文を入力
+              説明文(140文字以内)
             </label>
             <textarea
               id="marker_content"
