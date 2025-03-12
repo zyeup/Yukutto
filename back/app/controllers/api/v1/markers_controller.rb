@@ -6,7 +6,7 @@ class Api::V1::MarkersController < ApplicationController
     if post_id > 0
       @markers = Marker.where(post_id: post_id)
     else
-      @markers = Marker # post_idが0なら全件取得
+      @markers = Marker.all # post_idが0なら全件取得
     end
     render json: @markers.as_json(include: :location)
   end
