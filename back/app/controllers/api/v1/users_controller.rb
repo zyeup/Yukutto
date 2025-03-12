@@ -13,13 +13,6 @@ class Api::V1::UsersController < ApplicationController
     render json: users_with_counts
   end
 
-  def show
-    users = User.find(params[:id])
-    render json: users
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: "ユーザーが見つかりません" }, status: :not_found
-  end
-
   def following
     @user = User.find(params[:id])
     render json: @user.following

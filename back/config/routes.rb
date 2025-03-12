@@ -5,11 +5,11 @@ Rails.application.routes.draw do
       resources :posts, only: [:index, :show, :create, :update, :destroy]
       resources :markers, only: [:index, :show, :create, :update, :destroy]
       resources :post_bookmarks, only: [:index, :create, :destroy], param: :post_id
-      resources :users, only: [:index, :show] do
+      resources :users, only: [:index] do
         member do
           get 'following'
         end
-    end
+      end
       resources :follows, only: [:create, :destroy]
 
       mount_devise_token_auth_for 'User', at: 'auth', controllers: {

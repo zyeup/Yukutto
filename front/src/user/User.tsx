@@ -33,7 +33,7 @@ const UserList: React.FC = () => {
         }
         setUsers(fetchedUsers);
       } catch (error) {
-        console.error("ユーザー一覧取得失敗:", error);
+        alert("ユーザー一覧取得失敗");
       }
     };
 
@@ -52,7 +52,7 @@ const UserList: React.FC = () => {
         });
         setFollowing(followingMap);
       } catch (error) {
-        console.error("フォロー情報取得失敗:", error);
+        alert("フォロー情報取得失敗");
       }
     };
 
@@ -74,7 +74,7 @@ const UserList: React.FC = () => {
         })
       );
     } catch (error) {
-      console.error("フォロー失敗:", error);
+      alert("フォロー失敗");
     }
   };
 
@@ -94,7 +94,7 @@ const UserList: React.FC = () => {
         })
       );
     } catch (error) {
-      console.error("フォロー解除失敗:", error);
+      alert("フォロー解除失敗");
     }
   };
 

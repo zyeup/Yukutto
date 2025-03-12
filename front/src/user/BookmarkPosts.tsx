@@ -13,16 +13,15 @@ const BookmarkPosts = () => {
     const fetchBookmarks = async () => {
       try {
         const response = await api.get('/post_bookmarks');
-        const userBookmarks = response.data.bookmarks.reduce((acc: ({ [key: number]: boolean }), postId: number) => {
-          acc[postId] = true;
-          return acc;
-        }, {});
-        setBookmarks(userBookmarks);
+        const bookmarkMap: { [key: number]: boolean } = {};
+        response.data.bookmarks.forEach((postId: number) => {
+          bookmarkMap[postId] = true;
+        });
+        setBookmarks(bookmarkMap);
       } catch (err) {
-        console.error("Error fetching bookmarks", err);
+        // console.log("ブックマークの取得に失敗しました");
       }
     };
-
     fetchBookmarks();
   }, []);
 
@@ -38,7 +37,7 @@ const BookmarkPosts = () => {
         await api.delete(`/post_bookmarks/${postId}`);
       }
     } catch (err) {
-      console.error(err);
+      // console.log("ブックマークの更新に失敗しました");
       setBookmarks(prevBookmarks => ({ ...prevBookmarks, [postId]: !newIsBookmarked }));
     }
   };

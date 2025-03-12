@@ -4,15 +4,15 @@ class Api::V1::MarkersController < ApplicationController
   def index
     post_id = params[:post_id].to_i
     if post_id > 0
-      @markers = Marker.where(post_id: post_id).order(:id)
+      @markers = Marker.where(post_id: post_id)
     else
-      @markers = Marker.order(:id) # post_idが0なら全件取得
+      @markers = Marker # post_idが0なら全件取得
     end
     render json: @markers.as_json(include: :location)
   end
 
   def show
-    render json: @marker.as_json(include: :location).as_json.merge(image_url: @marker.image.url)
+    render json: @marker.as_json(include: :location).merge(image_url: @marker.image.url)
   end
 
   def create

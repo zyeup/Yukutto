@@ -7,7 +7,7 @@ const Post = () => {
     const { posts } = useContext(AuthContext);
     const { paramsId } = useParams<{ paramsId: string }>();
     const postId = parseInt(paramsId || "0", 10);
-    const post = postId ? posts.find((post) => post.id === postId) : undefined;
+    const post = posts.find((post) => post.id === postId);
     const createUserId = post?.userId ? post.userId : undefined;
 
     const [isOpen, setIsOpen] = useState(false);

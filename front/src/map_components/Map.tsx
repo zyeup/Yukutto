@@ -87,7 +87,7 @@ const Map: React.FC<MapProps> = ({ postId, createUserId }) => {
                     }
                 }
             } catch (error) {
-                console.error("Error fetching markers:", error);
+                // console.log("マーカの取得に失敗しました。");
             }
         };
         fetchMarkers();

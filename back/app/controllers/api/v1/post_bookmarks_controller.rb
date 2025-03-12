@@ -12,9 +12,9 @@ class Api::V1::PostBookmarksController < ApplicationController
     bookmark = current_api_v1_user.post_bookmarks.build(post: @post)
 
     if bookmark.save
-      render json: { post_id: @post.id, message: 'ブックマークしました' }, status: :created
+      head :created
     else
-      render json: { message: 'ブックマークに失敗しました' }, status: :unprocessable_entity
+      head :unprocessable_entity
     end
   end
 
@@ -22,9 +22,9 @@ class Api::V1::PostBookmarksController < ApplicationController
     bookmark = current_api_v1_user.post_bookmarks.find_by(post: @post)
 
     if bookmark&.destroy
-      render json: { post_id: @post.id, message: 'ブックマークを解除しました'}, status: :ok
+      head :ok
     else
-      render json: { message: 'ブックマークの解除に失敗しました' }, status: :unprocessable_entity
+      head :unprocessable_entity
     end
   end
 
@@ -33,6 +33,6 @@ class Api::V1::PostBookmarksController < ApplicationController
   def set_post
     @post = Post.find(params[:post_id])
   rescue ActiveRecord::RecordNotFound
-    render json: { error: '投稿が見つかりません' }, status: :not_found
+    head :not_found
   end
 end

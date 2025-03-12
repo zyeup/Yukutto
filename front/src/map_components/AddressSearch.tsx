@@ -29,7 +29,6 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ map, setLat, setLng }) =>
                 setResults([]);
             }
         } catch (err) {
-            console.error("Geocoding APIエラー:", err);
             setError("検索中にエラーが発生しました。");
         }
     };
