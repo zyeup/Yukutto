@@ -3,7 +3,7 @@
 ## 概要
 お気に入りの場所を記録・共有できるアプリを開発しました。  
 地図上にピンを立てて、その場所に関する自分のコメントを記録するアプリです。  
-個人の体験を大切にし、口コミ評価ではなく「本当におすすめしたい場所」を記録・発信できることを重視しています。
+個人の体験を大切にし、口コミ評価ではなく「本当におすすめしたい場所」を記録・発信できることを重視しました。
 ![スクリーンショット 2025-03-11 21 44 17](https://github.com/user-attachments/assets/6114defb-e1e6-44a8-b466-ad6c329408e6)
 
 ## 基本的な使い方
@@ -50,19 +50,19 @@
 ・GithubActions  
 
 ## テスト
-・RSpec
+・RSpec  
 ・Vitest
 
 ## 外部API
 ・Google Maps API  
 
 ## その他主要ライブラリ
-・carrierwave
-・devise_token_auth
-・vite
-・react-router-dom
-・axios
-・tailwindcss
+・carrierwave  
+・devise_token_auth  
+・vite  
+・react-router-dom  
+・axios  
+・tailwindcss  
 
 # 機能一覧
 ・投稿機能
