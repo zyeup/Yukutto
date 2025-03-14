@@ -45,6 +45,7 @@
 ・TypeScript 5.6.2  
 
 ## インフラ
+・PostgreSQL  
 ・AWS  (VPC、S3、Cloudfront、Application Load Balancer、ECS、RDS)  
 ・Docker  
 ・GithubActions  
