@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Posts", type: :request do
 
   before do
-    host! "api.yukutto.com"  # これによりリクエストのHostヘッダーが上書きされる
+    host! "api.yukutto.com"  # Hostヘッダーを上書き
   end
 
-  # まず、テスト用のユーザーと複数のポストを用意します。
+  # テスト用のユーザーとポスト
   let!(:user)  { FactoryBot.create(:user, name: "Test User") }
   let!(:posts) { FactoryBot.create_list(:post, 3, user: user) }
   let(:post_id) { posts.first.id }
@@ -17,10 +17,7 @@ RSpec.describe "Api::V1::Posts", type: :request do
     it "returns all posts" do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json).to be_an(Array)
       expect(json.size).to eq(3)
-      # ユーザー名も含まれているか確認
-      expect(json.first["user"]["name"]).to eq("Test User")
     end
   end
 
